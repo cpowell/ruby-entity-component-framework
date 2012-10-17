@@ -2,8 +2,7 @@
 # or just
 # ruby bin/pong.rb
 
-# rake rawr:jar
-# java -jar package/jar/pong.jar
+# rake rawr:jar && java -jar package/jar/pong.jar
 
 $:.push File.expand_path('../../lib/java', __FILE__)
 
