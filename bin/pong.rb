@@ -1,11 +1,11 @@
-# ruby -rubygems pong.rb 
+# ruby -rubygems bin/pong.rb 
 # or just
-# ruby pong.rb
+# ruby bin/pong.rb
 
 # rake rawr:jar
 # java -jar package/jar/pong.jar
 
-$:.push File.expand_path('../lib', __FILE__)
+$:.push File.expand_path('../../lib', __FILE__)
 
 require 'java'
 require 'lwjgl.jar'
