@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Class-Path: lib/java/jruby-complete.jar  . 
+Main-Class: org.prylis.rawr.Main
