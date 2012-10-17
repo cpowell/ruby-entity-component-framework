@@ -2,7 +2,7 @@ configuration do |config|
   config.project_name = 'pong'
   config.output_dir = 'package'
 
-  config.main_ruby_file = 'bin/pong'
+  config.main_ruby_file = 'bin/pong_runner'
   config.main_java_file = 'org.rubyforge.rawr.Main'
 
   # Compile all Ruby and Java files recursively

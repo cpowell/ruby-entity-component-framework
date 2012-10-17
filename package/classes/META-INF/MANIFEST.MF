@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Class-Path: lib/java/jruby-complete.jar  . 
+Class-Path: lib/java/hiero.jar lib/java/ibxm.jar lib/java/jinput.jar lib/java/jnlp.jar lib/java/jogg-0.0.7.jar lib/java/jorbis-0.0.15.jar lib/java/jruby-complete.jar lib/java/lwjgl.jar lib/java/natives-linux.jar lib/java/natives-mac.jar lib/java/natives-win32.jar lib/java/packulike.jar lib/java/pedigree.jar lib/java/scalar.jar lib/java/slick-examples.jar lib/java/slick-sources.jar lib/java/slick-util.jar lib/java/slick.jar lib/java/tinylinepp.jar  . 
 Main-Class: org.rubyforge.rawr.Main
