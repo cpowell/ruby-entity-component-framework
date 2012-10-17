@@ -1,3 +1,10 @@
+# ruby -rubygems pong.rb 
+# or just
+# ruby pong.rb
+
+# rake rawr:jar
+# java -jar package/jar/pong.jar
+
 $:.push File.expand_path('../lib', __FILE__)
 
 require 'java'
