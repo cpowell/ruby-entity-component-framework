@@ -5,7 +5,7 @@
 # rake rawr:jar
 # java -jar package/jar/pong.jar
 
-$:.push File.expand_path('../../lib', __FILE__)
+$:.push File.expand_path('../../lib/java', __FILE__)
 
 require 'java'
 require 'lwjgl.jar'
