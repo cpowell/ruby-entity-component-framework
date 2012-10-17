@@ -14,9 +14,9 @@ java_import org.newdawn.slick.AppGameContainer
 
 class PongGame < BasicGame
   def init(container)
-    @bg = Image.new('bg.png')
-    @ball = Image.new('ball.png')
-    @paddle = Image.new('paddle.png')
+    @bg = Image.new('media/bg.png')
+    @ball = Image.new('media/ball.png')
+    @paddle = Image.new('media/paddle.png')
     @paddle_x = 200
     @ball_x = 200
     @ball_y = 200
