@@ -3,8 +3,8 @@ require 'forwardable'
 
 class Paddle #< GameObject
   extend Forwardable
+  
   attr_accessor :x, :y, :game
-
   def_delegators :@image, :width, :height
 
   def initialize(game)

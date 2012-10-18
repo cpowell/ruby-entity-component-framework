@@ -8,7 +8,6 @@ class Ball #< GameObject
   def_delegators :game, :paddle
 
   attr_accessor :x, :y, :game
-
   def_delegators :@image, :width, :height
 
   def initialize(game)
@@ -17,17 +16,8 @@ class Ball #< GameObject
     reset
   end
 
-  def reset
-  end
-
   def render(container, graphics)
     @image.draw(@x, @y)
-  end
-
-  def reset
-    @x = 200
-    @y = 200
-    @angle = 0.25
   end
 
   def update(container, delta)
@@ -47,6 +37,12 @@ class Ball #< GameObject
        @x + width > paddle.x
       @angle = (@angle + 0.5 + rand(0.2) - 0.1) % 2
     end
+  end
+
+  def reset
+    @x = 200
+    @y = 200
+    @angle = 0.25
   end
 
 end
