@@ -17,18 +17,18 @@ class Lander < Entity
     
     if input.is_key_down(Input::KEY_A)
       rotate(-0.2 * delta)
-      self.rotation = self.image.rotation
+      self.rotation = image.rotation
     elsif input.is_key_down(Input::KEY_D)
       rotate(0.2 * delta)
-      self.rotation = self.image.rotation
+      self.rotation = image.rotation
     elsif input.is_key_down(Input::KEY_W)
       reposition_forward(0.2 * delta)
     elsif input.is_key_down(Input::KEY_1)
-      self.scale -= (self.scale <= 0.5) ? 0 : 0.01
-      image.setCenterOfRotation(width/2.0*self.scale, height/2.0*self.scale)
+      self.scale -= (scale <= 0.5) ? 0 : 0.01
+      image.setCenterOfRotation(width/2.0*scale, height/2.0*scale)
     elsif input.is_key_down(Input::KEY_2)
-      self.scale += (self.scale >= 3.0) ? 0 : 0.01;
-      image.setCenterOfRotation(width/2.0*self.scale, height/2.0*self.scale)
+      self.scale += (scale >= 3.0) ? 0 : 0.01;
+      image.setCenterOfRotation(width/2.0*scale, height/2.0*scale)
     end
   end
 
@@ -38,7 +38,7 @@ class Lander < Entity
     self.scale = 1.0
     self.rotation = 0
     image.setRotation(self.rotation)
-    image.setCenterOfRotation(width/2.0*self.scale, height/2.0*self.scale)
+    image.setCenterOfRotation(width/2.0*scale, height/2.0*scale)
   end
 
 end

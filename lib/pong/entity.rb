@@ -8,11 +8,11 @@ class Entity
   attr_reader :game
 
   def initialize(game)
-    @game = game
+    @game       = game
     @position_x = 0
     @position_y = 0
-    @scale = 1.0
-    @rotation = 0
+    @scale      = 1.0
+    @rotation   = 0
   end
 
   def update(container, delta)
