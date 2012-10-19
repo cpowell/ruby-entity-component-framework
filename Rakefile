@@ -1,1 +1,2 @@
-require 'rawr'
+require 'warbler'
+Warbler::Task.new

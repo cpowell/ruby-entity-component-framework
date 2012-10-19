@@ -1,8 +1,6 @@
 # ruby -rubygems bin/pong_runner.rb 
-# or just
-# ruby bin/pong.rb
-
-# rake rawr:jar && java -jar package/jar/pong.jar
+# or
+# rm mygame.jar && warble jar && java -jar ./mygame.jar
 
 $:.push File.expand_path('../../lib/', __FILE__)
 
