@@ -49,10 +49,3 @@ class Lander
   end
 
 end
-
-  # attr_accessor :angle
-  # def_delegators :game, :paddle
-
-  # attr_accessor :x, :y, :game
-
-      #Logger.global.log Level::INFO, "Rotation change = #{@rotation_change}"
