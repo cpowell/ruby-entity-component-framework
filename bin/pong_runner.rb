@@ -4,7 +4,7 @@
 
 # rake rawr:jar && java -jar package/jar/pong.jar
 
-$:.push File.expand_path('../../lib', __FILE__)
+$:.push File.expand_path('../../lib/', __FILE__)
 
 require 'java'
 require 'lwjgl.jar'
@@ -18,8 +18,7 @@ java_import org.newdawn.slick.Input
 java_import org.newdawn.slick.SlickException
 java_import org.newdawn.slick.AppGameContainer
 
-
-require 'lib/pong_game.rb'
+require 'pong/pong_game.rb'
 
 app = AppGameContainer.new(PongGame.new('RubyPong'))
 app.set_display_mode(640, 480, false)
