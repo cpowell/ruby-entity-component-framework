@@ -1,5 +1,5 @@
-require "lib/ball"
-require "lib/paddle"
+require "lib/pong/ball"
+require "lib/pong/paddle"
 
 class PongGame < BasicGame
   attr_reader :ball, :paddle
