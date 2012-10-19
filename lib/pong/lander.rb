@@ -1,17 +1,14 @@
-require 'forwardable'
+require 'entity'
 require 'positionable'
 require 'renderable'
 
-class Lander
+class Lander < Entity
   include Positionable
   include Renderable
 
-  extend Forwardable
-  def_delegators :@image, :width, :height  # Its image knows the dimensions.
-
   def initialize(game)
-    @game = game
-    @image = Image.new("media/plane.png")
+    super
+    self.image = Image.new("media/plane.png")
     reset
   end
 
@@ -19,32 +16,29 @@ class Lander
     input = container.get_input
     
     if input.is_key_down(Input::KEY_A)
-      @image.rotate(-0.2 * delta)
-      @rotation = @image.rotation
+      rotate(-0.2 * delta)
+      self.rotation = self.image.rotation
     elsif input.is_key_down(Input::KEY_D)
-      @image.rotate(0.2 * delta)
-      @rotation = @image.rotation
+      rotate(0.2 * delta)
+      self.rotation = self.image.rotation
     elsif input.is_key_down(Input::KEY_W)
-      hypot = 0.2 * delta
-      radians = @rotation * Math::PI / 180.0
-      @position_x+= hypot * Math.sin(radians)
-      @position_y-= hypot * Math.cos(radians)
+      reposition_forward(0.2 * delta)
     elsif input.is_key_down(Input::KEY_1)
-      @scale -= (@scale <= 0.5) ? 0 : 0.01
-      @image.setCenterOfRotation(width/2.0*@scale, height/2.0*@scale)
+      self.scale -= (self.scale <= 0.5) ? 0 : 0.01
+      image.setCenterOfRotation(width/2.0*self.scale, height/2.0*self.scale)
     elsif input.is_key_down(Input::KEY_2)
-      @scale += (@scale >= 3.0) ? 0 : 0.01;
-      @image.setCenterOfRotation(width/2.0*@scale, height/2.0*@scale)
+      self.scale += (self.scale >= 3.0) ? 0 : 0.01;
+      image.setCenterOfRotation(width/2.0*self.scale, height/2.0*self.scale)
     end
   end
 
   def reset
-    @position_x = 200
-    @position_y = 200
-    @scale = 1.0
-    @rotation = 0
-    @image.setRotation(@rotation) # or @image.rotation=0
-    @image.setCenterOfRotation(width/2.0*@scale, height/2.0*@scale)
+    self.position_x = 200
+    self.position_y = 200
+    self.scale = 1.0
+    self.rotation = 0
+    image.setRotation(self.rotation)
+    image.setCenterOfRotation(width/2.0*self.scale, height/2.0*self.scale)
   end
 
 end
