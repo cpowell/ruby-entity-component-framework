@@ -3,6 +3,7 @@
 # rm -f mygame.jar && warble jar && java -jar ./mygame.jar
 
 $:.push File.expand_path('../../lib/', __FILE__)
+$:.push File.expand_path('../../lib/pong/', __FILE__)
 
 require 'java'
 require 'lwjgl.jar'

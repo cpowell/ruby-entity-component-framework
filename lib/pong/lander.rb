@@ -1,10 +1,13 @@
-require "forwardable"
+require 'forwardable'
+require 'positionable'
+require 'renderable'
 
 class Lander
-  extend Forwardable
+  include Positionable
+  include Renderable
 
-  # Its image knows the dimensions.
-  def_delegators :@image, :width, :height
+  extend Forwardable
+  def_delegators :@image, :width, :height  # Its image knows the dimensions.
 
   def initialize(game)
     @game = game
@@ -24,8 +27,8 @@ class Lander
     elsif input.is_key_down(Input::KEY_W)
       hypot = 0.2 * delta
       radians = @rotation * Math::PI / 180.0
-      @x+= hypot * Math.sin(radians)
-      @y-= hypot * Math.cos(radians)
+      @position_x+= hypot * Math.sin(radians)
+      @position_y-= hypot * Math.cos(radians)
     elsif input.is_key_down(Input::KEY_1)
       @scale -= (@scale <= 0.5) ? 0 : 0.01
       @image.setCenterOfRotation(width/2.0*@scale, height/2.0*@scale)
@@ -35,13 +38,9 @@ class Lander
     end
   end
 
-  def render(container, graphics)
-    @image.draw(@x, @y, @scale)
-  end
-
   def reset
-    @x = 200
-    @y = 200
+    @position_x = 200
+    @position_y = 200
     @scale = 1.0
     @rotation = 0
     @image.setRotation(@rotation) # or @image.rotation=0
