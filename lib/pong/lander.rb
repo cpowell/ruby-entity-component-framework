@@ -22,7 +22,7 @@ class Lander < Entity
       rotate(0.2 * delta)
       self.rotation = image.rotation
     elsif input.is_key_down(Input::KEY_W)
-      reposition_forward(0.2 * delta)
+      thrust_forward(0.02)
     elsif input.is_key_down(Input::KEY_1)
       self.scale -= (scale <= 0.5) ? 0 : 0.01
       image.setCenterOfRotation(width/2.0*scale, height/2.0*scale)
@@ -30,6 +30,9 @@ class Lander < Entity
       self.scale += (scale >= 3.0) ? 0 : 0.01;
       image.setCenterOfRotation(width/2.0*scale, height/2.0*scale)
     end
+
+    reposition_forward(0.2 * delta * velocity)
+
   end
 
   def reset
@@ -37,6 +40,7 @@ class Lander < Entity
     self.position_y = 200
     self.scale = 1.0
     self.rotation = 0
+    reset_velocity
     image.setRotation(self.rotation)
     image.setCenterOfRotation(width/2.0*scale, height/2.0*scale)
   end
