@@ -1,4 +1,4 @@
-# ruby -rubygems bin/pong.rb 
+# ruby -rubygems bin/pong_runner.rb 
 # or just
 # ruby bin/pong.rb
 
