@@ -38,8 +38,8 @@ class Lander < Entity
 
   def reset
     self.vertical_speed = 0
-    self.position_x = 200
-    self.position_y = 200
+    self.position_x = 80
+    self.position_y = 0
     self.scale = 1.0
     self.rotation = 0
     image.setRotation(self.rotation)

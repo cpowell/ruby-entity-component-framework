@@ -32,10 +32,10 @@ module Renderable
 
   def bounding_box
     polygon = Polygon.new
-    polygon.addPoint(position_x - width/2.0*scale, position_y - height/2.0*scale)
-    polygon.addPoint(position_x + width/2.0*scale, position_y - height/2.0*scale)
-    polygon.addPoint(position_x + width/2.0*scale, position_y + height/2.0*scale)
-    polygon.addPoint(position_x - width/2.0*scale, position_y + height/2.0*scale)
+    polygon.addPoint(position_x, position_y)
+    polygon.addPoint(position_x + width, position_y)
+    polygon.addPoint(position_x + width, position_y + height)
+    polygon.addPoint(position_x, position_y + height)
 
     center = Vector2f.new(position_x + width/2.0*scale, position_y + height/2.0*scale)
 
@@ -46,5 +46,9 @@ module Renderable
     #polygon = polygon.transform(scale_transform)
 
     return polygon
+  end
+
+  def intersects(other)
+    return bounding_box.intersects(other.bounding_box)
   end
 end
