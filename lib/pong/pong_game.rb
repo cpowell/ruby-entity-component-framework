@@ -1,5 +1,5 @@
-require "lander"
-require "pad"
+require "entity"
+require "renderable"
 
 class PongGame < BasicGame
 
@@ -12,8 +12,9 @@ class PongGame < BasicGame
     container.setAlwaysRender(true)
 
     @bg = Image.new('media/bg.png')
-    @lander = Lander.new(self)
-    @pad = Pad.new(self)
+    @lander = Entity.new(self)
+    @lander.add_component(Renderable.new("media/lander.png"))
+    #@pad = Pad.new(self)
   end
 
   # The update method is called during the game to update the logic in our world, 
@@ -30,9 +31,9 @@ class PongGame < BasicGame
     container.exit if input.is_key_down(Input::KEY_ESCAPE)
 
     @lander.update(container, delta)
-    if @lander.intersects(@pad)
-      Logger.global.log Level::SEVERE, "Intersection"
-    end
+    # if @lander.intersects(@pad)
+    #   Logger.global.log Level::SEVERE, "Intersection"
+    # end
 
 
   end
@@ -44,7 +45,7 @@ class PongGame < BasicGame
     graphics.draw_string("RubyPong (ESC to exit)", 8, container.height - 30)
 
     @lander.render(container, graphics)
-    @pad.render(container,graphics)
+    #@pad.render(container,graphics)
   end
 
   def reset

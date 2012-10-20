@@ -4,20 +4,38 @@
 # to the box that holds the score. Some entities may be visible, others may be mobile, 
 # but all of them are part of the world of the game (even if invisible).
 class Entity
-  attr_accessor :position_x, :position_y, :scale
-  attr_accessor :rotation # degrees
   attr_reader :game
 
   def initialize(game)
+    @id         = rand(5000) # sucks, i know
     @game       = game
-    @position_x = 0
-    @position_y = 0
-    @scale      = 1.0
-    @rotation   = 0
+    @components = []
+  end
+
+  def add_component(component)
+    component.owner = self
+    @components << component
+  end
+
+  def get_component(id)
+    @components.detect {|comp| comp.id==id}
   end
 
   def update(container, delta)
-    Logger.global.log Level::SEVERE, "Entity::update must be overridden."
+    @components.each do |c|
+      c.update(container, delta)
+    end
   end
 
+  def render(container, graphics)
+    @components.each do |c|
+      if c.respond_to?(:render)
+        c.render(container,graphics)
+      end
+    end
+  end
+
+  def to_s
+    "Entity {#{id}}"
+  end
 end

@@ -1,14 +1,38 @@
 require 'forwardable'
+require 'component'
 
 java_import org.newdawn.slick.geom.Polygon
 java_import org.newdawn.slick.geom.Vector2f
 java_import org.newdawn.slick.geom.Transform
 
-module Renderable
-  attr_accessor  :image
+class Renderable < Component
+  attr_accessor :image
+  attr_accessor :position_x, :position_y, :scale
+  attr_accessor :rotation # degrees
 
   extend Forwardable
   def_delegators :image, :width, :height  # Its image knows the dimensions.
+
+  def initialize(image_fn)
+    self.image = Image.new(image_fn)
+
+    @position_x = 0
+    @position_y = 0
+    @scale      = 1.0
+    @rotation   = 0
+  end
+
+  def update(container, delta)
+    input = container.get_input
+    
+    if input.is_key_down(Input::KEY_A)
+      rotate(-0.2 * delta)
+      self.rotation = image.rotation
+    elsif input.is_key_down(Input::KEY_D)
+      rotate(0.2 * delta)
+      self.rotation = image.rotation
+    end
+  end
 
   def rotate(amount)
     image.rotate(amount)
@@ -19,16 +43,6 @@ module Renderable
     graphics.draw(p)
     image.draw(position_x, position_y, scale)
   end
-
-  # public static Polygon toPolygon(Vector2f position, Vector2f size, float rotation, float scale) {
-#         Polygon polygon = new Polygon(toPoints(position, size));
-#         Vector2f centre = new Vector2f(position.getX() + size.getX() / 2.0f, position.getY() + size.getY() / 2.0f);
-#         Transform rotateTransform = Transform.createRotateTransform(MathUtils.toRadians(rotation), centre.getX(), centre.getY());
-#         Transform scaleTransform = Transform.createScaleTransform(scale, scale);
-#         polygon = (Polygon) polygon.transform(rotateTransform);
-#         polygon = (Polygon) polygon.transform(scaleTransform);
-#         return polygon;
-# }
 
   def bounding_box
     polygon = Polygon.new
