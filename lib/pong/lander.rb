@@ -1,10 +1,12 @@
 require 'entity'
 require 'positionable'
 require 'renderable'
+require 'gravity_sensitive'
 
 class Lander < Entity
   include Positionable
   include Renderable
+  include GravitySensitive
 
   def initialize(game)
     super
@@ -29,15 +31,19 @@ class Lander < Entity
     elsif input.is_key_down(Input::KEY_2)
       self.scale += (scale >= 3.0) ? 0 : 0.01;
       image.setCenterOfRotation(width/2.0*scale, height/2.0*scale)
+    elsif input.is_key_down(Input::KEY_S)
+      @y_velo -= 0.01 * delta
+      image.setCenterOfRotation(width/2.0*scale, height/2.0*scale)
     end
-
-    reposition_forward(0.2 * delta * velocity)
-
+    @y_velo += 0.003 * delta
+    downward(0.1 * @y_velo)
+    #reposition_forward(0.2 * delta * velocity)
   end
 
   def reset
+    @y_velo=-3
     self.position_x = 200
-    self.position_y = 200
+    self.position_y = 40
     self.scale = 1.0
     self.rotation = 0
     reset_velocity

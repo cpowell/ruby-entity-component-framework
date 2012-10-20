@@ -4,7 +4,8 @@
 # to the box that holds the score. Some entities may be visible, others may be mobile, 
 # but all of them are part of the world of the game (even if invisible).
 class Entity
-  attr_accessor :position_x, :position_y, :scale, :rotation
+  attr_accessor :position_x, :position_y, :scale
+  attr_accessor :rotation # degrees
   attr_reader :game
 
   def initialize(game)
