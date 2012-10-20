@@ -10,7 +10,7 @@ class Lander < Entity
 
   def initialize(game)
     super
-    self.image = Image.new("media/plane.png")
+    self.image = Image.new("media/lander.png")
     reset
   end
 
@@ -35,7 +35,7 @@ class Lander < Entity
       @y_velo -= 0.01 * delta
       image.setCenterOfRotation(width/2.0*scale, height/2.0*scale)
     end
-    @y_velo += 0.003 * delta
+    @y_velo += 0.005 * delta
     downward(0.1 * @y_velo)
     #reposition_forward(0.2 * delta * velocity)
   end
@@ -43,7 +43,7 @@ class Lander < Entity
   def reset
     @y_velo=-3
     self.position_x = 200
-    self.position_y = 40
+    self.position_y = 200
     self.scale = 1.0
     self.rotation = 0
     reset_velocity

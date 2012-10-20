@@ -9,6 +9,9 @@ class PongGame < BasicGame
   def init(container)
     @bg = Image.new('media/bg.png')
     @lander = Lander.new(self)
+    #container.setSmoothDeltas(true)
+    container.setTargetFrameRate(60)
+    container.setAlwaysRender(true)
   end
 
   # The update method is called during the game to update the logic in our world, 
@@ -31,7 +34,7 @@ class PongGame < BasicGame
   # to the variables calculated in the update method.
   def render(container, graphics)
     @bg.draw(0, 0)
-    graphics.draw_string("RubyPong (ESC to exit)", 8, container.height - 30)
+    #graphics.draw_string("RubyPong (ESC to exit)", 8, container.height - 30)
 
     @lander.render(container, graphics)
   end
