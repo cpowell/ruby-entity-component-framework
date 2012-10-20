@@ -1,22 +1,19 @@
-require "lib/pong/ball"
-require "lib/pong/paddle"
+require "lander"
+require "pad"
 
 class PongGame < BasicGame
-  attr_reader :ball, :paddle
 
   # So before you start the game loop, you can initialize any data you wish inside the method init.
   # Why? Lets say you are initializing class variables or loading resources as you are playing the 
   # game, since these could be heavy actions on the computer, the game may slow down a bit so why 
   # not do that before the game cycle begins?
   def init(container)
-    @bg = Image.new('media/bg.png')
-    @ball = Ball.new(self)
-    @paddle = Paddle.new(self)
+    container.setTargetFrameRate(60)
+    container.setAlwaysRender(true)
 
-    @plane = Image.new('media/plane.png')
-    @x=250
-    @y=250
-    @scale = 1.0
+    @bg = Image.new('media/bg.png')
+    @lander = Lander.new(self)
+    @pad = Pad.new(self)
   end
 
   # The update method is called during the game to update the logic in our world, 
@@ -29,46 +26,29 @@ class PongGame < BasicGame
   #
   def update(container, delta)
     input = container.get_input
+    reset if input.is_key_down(Input::KEY_R)
     container.exit if input.is_key_down(Input::KEY_ESCAPE)
 
-    @ball.update(container, delta)
-    @paddle.update(container, delta)
-
-    if input.is_key_down(Input::KEY_A)
-      @plane.rotate(-0.2 * delta)
-    elsif input.is_key_down(Input::KEY_D)
-      @plane.rotate(0.2 * delta)
-    elsif input.is_key_down(Input::KEY_W)
-      hypot = 0.2 * delta;
-      rotation = @plane.getRotation
- 
-      @x+= hypot * Math.sin(rotation * Math::PI / 180.0)
-      @y-= hypot * Math.cos(rotation * Math::PI / 180.0)
-    elsif input.is_key_down(Input::KEY_1)
-      @scale -= (@scale <= 0.5) ? 0 : 0.01
-      @plane.setCenterOfRotation(@plane.getWidth/2.0*@scale, @plane.getHeight/2.0*@scale)
-    elsif input.is_key_down(Input::KEY_2)
-      @scale += (@scale >= 3.0) ? 0 : 0.01;
-      @plane.setCenterOfRotation(@plane.getWidth/2.0*@scale, @plane.getHeight/2)
+    @lander.update(container, delta)
+    if @lander.intersects(@pad)
+      Logger.global.log Level::SEVERE, "Intersection"
     end
+
+
   end
 
   # After that the render method allows us to draw the world we designed accordingly 
   # to the variables calculated in the update method.
   def render(container, graphics)
     @bg.draw(0, 0)
-
-    @plane.draw(@x, @y, @scale)
-
-
-    @ball.render(container, graphics)
-    @paddle.render(container, graphics)
     graphics.draw_string("RubyPong (ESC to exit)", 8, container.height - 30)
+
+    @lander.render(container, graphics)
+    @pad.render(container,graphics)
   end
 
   def reset
-    @ball.reset
-    @paddle.reset
+    @lander.reset
   end
 
 end
