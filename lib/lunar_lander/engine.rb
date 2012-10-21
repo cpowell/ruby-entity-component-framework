@@ -19,10 +19,10 @@ class Engine < Component
 
         current_rotation = @owner.get_rotation
  
-        x_comp = (THRUST*delta) * Math.sin(current_rotation * Math::PI / 180.0);
+        x_comp = (THRUST*delta/50) * Math.sin(current_rotation * Math::PI / 180.0);
         y_comp = -(THRUST*delta) * Math.cos(current_rotation * Math::PI / 180.0);
 
-        @owner.alter_horizontal_speed(x_comp/50)
+        @owner.alter_horizontal_speed(x_comp)
         @owner.alter_vertical_speed(y_comp)
       end
     end
