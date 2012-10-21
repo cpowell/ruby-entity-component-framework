@@ -19,7 +19,7 @@ class GravitySensitive < Component
     @owner.reposition_y(amount * direction)
   end
 
-  def reduce_vertical_speed(amount)
-    @vertical_speed -= amount
+  def alter_vertical_speed(amount)
+    @vertical_speed += amount
   end
 end

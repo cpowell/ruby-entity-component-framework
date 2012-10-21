@@ -35,13 +35,19 @@ class Entity
     end
   end
 
+  def get_rotation
+    first = @components.detect {|c| c.respond_to? :get_rotation}
+    first.get_rotation
+  end
+
   # id is the name of the method called, the * syntax collects
   # all the arguments in an array named 'arguments'
+  # TODO refactor to  "broadcast_message" instead
   def method_missing( id, *arguments )
     #puts "Method #{id} was called, but not found. It has these arguments: #{arguments.join(", ")}"
     @components.each do |c|
       if c.respond_to?(id)
-        c.send id, *arguments
+        retval = c.send(id, *arguments)
       end
     end
   end

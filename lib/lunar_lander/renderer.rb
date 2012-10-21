@@ -7,7 +7,7 @@ java_import org.newdawn.slick.geom.Transform
 
 class Renderer < Component
   extend Forwardable
-  def_delegators :@image, :width, :height  # Its image knows the dimensions.
+  def_delegators :@image, :width, :height # Its image knows the dimensions.
 
   def initialize(image_fn, x, y, scale, rotation)
     super()
@@ -17,10 +17,17 @@ class Renderer < Component
     @position_y = y
     @scale      = scale
     @rotation   = rotation
+    @horizontal_speed = 0
   end
 
   def update(container, delta)
-    #nop
+    direction = Math.sin(Math::PI)
+    amount    = delta * @horizontal_speed
+    @owner.reposition_x(amount)
+  end
+
+  def alter_horizontal_speed(amount)
+    @horizontal_speed += amount
   end
 
   def render(container, graphics)
@@ -64,5 +71,9 @@ class Renderer < Component
 
   def reposition_y(amount)
     @position_y += amount
+  end
+
+  def get_rotation
+    return @image.rotation
   end
 end

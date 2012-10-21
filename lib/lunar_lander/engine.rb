@@ -16,7 +16,14 @@ class Engine < Component
       if (@fuel > 0)
         @fuel -= THRUST*delta
         @fuel = 0 if @fuel < 0
-        @owner.reduce_vertical_speed(THRUST*delta)
+
+        current_rotation = @owner.get_rotation
+ 
+        x_comp = (THRUST*delta) * Math.sin(current_rotation * Math::PI / 180.0);
+        y_comp = -(THRUST*delta) * Math.cos(current_rotation * Math::PI / 180.0);
+
+        @owner.alter_horizontal_speed(x_comp/50)
+        @owner.alter_vertical_speed(y_comp)
       end
     end
   end
