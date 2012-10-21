@@ -6,7 +6,7 @@
 class Entity
   attr_reader :game
   attr_reader :components
-  
+
   def initialize(game)
     @id         = rand(5000) # sucks, i know
     @game       = game
@@ -32,6 +32,17 @@ class Entity
     @components.each do |c|
       if c.respond_to?(:render)
         c.render(container,graphics)
+      end
+    end
+  end
+
+  # id is the name of the method called, the * syntax collects
+  # all the arguments in an array named 'arguments'
+  def method_missing( id, *arguments )
+    #puts "Method #{id} was called, but not found. It has these arguments: #{arguments.join(", ")}"
+    @components.each do |c|
+      if c.respond_to?(id)
+        c.send id, *arguments
       end
     end
   end

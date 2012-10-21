@@ -12,11 +12,7 @@ class Engine < Component
     input = container.get_input
     
     if input.is_key_down(Input::KEY_S)
-      @owner.components.each do |c|
-        if c.respond_to?(:vertical_speed)
-          c.vertical_speed = c.vertical_speed - (THRUST * delta)
-        end
-      end
+      @owner.reduce_vertical_speed(THRUST*delta)
     end
   end
 

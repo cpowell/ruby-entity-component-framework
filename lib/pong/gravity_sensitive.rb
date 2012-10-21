@@ -4,8 +4,6 @@ require 'component'
 class GravitySensitive < Component
   ACCELERATION = 0.005 # m/s^2
 
-  attr_accessor :vertical_speed
-
   def initialize
     super()
     @vertical_speed = 0
@@ -23,5 +21,9 @@ class GravitySensitive < Component
         c.position_y -= amount * Math.cos(dir)
       end
     end
+  end
+
+  def reduce_vertical_speed(amount)
+    @vertical_speed -= amount
   end
 end
