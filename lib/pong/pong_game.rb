@@ -21,9 +21,15 @@ class PongGame < BasicGame
     lander.add_component(Renderable.new("media/lander.png"))
     lander.add_component(GravitySensitive.new)
     lander.add_component(Engine.new)
-    
     @entities << lander
-    #@pad = Pad.new(self)
+
+    pad = Entity.new(self)
+    r = Renderable.new("media/shelf.png")
+    r.position_y=250
+    r.position_x=150
+    pad.add_component(r)
+    @entities << pad
+
   end
 
   # The update method is called during the game to update the logic in our world, 

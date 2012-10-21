@@ -17,7 +17,7 @@ class Renderable < Component
     super()
     @image = Image.new(image_fn)
 
-    @position_x = 0
+    @position_x = 25
     @position_y = 0
     @scale      = 1.0
     @rotation   = 0
@@ -37,7 +37,7 @@ class Renderable < Component
 
   def render(container, graphics)
     p = bounding_box
-    graphics.draw(p)
+    #graphics.draw(p)
     image.draw(position_x, position_y, scale)
   end
 
