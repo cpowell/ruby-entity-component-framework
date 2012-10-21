@@ -47,7 +47,7 @@ class Entity
     #puts "Method #{id} was called, but not found. It has these arguments: #{arguments.join(", ")}"
     @components.each do |c|
       if c.respond_to?(id)
-        retval = c.send(id, *arguments)
+        c.send(id, *arguments)
       end
     end
   end
