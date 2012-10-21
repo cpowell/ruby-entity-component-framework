@@ -1,6 +1,7 @@
 require "entity"
 require "renderable"
 require 'gravity_sensitive'
+require 'engine'
 
 class PongGame < BasicGame
 
@@ -19,6 +20,8 @@ class PongGame < BasicGame
     lander = Entity.new(self)
     lander.add_component(Renderable.new("media/lander.png"))
     lander.add_component(GravitySensitive.new)
+    lander.add_component(Engine.new)
+    
     @entities << lander
     #@pad = Pad.new(self)
   end
