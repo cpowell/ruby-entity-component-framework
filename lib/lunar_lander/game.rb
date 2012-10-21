@@ -1,6 +1,6 @@
 require "entity"
 require "renderer"
-require 'gravity_sensitive'
+require 'physics'
 require 'engine'
 require 'maneuvering_thrusters'
 
@@ -20,7 +20,7 @@ class Game < BasicGame
 
     lander = Entity.new(self)
     lander.add_component(Renderer.new("media/lander.png", 50, 50, 1.0, 0))
-    lander.add_component(GravitySensitive.new)
+    lander.add_component(Physics.new)
     lander.add_component(ManeuveringThrusters.new)
     lander.add_component(Engine.new(200))
     @entities << lander

@@ -1,7 +1,7 @@
 require 'forwardable'
 require 'component'
 
-class GravitySensitive < Component
+class Physics < Component
   ACCELERATION = 0.005 # m/s^2
 
   def initialize
