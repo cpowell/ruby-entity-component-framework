@@ -1,9 +1,9 @@
-# ruby -rubygems bin/pong_runner.rb 
+# ruby -rubygems bin/runner.rb 
 # or
 # rm -f mygame.jar && warble jar && java -jar ./mygame.jar
 
 $:.push File.expand_path('../../lib/', __FILE__)
-$:.push File.expand_path('../../lib/pong/', __FILE__)
+$:.push File.expand_path('../../lib/lunar_lander/', __FILE__)
 
 require 'java'
 require 'lwjgl.jar'
@@ -19,8 +19,8 @@ java_import org.newdawn.slick.AppGameContainer
 java_import java.util.logging.Logger
 java_import java.util.logging.Level
 
-require 'pong/pong_game.rb'
+require 'lunar_lander/game.rb'
 
-app = AppGameContainer.new(PongGame.new('RubyPong'))
+app = AppGameContainer.new(Game.new('LunarLander'))
 app.set_display_mode(640, 480, false)
 app.start

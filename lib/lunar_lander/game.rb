@@ -3,7 +3,7 @@ require "renderable"
 require 'gravity_sensitive'
 require 'engine'
 
-class PongGame < BasicGame
+class Game < BasicGame
 
   # So before you start the game loop, you can initialize any data you wish inside the method init.
   # Why? Lets say you are initializing class variables or loading resources as you are playing the 
@@ -54,7 +54,7 @@ class PongGame < BasicGame
   # to the variables calculated in the update method.
   def render(container, graphics)
     @bg.draw(0, 0)
-    graphics.draw_string("RubyPong (ESC to exit)", 8, container.height - 30)
+    graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
 
     @entities.each {|e| e.render(container, graphics)}
   end
