@@ -20,15 +20,7 @@ class Renderable < Component
   end
 
   def update(container, delta)
-    input = container.get_input
-    
-    if input.is_key_down(Input::KEY_A)
-      rotate(-0.2 * delta)
-      self.rotation = image.rotation
-    elsif input.is_key_down(Input::KEY_D)
-      rotate(0.2 * delta)
-      self.rotation = image.rotation
-    end
+    #nop
   end
 
   def render(container, graphics)
@@ -38,7 +30,10 @@ class Renderable < Component
   end
 
   def rotate(amount)
-    image.rotate(amount)
+    @image.rotate(amount)
+
+    #  rotate(-0.2 * delta)
+    @rotation = @image.rotation
   end
 
   def bounding_box

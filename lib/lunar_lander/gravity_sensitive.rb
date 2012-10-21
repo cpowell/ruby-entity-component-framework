@@ -14,9 +14,9 @@ class GravitySensitive < Component
     @vertical_speed += ACCELERATION * delta
 
     # fall
-    dir = Math::PI
-    amount = -0.01 * delta * @vertical_speed
-    @owner.reposition_y(amount * Math.cos(dir))
+    direction = Math.cos(Math::PI)
+    amount    = -0.01 * delta * @vertical_speed
+    @owner.reposition_y(amount * direction)
   end
 
   def reduce_vertical_speed(amount)
