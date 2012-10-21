@@ -22,7 +22,7 @@ class Game < BasicGame
     lander.add_component(Renderable.new("media/lander.png", 50, 50, 1.0, 0))
     lander.add_component(GravitySensitive.new)
     lander.add_component(ManeuveringThrusters.new)
-    lander.add_component(Engine.new)
+    lander.add_component(Engine.new(20))
     @entities << lander
 
     pad = Entity.new(self)
