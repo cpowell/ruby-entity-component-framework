@@ -1,5 +1,6 @@
 require "entity"
 require "renderable"
+require 'gravity_sensitive'
 
 class PongGame < BasicGame
 
@@ -12,8 +13,13 @@ class PongGame < BasicGame
     container.setAlwaysRender(true)
 
     @bg = Image.new('media/bg.png')
-    @lander = Entity.new(self)
-    @lander.add_component(Renderable.new("media/lander.png"))
+    
+    @entities = []
+
+    lander = Entity.new(self)
+    lander.add_component(Renderable.new("media/lander.png"))
+    lander.add_component(GravitySensitive.new)
+    @entities << lander
     #@pad = Pad.new(self)
   end
 
@@ -27,15 +33,12 @@ class PongGame < BasicGame
   #
   def update(container, delta)
     input = container.get_input
-    reset if input.is_key_down(Input::KEY_R)
     container.exit if input.is_key_down(Input::KEY_ESCAPE)
 
-    @lander.update(container, delta)
+    @entities.each {|e| e.update(container, delta) }
     # if @lander.intersects(@pad)
     #   Logger.global.log Level::SEVERE, "Intersection"
     # end
-
-
   end
 
   # After that the render method allows us to draw the world we designed accordingly 
@@ -44,12 +47,7 @@ class PongGame < BasicGame
     @bg.draw(0, 0)
     graphics.draw_string("RubyPong (ESC to exit)", 8, container.height - 30)
 
-    @lander.render(container, graphics)
-    #@pad.render(container,graphics)
-  end
-
-  def reset
-    @lander.reset
+    @entities.each {|e| e.render(container, graphics)}
   end
 
 end

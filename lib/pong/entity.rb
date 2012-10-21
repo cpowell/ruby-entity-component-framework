@@ -5,7 +5,8 @@
 # but all of them are part of the world of the game (even if invisible).
 class Entity
   attr_reader :game
-
+  attr_reader :components
+  
   def initialize(game)
     @id         = rand(5000) # sucks, i know
     @game       = game

@@ -6,7 +6,7 @@ java_import org.newdawn.slick.geom.Vector2f
 java_import org.newdawn.slick.geom.Transform
 
 class Renderable < Component
-  attr_accessor :image
+  attr_reader :image
   attr_accessor :position_x, :position_y, :scale
   attr_accessor :rotation # degrees
 
@@ -14,7 +14,8 @@ class Renderable < Component
   def_delegators :image, :width, :height  # Its image knows the dimensions.
 
   def initialize(image_fn)
-    self.image = Image.new(image_fn)
+    super()
+    @image = Image.new(image_fn)
 
     @position_x = 0
     @position_y = 0
@@ -34,14 +35,14 @@ class Renderable < Component
     end
   end
 
-  def rotate(amount)
-    image.rotate(amount)
-  end
-
   def render(container, graphics)
     p = bounding_box
     graphics.draw(p)
     image.draw(position_x, position_y, scale)
+  end
+
+  def rotate(amount)
+    image.rotate(amount)
   end
 
   def bounding_box
