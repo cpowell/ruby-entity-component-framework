@@ -5,7 +5,7 @@ java_import org.newdawn.slick.geom.Polygon
 java_import org.newdawn.slick.geom.Vector2f
 java_import org.newdawn.slick.geom.Transform
 
-class Renderable < Component
+class Renderer < Component
   extend Forwardable
   def_delegators :@image, :width, :height  # Its image knows the dimensions.
 
