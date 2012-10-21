@@ -15,12 +15,8 @@ class GravitySensitive < Component
 
     # fall
     dir = Math::PI
-    amount = 0.01 * delta * @vertical_speed
-    @owner.components.each do |c|
-      if c.respond_to?(:render)
-        c.position_y -= amount * Math.cos(dir)
-      end
-    end
+    amount = -0.01 * delta * @vertical_speed
+    @owner.reposition_y(amount * Math.cos(dir))
   end
 
   def reduce_vertical_speed(amount)

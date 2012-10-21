@@ -18,16 +18,13 @@ class Game < BasicGame
     @entities = []
 
     lander = Entity.new(self)
-    lander.add_component(Renderable.new("media/lander.png"))
+    lander.add_component(Renderable.new("media/lander.png", 50, 50, 1.0, 0))
     lander.add_component(GravitySensitive.new)
     lander.add_component(Engine.new)
     @entities << lander
 
     pad = Entity.new(self)
-    r = Renderable.new("media/shelf.png")
-    r.position_y=250
-    r.position_x=150
-    pad.add_component(r)
+    pad.add_component(Renderable.new("media/shelf.png", 250, 150, 1.0, 0))
     @entities << pad
 
   end
