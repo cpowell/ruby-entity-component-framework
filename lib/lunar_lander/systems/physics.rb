@@ -20,7 +20,7 @@ class Physics < System
       amount    = -0.01 * delta * loc_comp.dy
       loc_comp.y += (amount * direction)
 
-      amount     = 0.2 * delta * loc_comp.dx
+      amount     = 0.01 * delta * loc_comp.dx
       loc_comp.x += (amount)
     end
   end

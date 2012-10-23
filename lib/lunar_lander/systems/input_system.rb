@@ -12,21 +12,21 @@ class InputSystem < System
 
   def process_one_game_tick(container, delta, entity_mgr)
     entities = entity_mgr.get_all_entities_possessing_component(PlayerInput)
-    input = container.get_input
+    user_input = container.get_input
 
     entities.each do |e|
-      input_comp = entity_mgr.get_component(e, PlayerInput)
-      loc_comp   = entity_mgr.get_component(e, ScreenLocation)
-      rend_comp  = entity_mgr.get_component(e, Renderable)
+      input_component      = entity_mgr.get_component(e, PlayerInput)
+      renderable_component = entity_mgr.get_component(e, Renderable)
 
-      if input.is_key_down(KEY_THRUST)
-        current_rotation = rend_comp.rotation
+      if user_input.is_key_down(KEY_THRUST) && input_component.responsive_keys.include?(KEY_THRUST)
+        location_component = entity_mgr.get_component(e, ScreenLocation)
+        current_rotation   = renderable_component.rotation
 
-        x_vector = (THRUST*delta/50) * Math.sin(current_rotation * Math::PI / 180.0);
+        x_vector =  (THRUST*delta) * Math.sin(current_rotation * Math::PI / 180.0);
         y_vector = -(THRUST*delta) * Math.cos(current_rotation * Math::PI / 180.0);
 
-        loc_comp.dy += y_vector
-        loc_comp.dx += x_vector
+        location_component.dy += y_vector
+        location_component.dx += x_vector
 
         #if (@fuel > 0)
         #  @fuel -= THRUST*delta
@@ -34,12 +34,12 @@ class InputSystem < System
         #end
       end
 
-      if input.is_key_down(KEY_ROTL)
-        rend_comp.rotate(delta * -0.1)
+      if user_input.is_key_down(KEY_ROTL) && input_component.responsive_keys.include?(KEY_ROTL)
+        renderable_component.rotate(delta * -0.1)
       end
-      
-      if input.is_key_down(KEY_ROTR)
-        rend_comp.rotate(delta * 0.1)
+
+      if user_input.is_key_down(KEY_ROTR) && input_component.responsive_keys.include?(KEY_ROTR)
+        renderable_component.rotate(delta * 0.1)
       end
     end
   end
