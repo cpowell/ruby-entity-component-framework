@@ -126,7 +126,7 @@ class EntityManager
     end
   end
 
-  def dump
+  def dump_to_screen
     @entities.each do |e|
       puts "#{e} (#{@entity_names[e]})"
       comps = get_all_components_on_entity(e)
