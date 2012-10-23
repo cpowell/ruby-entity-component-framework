@@ -7,7 +7,7 @@ class EntityManager
   attr_reader :game
 
   def initialize(game)
-    @game       = game
+    @game     = game
     @entities = []
     @entity_names = Hash.new
 
@@ -99,14 +99,14 @@ class EntityManager
     end
   end
 
-  def create_entity
+  def create_basic_entity
     uuid = rand(5000) #FIXME
     @entities << uuid
     return uuid
   end
 
-  def create_entity(human_readable_name)
-    uuid=create_entity
+  def create_named_entity(human_readable_name)
+    uuid=create_basic_entity
     @entity_names[uuid]=human_readable_name    
     return uuid
   end

@@ -1,5 +1,5 @@
 require 'forwardable'
-require 'component'
+require 'system'
 
 java_import org.newdawn.slick.geom.Polygon
 java_import org.newdawn.slick.geom.Vector2f

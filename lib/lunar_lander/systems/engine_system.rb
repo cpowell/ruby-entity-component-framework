@@ -1,7 +1,7 @@
 require 'forwardable'
 require 'component'
 
-class Engine < Component
+class EngineSystem < System
   THRUST=0.01
 
   def initialize(fuel_qty)

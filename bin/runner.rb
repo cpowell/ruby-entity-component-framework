@@ -4,6 +4,8 @@
 
 $:.push File.expand_path('../../lib/', __FILE__)
 $:.push File.expand_path('../../lib/lunar_lander/', __FILE__)
+$:.push File.expand_path('../../lib/lunar_lander/components', __FILE__)
+$:.push File.expand_path('../../lib/lunar_lander/systems', __FILE__)
 
 require 'java'
 require 'lwjgl.jar'

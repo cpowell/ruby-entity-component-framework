@@ -1,8 +1,9 @@
-require "entity"
-require "renderer"
-require 'physics'
-require 'engine'
-require 'maneuvering_thrusters'
+#require "renderer"
+#require 'physics'
+#require 'engine'
+#require 'maneuvering_thrusters'
+require 'entity_manager'
+require 'screen_location'
 
 class Game < BasicGame
 
@@ -15,20 +16,23 @@ class Game < BasicGame
     container.setAlwaysRender(true)
 
     @bg = Image.new('media/bg.png')
+    @em = EntityManager.new(self)
+
+    lander_uuid = @em.create_named_entity('lander')
+    @em.add_component(lander_uuid, ScreenLocation.new(50, 50))
     
-    @entities = []
+    
+    
+    # lander = Entity.new(self)
+    # lander.add_component(Renderer.new("media/lander.png", 50, 50, 1.0, 0))
+    # lander.add_component(Physics.new)
+    # lander.add_component(ManeuveringThrusters.new)
+    # lander.add_component(Engine.new(200))
+    # @entities << lander
 
-    lander = Entity.new(self)
-    lander.add_component(Renderer.new("media/lander.png", 50, 50, 1.0, 0))
-    lander.add_component(Physics.new)
-    lander.add_component(ManeuveringThrusters.new)
-    lander.add_component(Engine.new(200))
-    @entities << lander
-
-    pad = Entity.new(self)
-    pad.add_component(Renderer.new("media/shelf.png", 250, 150, 1.0, 0))
-    @entities << pad
-
+    # pad = Entity.new(self)
+    # pad.add_component(Renderer.new("media/shelf.png", 250, 150, 1.0, 0))
+    # @entities << pad
   end
 
   # The update method is called during the game to update the logic in our world, 
@@ -43,7 +47,7 @@ class Game < BasicGame
     input = container.get_input
     container.exit if input.is_key_down(Input::KEY_ESCAPE)
 
-    @entities.each {|e| e.update(container, delta) }
+    #@entities.each {|e| e.update(container, delta) }
     # if @lander.intersects(@pad)
     #   Logger.global.log Level::SEVERE, "Intersection"
     # end
@@ -55,7 +59,7 @@ class Game < BasicGame
     @bg.draw(0, 0)
     graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
 
-    @entities.each {|e| e.render(container, graphics)}
+    #@entities.each {|e| e.render(container, graphics)}
   end
 
 end
