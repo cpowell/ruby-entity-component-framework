@@ -17,88 +17,6 @@ class EntityManager
     @component_stores = Hash.new
   end
 
-  #
-  #
-  # * *Args*    :
-  #   - +uuid+ -> entity identifier
-  #   - +component_class+ ->
-  # * *Returns* :
-  #   -
-  # * *Raises* :
-  #   - ++ ->
-  #
-  def get_component(uuid, component_class)
-    store = @component_stores[component_class]
-    if store.nil?
-      raise ArgumentError, "There are no entities with a component of class #{component_class}"
-    end
-
-    result = store[uuid]
-    if result.nil?
-      raise ArgumentError, "Entity #{uuid} does not possess Component of #{component_class}"
-    end
-
-    return result
-    #    @components.detect {|comp| comp.id==id}
-  end
-
-  def remove_component(uuid, component)
-    store = @component_stores[component.class]
-    if store.nil?
-      raise ArgumentError, "There are no entities with a component of class #{component_class}"
-    end
-
-    result = store.delete(component)
-    if result.nil?
-      raise ArgumentError, "Entity #{uuid} did not possess Component #{component} to remove"
-    end
-  end
-
-  def has_component(uuid, component_class)
-    store = @component_stores[component_class]
-    if store.nil?
-      return false
-    else
-      return store.has_key? uuid
-    end
-  end
-
-  def add_component(uuid, component)
-    store = @component_stores[component.class]
-    if store.nil?
-      store = Hash.new
-      @component_stores[component.class]=store
-    end
-    store[uuid]=component
-  end
-
-  def get_all_components_on_entity(uuid)
-    components = []
-    @component_stores.values.each do |store|
-      if store[entity]
-        components << store[entity]
-      end
-    end
-  end
-
-  def get_all_components_of_type(component_class)
-    store = @component_stores[component_class]
-    if store.nil?
-      return []
-    else
-      return store.values
-    end
-  end
-
-  def get_all_entities_possessing_component(component_class)
-    store = @component_stores[component_class]
-    if store.nil?
-      return []
-    else
-      return store.keys
-    end
-  end
-
   def create_basic_entity
     uuid = rand(5000) #FIXME
     @entities << uuid
@@ -122,6 +40,99 @@ class EntityManager
   def kill_entity(uuid)
     @component_stores.each_value do |store|
       store.delete(uuid)
+    end
+    @entities.delete(uuid)
+  end
+
+  def get_known_entities
+    @entities
+  end
+
+  def add_component(uuid, component)
+    store = @component_stores[component.class]
+    if store.nil?
+      store = Hash.new
+      @component_stores[component.class]=store
+    end
+    store[uuid]=component
+  end
+
+  def has_component(uuid, component_class)
+    store = @component_stores[component_class]
+    if store.nil?
+      return false
+    else
+      return store.has_key? uuid
+    end
+  end
+
+  def get_component(uuid, component_class)
+    store = @component_stores[component_class]
+    if store.nil?
+      raise ArgumentError, "There are no entities with a component of class #{component_class}"
+    end
+
+    result = store[uuid]
+    if result.nil?
+      raise ArgumentError, "Entity #{uuid} does not possess Component of #{component_class}"
+    end
+
+    return result
+    #    @components.detect {|comp| comp.id==id}
+  end
+
+  def remove_component(uuid, component_class)
+    store = @component_stores[component_class]
+    if store.nil?
+      raise ArgumentError, "There are no entities with a component of class #{component_class}"
+    end
+
+    comp = store[uuid]
+    if comp.nil?
+      raise ArgumentError, "Entity #{uuid} does not possess Component of #{component_class}"
+    end
+
+    result = store.delete(uuid)
+    if result.nil?
+      raise ArgumentError, "Entity #{uuid} did not possess Component #{component} to remove"
+    end
+  end
+
+  def get_all_components_on_entity(uuid)
+    components = []
+    @component_stores.values.each do |store|
+      if store[uuid]
+        components << store[uuid]
+      end
+    end
+    components
+  end
+
+  def get_all_components_of_type(component_class)
+    store = @component_stores[component_class]
+    if store.nil?
+      return []
+    else
+      return store.values
+    end
+  end
+
+  def get_all_entities_possessing_component(component_class)
+    store = @component_stores[component_class]
+    if store.nil?
+      return []
+    else
+      return store.keys
+    end
+  end
+
+  def dump
+    @entities.each do |e|
+      puts "#{e} (#{@entity_names[e]})"
+      comps = get_all_components_on_entity(e)
+      comps.each do |c|
+        puts "  #{c.to_s}"
+      end
     end
   end
 

@@ -1,9 +1,10 @@
-#require "renderer"
 #require 'physics'
 #require 'engine'
 #require 'maneuvering_thrusters'
 require 'entity_manager'
 require 'screen_location'
+
+require 'renderer'
 
 class Game < BasicGame
 
@@ -20,9 +21,12 @@ class Game < BasicGame
 
     lander_uuid = @em.create_named_entity('lander')
     @em.add_component(lander_uuid, ScreenLocation.new(50, 50))
+    @em.add_component(lander_uuid, Renderable.new("media/lander.png", 1.0, 0))
     
-    
-    
+    @em.dump #.get_all_entities_possessing_component('Renderable')
+
+    @renderer = Renderer.new
+
     # lander = Entity.new(self)
     # lander.add_component(Renderer.new("media/lander.png", 50, 50, 1.0, 0))
     # lander.add_component(Physics.new)
@@ -58,6 +62,8 @@ class Game < BasicGame
   def render(container, graphics)
     @bg.draw(0, 0)
     graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
+
+    @renderer.process_one_game_tick(@em)
 
     #@entities.each {|e| e.render(container, graphics)}
   end

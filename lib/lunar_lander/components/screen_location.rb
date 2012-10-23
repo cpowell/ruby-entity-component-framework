@@ -8,4 +8,8 @@ class ScreenLocation < Component
     @x=x_pos
     @y=y_pos
   end
+
+  def to_s
+    "ScreenLocation component {#{x}, #{y}}"
+  end
 end
