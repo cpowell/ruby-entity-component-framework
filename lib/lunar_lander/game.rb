@@ -1,10 +1,11 @@
-#require 'physics'
 #require 'engine'
 #require 'maneuvering_thrusters'
 require 'entity_manager'
 require 'screen_location'
+require 'gravity_sensitive'
 
 require 'renderer'
+require 'physics'
 
 class Game < BasicGame
 
@@ -22,10 +23,12 @@ class Game < BasicGame
     lander_uuid = @em.create_named_entity('lander')
     @em.add_component(lander_uuid, ScreenLocation.new(50, 50))
     @em.add_component(lander_uuid, Renderable.new("media/lander.png", 1.0, 0))
+    @em.add_component(lander_uuid, GravitySensitive.new)
     
-    @em.dump #.get_all_entities_possessing_component('Renderable')
+    @em.dump
 
     @renderer = Renderer.new
+    @physics = Physics.new
 
     # lander = Entity.new(self)
     # lander.add_component(Renderer.new("media/lander.png", 50, 50, 1.0, 0))
@@ -50,6 +53,8 @@ class Game < BasicGame
   def update(container, delta)
     input = container.get_input
     container.exit if input.is_key_down(Input::KEY_ESCAPE)
+
+    @physics.process_one_game_tick(@em, delta)
 
     #@entities.each {|e| e.update(container, delta) }
     # if @lander.intersects(@pad)

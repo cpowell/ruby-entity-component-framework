@@ -7,6 +7,8 @@ class ScreenLocation < Component
     super()
     @x=x_pos
     @y=y_pos
+    @dx=0
+    @dy=0
   end
 
   def to_s
