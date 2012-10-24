@@ -1,6 +1,6 @@
 # ruby -rubygems bin/runner.rb 
 # or
-# rm -f mygame.jar && warble jar && java -Djava.library.path=. -jar mygame.jar
+# rm -f mygame.jar && warble jar && java -Djava.library.path=./native -jar mygame.jar
 
 $:.push File.expand_path('../../lib/', __FILE__)
 $:.push File.expand_path('../../lib/lunar_lander/', __FILE__)
