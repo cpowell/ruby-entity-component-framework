@@ -5,10 +5,10 @@ class SpatialState < Component
 
   def initialize(x_pos, y_pos, x_velo, y_velo)
     super()
-    @x=x_pos
-    @y=y_pos
-    @dx=x_velo
-    @dy=y_velo
+    @x  = x_pos
+    @y  = y_pos
+    @dx = x_velo
+    @dy = y_velo
   end
 
 end

@@ -50,6 +50,7 @@ class Game < BasicGame
     input = container.get_input
     container.exit if input.is_key_down(Input::KEY_ESCAPE)
 
+    # Nice because I can dictate the order things are processed
     @physics.process_one_game_tick(container, delta, @em)
     @input.process_one_game_tick(container, delta, @em)
   end
