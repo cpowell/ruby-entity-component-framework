@@ -1,4 +1,4 @@
-# ruby -rubygems bin/runner.rb 
+# ruby -J-Djava.library.path=./native -rubygems bin/runner.rb
 # or
 # rm -f mygame.jar && warble jar && java -Djava.library.path=./native -jar mygame.jar
 
