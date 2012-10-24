@@ -20,12 +20,12 @@ class Game < BasicGame
     container.setTargetFrameRate(60)
     container.setAlwaysRender(true)
 
-    @bg = Image.new(RELATIVE_ROOT + 'media/bg.png')
+    @bg = Image.new(RELATIVE_ROOT + 'res/bg.png')
     @em = EntityManager.new(self)
 
     lander = @em.create_named_entity('lander')
     @em.add_component lander, ScreenLocation.new(50, 50)
-    @em.add_component lander, Renderable.new(RELATIVE_ROOT + "media/lander.png", 1.0, 0)
+    @em.add_component lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
     @em.add_component lander, GravitySensitive.new
     @em.add_component lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
     #@em.dump_to_screen
