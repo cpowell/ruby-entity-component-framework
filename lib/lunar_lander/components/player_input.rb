@@ -7,8 +7,4 @@ class PlayerInput < Component
     super()
     @responsive_keys=keys  
   end
-
-  def to_s
-    "PlayerInput component"
-  end
 end

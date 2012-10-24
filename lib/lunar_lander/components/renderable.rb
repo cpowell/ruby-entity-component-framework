@@ -19,7 +19,4 @@ class Renderable < Component
     @image.rotate(amount)
   end
 
-  def to_s
-    "Renderable component {#{@image}}"
-  end
 end

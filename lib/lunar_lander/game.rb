@@ -1,3 +1,5 @@
+require 'SecureRandom'
+
 # Necesssary components
 require 'entity_manager'
 require 'screen_location'
@@ -28,7 +30,7 @@ class Game < BasicGame
     @em.add_component lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
     @em.add_component lander, GravitySensitive.new
     @em.add_component lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
-    #@em.dump_to_screen
+    @em.dump_to_screen
 
     # Initialize any runnable systems
     @renderer = Renderer.new

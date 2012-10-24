@@ -11,7 +11,4 @@ class ScreenLocation < Component
     @dy=0
   end
 
-  def to_s
-    "ScreenLocation component {#{x}, #{y}}"
-  end
 end

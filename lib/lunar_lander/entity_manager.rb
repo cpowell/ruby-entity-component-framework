@@ -18,7 +18,7 @@ class EntityManager
   end
 
   def create_basic_entity
-    uuid = rand(5000) #FIXME
+    uuid = SecureRandom.uuid
     @entities << uuid
     return uuid
   end

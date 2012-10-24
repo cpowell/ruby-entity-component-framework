@@ -2,10 +2,10 @@ class Component
   attr_reader :id
 
   def initialize
-    @id = rand(5000) # FIXME
+    @id = SecureRandom.uuid
   end
 
   def to_s
-    "Component {#{id}: #{class_name}}"
+    "Component {#{id}: #{self.class.name}}"
   end
 end
