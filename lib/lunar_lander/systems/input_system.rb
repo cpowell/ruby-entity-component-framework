@@ -1,6 +1,6 @@
 require 'systems/system'
 require 'renderable'
-require 'screen_location'
+require 'spatial_state'
 
 class InputSystem < System
   THRUST=0.01
@@ -19,7 +19,7 @@ class InputSystem < System
       renderable_component = entity_mgr.get_component(e, Renderable)
 
       if user_input.is_key_down(KEY_THRUST) && input_component.responsive_keys.include?(KEY_THRUST)
-        location_component = entity_mgr.get_component(e, ScreenLocation)
+        location_component = entity_mgr.get_component(e, SpatialState)
         current_rotation   = renderable_component.rotation
 
         x_vector =  (THRUST*delta) * Math.sin(current_rotation * Math::PI / 180.0);

@@ -2,7 +2,7 @@ require 'SecureRandom'
 
 # Necesssary components
 require 'entity_manager'
-require 'screen_location'
+require 'spatial_state'
 require 'gravity_sensitive'
 require 'player_input'
 
@@ -26,7 +26,7 @@ class Game < BasicGame
     @em = EntityManager.new(self)
 
     lander = @em.create_named_entity('lander')
-    @em.add_component lander, ScreenLocation.new(50, 50)
+    @em.add_component lander, SpatialState.new(50, 50, 0, 0)
     @em.add_component lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
     @em.add_component lander, GravitySensitive.new
     @em.add_component lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
