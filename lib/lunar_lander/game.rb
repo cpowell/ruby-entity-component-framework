@@ -35,7 +35,7 @@ class Game < BasicGame
     p1_lander = @entity_manager.create_named_entity('p1_lander')
     @entity_manager.add_component p1_lander, SpatialState.new(50, 50, 0, 0)
     @entity_manager.add_component p1_lander, Engine.new(0.01)
-    @entity_manager.add_component p1_lander, Fuel.new(25)
+    @entity_manager.add_component p1_lander, Fuel.new(250)
     @entity_manager.add_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
     @entity_manager.add_component p1_lander, GravitySensitive.new
     @entity_manager.add_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
@@ -51,10 +51,14 @@ class Game < BasicGame
     p2_lander = @entity_manager.create_named_entity('p2_lander')
     @entity_manager.add_component p2_lander, SpatialState.new(250, 50, 0, 0)
     @entity_manager.add_component p2_lander, Engine.new(0.02)
-    @entity_manager.add_component p2_lander, Fuel.new(25)
+    @entity_manager.add_component p2_lander, Fuel.new(250)
     @entity_manager.add_component p2_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
     @entity_manager.add_component p2_lander, GravitySensitive.new
     @entity_manager.add_component p2_lander, PlayerInput.new([Input::KEY_J,Input::KEY_K,Input::KEY_L])
+
+    platform = @entity_manager.create_named_entity('platform')
+    @entity_manager.add_component platform, SpatialState.new(350, container.height - 25, 0, 0)
+    @entity_manager.add_component platform, Renderable.new(RELATIVE_ROOT + "res/shelf.png", 1.0, 0)
 
     @entity_manager.dump_to_screen
 
@@ -120,21 +124,6 @@ class Game < BasicGame
   #   end
   # end
 end
-
-
-#require 'engine'
-#require 'maneuvering_thrusters'
-
-    # lander = Entity.new(self)
-    # lander.add_component(Renderer.new("media/lander.png", 50, 50, 1.0, 0))
-    # lander.add_component(Physics.new)
-    # lander.add_component(ManeuveringThrusters.new)
-    # lander.add_component(Engine.new(200))
-    # @entities << lander
-    # pad = Entity.new(self)
-    # pad.add_component(Renderer.new("media/shelf.png", 250, 150, 1.0, 0))
-    # @entities << pad
-
 
     #@entities.each {|e| e.update(container, delta) }
     # if @lander.intersects(@pad)
