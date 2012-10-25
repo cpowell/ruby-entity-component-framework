@@ -42,11 +42,10 @@ class Game < BasicGame
     @entity_manager.dump_to_screen
 
     # Initialize any runnable systems
-    @renderer = Renderer.new(self)
     @physics  = Physics.new(self)
     @input    = InputSystem.new(self)
-    @spatial  = SpatialSystem.new(self)
-    @systems = [@physics, @input, @renderer, @spatial]
+    @renderer = Renderer.new(self)
+    @systems = [@physics, @input, @renderer]
 
   end
 
@@ -81,26 +80,26 @@ class Game < BasicGame
     @renderer.process_one_game_tick(@entity_manager)
   end
 
-  # id is the name of the method called, the * syntax collects
-  # all the arguments in an array named 'arguments'
-  def broadcast_systems_message(method, *arguments )
-    #puts "Method #{method} was called, but not found. It has these arguments: #{arguments.join(", ")}"
-    @systems.each do |sys|
-      if sys.respond_to?(method)
-        sys.send method, *arguments
-      end
-    end
-  end  
+  # # id is the name of the method called, the * syntax collects
+  # # all the arguments in an array named 'arguments'
+  # def broadcast_systems_message(method, *arguments )
+  #   #puts "Method #{method} was called, but not found. It has these arguments: #{arguments.join(", ")}"
+  #   @systems.each do |sys|
+  #     if sys.respond_to?(method)
+  #       sys.send method, *arguments
+  #     end
+  #   end
+  # end  
 
-  # Stops at the first system who replies to the interrogatory
-  def broadcast_systems_interrogatory(method, *arguments)
-    @systems.each do |sys|
-      if sys.respond_to?(method)
-        reply=sys.send method, *arguments
-        return reply
-      end
-    end
-  end
+  # # Stops at the first system who replies to the interrogatory
+  # def broadcast_systems_interrogatory(method, *arguments)
+  #   @systems.each do |sys|
+  #     if sys.respond_to?(method)
+  #       reply=sys.send method, *arguments
+  #       return reply
+  #     end
+  #   end
+  # end
 end
 
 

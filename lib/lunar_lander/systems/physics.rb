@@ -1,6 +1,3 @@
-require 'systems/system'
-require 'spatial_state'
-
 class Physics < System
   # This constant could conceivably live in the gravity component...
   ACCELERATION = 0.005 # m/s^2
@@ -12,16 +9,16 @@ class Physics < System
     gravity_entities.each do |e|
       spatial_component = entity_mgr.get_component(e, SpatialState)
 
+      # move horizontally according to dx
+      amount = 0.01 * delta * spatial_component.dx
+      spatial_component.x += (amount)
+
       # vertical speed will feel gravity's effect
       spatial_component.dy += ACCELERATION * delta
 
       # now fall according to dy
       amount = -0.01 * delta * spatial_component.dy
-      @game.broadcast_systems_message(:alter_y_position, e, amount*DOWN)
-
-      # move horizontally according to dx
-      amount = 0.01 * delta * spatial_component.dy
-      @game.broadcast_systems_message(:alter_x_position, e, amount)
+      spatial_component.y += (amount * DOWN)
     end
   end
 end
