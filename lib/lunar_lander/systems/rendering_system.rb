@@ -20,3 +20,4 @@ class RenderingSystem < System
     end
   end
 end
+
