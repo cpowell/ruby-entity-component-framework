@@ -29,52 +29,52 @@ class EntityManager
     return uuid
   end
 
-  def set_entity_name(uuid, human_readable_name)
-    @entity_names[uuid]=human_readable_name
+  def set_entity_name(entity_uuid, human_readable_name)
+    @entity_names[entity_uuid]=human_readable_name
   end
 
-  def get_entity_name(uuid)
-    @entity_names[uuid]
+  def get_entity_name(entity_uuid)
+    @entity_names[entity_uuid]
   end
 
-  def kill_entity(uuid)
+  def kill_entity(entity_uuid)
     @component_stores.each_value do |store|
-      store.delete(uuid)
+      store.delete(entity_uuid)
     end
-    @entities.delete(uuid)
+    @entities.delete(entity_uuid)
   end
 
   def get_known_entities
     @entities
   end
 
-  def add_component(uuid, component)
+  def add_component(entity_uuid, component)
     store = @component_stores[component.class]
     if store.nil?
       store = Hash.new
       @component_stores[component.class]=store
     end
-    store[uuid]=component
+    store[entity_uuid]=component
   end
 
-  def has_component(uuid, component_class)
+  def has_component(entity_uuid, component_class)
     store = @component_stores[component_class]
     if store.nil?
       return false
     else
-      return store.has_key? uuid
+      return store.has_key? entity_uuid
     end
   end
 
-  def get_component(uuid, component_class)
+  def get_component(entity_uuid, component_class)
     store = @component_stores[component_class]
     if store.nil?
       raise ArgumentError, "There are no entities with a component of class #{component_class}"
     end
 
-    result = store[uuid]
+    result = store[entity_uuid]
     if result.nil?
-      raise ArgumentError, "Entity #{uuid} does not possess Component of #{component_class}"
+      raise ArgumentError, "Entity #{entity_uuid} does not possess Component of #{component_class}"
     end
 
     return result
