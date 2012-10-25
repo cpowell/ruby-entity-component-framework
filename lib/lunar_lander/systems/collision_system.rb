@@ -10,12 +10,12 @@ class CollisionSystem < System
     collidable_entities = entity_mgr.get_all_entities_possessing_component(PolygonCollidable)
 
     # Naive O(n^2)
-    polygons=[]
+    bounding_areas={}
     collidable_entities.each do |e|
       spatial_component = entity_mgr.get_component(e, SpatialState)
       renderable_component = entity_mgr.get_component(e, Renderable)
 
-      polygons << make_polygon(spatial_component.x, 
+      bounding_areas[e] = make_polygon(spatial_component.x, 
                                 renderable_component.width,
                                 spatial_component.y, 
                                 renderable_component.height, 
@@ -23,10 +23,12 @@ class CollisionSystem < System
                                 renderable_component.scale)
     end
 
-    for poly_1 in polygons
-      for poly_2 in polygons
-        if poly_1 != poly_2 && poly_1.intersects(poly_2)
-          puts 'intersection'
+    bounding_areas.each_key do |entity|
+      bounding_areas.each_key do |other|
+        next if entity==other
+
+        if bounding_areas[entity].intersects bounding_areas[other]
+          puts "BANG: #{entity} and #{other}"
         end
       end
     end
