@@ -2,7 +2,7 @@ require 'systems/system'
 require 'renderable'
 require 'spatial_state'
 
-class Renderer < System
+class RenderingSystem < System
   def process_one_game_tick(entity_mgr)
     entities = entity_mgr.get_all_entities_possessing_component(Renderable)
 

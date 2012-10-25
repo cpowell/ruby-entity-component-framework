@@ -9,7 +9,7 @@ require 'gravity_sensitive'
 require 'player_input'
 
 # Necessary systems
-require 'renderer'
+require 'rendering_system'
 require 'physics'
 require 'input_system'
 require 'spatial_system'
@@ -58,7 +58,7 @@ class Game < BasicGame
     # Initialize any runnable systems
     @physics  = Physics.new(self)
     @input    = InputSystem.new(self)
-    @renderer = Renderer.new(self)
+    @renderer = RenderingSystem.new(self)
     @engine   = EngineSystem.new(self)
     @systems = [@physics, @input, @engine, @renderer]
 
