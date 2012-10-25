@@ -81,17 +81,18 @@ class EntityManager
     #    @components.detect {|comp| comp.id==id}
   end
 
-  def remove_component(uuid, component_class)
-    store = @component_stores[component_class]
+  def remove_component(uuid, component)
+    store = @component_stores[component.class]
     if store.nil?
-      raise ArgumentError, "There are no entities with a component of class #{component_class}"
+      raise ArgumentError, "There are no entities with a component of class #{component.class}"
     end
 
     comp = store[uuid]
     if comp.nil?
-      raise ArgumentError, "Entity #{uuid} does not possess Component of #{component_class}"
+      raise ArgumentError, "Entity #{uuid} does not possess Component of #{component.class}"
     end
 
+    # FIXME this doesn't allow for entity having multiple of component.class!
     result = store.delete(uuid)
     if result.nil?
       raise ArgumentError, "Entity #{uuid} did not possess Component #{component} to remove"
