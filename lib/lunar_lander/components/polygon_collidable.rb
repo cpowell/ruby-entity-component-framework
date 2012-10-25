@@ -1,7 +1,7 @@
 require 'component'
 
 class PolygonCollidable < Component
-  # attr_accessor :polygon
+  attr_accessor :bounding_polygon
 
   # def initialize(pos_x, width, pos_y, height, rotation, scale)
   #   super()
