@@ -23,32 +23,29 @@ class InputSystem < System
       input_component = entity_mgr.get_component(entity, PlayerInput)
 
       if (input_system.is_key_down(P1_KEY_THRUST) && 
-         input_component.responsive_keys.include?(P1_KEY_THRUST) && 
-         entity_mgr.has_component_type(entity, Engine)) || 
+          input_component.responsive_keys.include?(P1_KEY_THRUST) && 
+          entity_mgr.has_component_type(entity, Engine)) || 
          (input_system.is_key_down(P2_KEY_THRUST) && 
           input_component.responsive_keys.include?(P2_KEY_THRUST) &&
           entity_mgr.has_component_type(entity, Engine))
 
-         engine_component = entity_mgr.get_component(entity, Engine)
-         engine_component.on=true
-         
-        # location_component = entity_mgr.get_component(e, SpatialState)
-        # current_rotation   = renderable_component.rotation
-
-        # x_vector =  (THRUST*delta) * Math.sin(current_rotation * Math::PI / 180.0);
-        # y_vector = -(THRUST*delta) * Math.cos(current_rotation * Math::PI / 180.0);
-
-        # location_component.dy += y_vector
-        # location_component.dx += x_vector
+        engine_component=entity_mgr.get_component(entity, Engine)
+        engine_component.on=true
       end
 
-      if (input_system.is_key_down(P1_KEY_ROTL) && input_component.responsive_keys.include?(P1_KEY_ROTL)) ||
-        (input_system.is_key_down(P2_KEY_ROTL) && input_component.responsive_keys.include?(P2_KEY_ROTL))
+      if (input_system.is_key_down(P1_KEY_ROTL) && 
+          input_component.responsive_keys.include?(P1_KEY_ROTL)) ||
+         (input_system.is_key_down(P2_KEY_ROTL) && 
+          input_component.responsive_keys.include?(P2_KEY_ROTL))
+          
         renderable_component.rotate(delta * -0.1)
       end
 
-      if (input_system.is_key_down(P1_KEY_ROTR) && input_component.responsive_keys.include?(P1_KEY_ROTR)) ||
-        (input_system.is_key_down(P2_KEY_ROTR) && input_component.responsive_keys.include?(P2_KEY_ROTR))
+      if (input_system.is_key_down(P1_KEY_ROTR) && 
+          input_component.responsive_keys.include?(P1_KEY_ROTR)) ||
+         (input_system.is_key_down(P2_KEY_ROTR) && 
+          input_component.responsive_keys.include?(P2_KEY_ROTR))
+        
         renderable_component.rotate(delta * 0.1)
       end
     end

@@ -83,6 +83,8 @@ class EntityManager
   end
 
   def get_component(entity_uuid, component_class)
+    # TODO instead of raising, how about just return nil?
+
     store = @component_stores[component_class]
     if store.nil?
       raise ArgumentError, "There are no entities with a component of class #{component_class}"
@@ -94,7 +96,6 @@ class EntityManager
     end
 
     return result
-    #    @components.detect {|comp| comp.id==id}
   end
 
   def remove_component(uuid, component)
