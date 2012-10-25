@@ -23,20 +23,100 @@
 # If you have performance problems, you can re-write critical sections directly
 # using Entity's, removing the overhead of this class.
 #
+# http://t-machine.org/index.php/2011/08/22/entity-system-rdbms-beta-a-new-example-with-source
+#
 class MetaEntity
-  def initialize(entity_manager, name)
-    @entity_manager = entity_manager
-    @internal_name  = name
-    @uuid           = @entity_manager.create_named_entity(name)
+  @@default_entity_manager=nil
+
+  attr_reader :uuid
+  attr_reader :entity_manager
+  attr_accessor :internal_name
+
+  def self.default_entity_manager=(value)
+    @@default_entity_manager = value
+  end
+  
+  # def self.load_from_entity_manager(uuid)
+  #   if @@default_entity_manager.nil?
+  #     raise RuntimeError, "There is no global EntityManager; create a new EntityManager before creating MetaEntities"
+  #   end
+  #   e = new MetaEntity(uuid)
+  # end
+
+  # #protected
+  # #This should NEVER be called by external classes - it's used by the static method loadFromEntityManager
+  # def self.init_with_uuid(uuid)
+  #   if @@default_entity_manager.nil?
+  #     raise RuntimeError, "There is no global EntityManager; create a new EntityManager before creating MetaEntities"
+  #   end
+  #   @entity_manager = @@default_entity_manager 
+  #   @uuid=uuid
+  # end
+
+  # Invoke this to use the global default {@link EntityManager} as the source
+  # varargs = all the arguments that are bundled into a new Array
+  # spec:
+  # - zero arguments
+  # - one argument: name
+  def initialize(*varargs)
+    if @@default_entity_manager.nil?
+      raise RuntimeError, "There is no global EntityManager; create a new EntityManager before creating MetaEntities"
+    end
+
+    @entity_manager = @@default_entity_manager 
+    
+    case varargs.length
+    when 0
+      @uuid = @entity_manager.create_basic_entity
+    when 1
+      @uuid = @entity_manager.create_named_entity(varargs[0])
+    end
   end
 
-  # def self.load_from_entity_manager(uuid)
-  #   e = new Entity(uuid)
-  #   return e    
+  # # This is the main constructor for Entities - usually, you'll know which Components you want them to have
+  # # 
+  # # NB: this is a NON-lazy way of instantiating Entities - in low-mem situations, you may want to
+  # # use an alternative constructor that accepts the CLASS of each Component, rather than the OBJECT, and
+  # # which only instantiates / allocates the memory for the data of each component when that component is
+  # # (eventually) initialized.
+  # # 
+  # # @param n the internal name that will be attached to this entity, and reported in debugging info
+  # # @param components
+  # def self.init_with_name_and_components(name, components)
+  #   me = MetaEntity.new(name)
+  #   me.internal_name=name
+  #   me.add_all_components(components)
+  #   me
+  # end
+
+  # # This is the main constructor for Entities - usually, you'll know which Components you want them to have
+  # # 
+  # # NB: this is a NON-lazy way of instantiating Entities - in low-mem situations, you may want to
+  # # use an alternative constructor that accepts the CLASS of each Component, rather than the OBJECT, and
+  # # which only instantiates / allocates the memory for the data of each component when that component is
+  # # (eventually) initialized.
+  # #
+  # # @param components
+  # def self.init_with_components(components)
+  #   me = MetaEntity.new
+  #   me.add_all_components(components)
+  #   me
+  # end
+
+  # def initialize(entity_manager, name, components)
+  #   @entity_manager = entity_manager
+  #   @internal_name  = name
+  #   @uuid           = @entity_manager.create_named_entity(name)
   # end
 
   def add_component(component)
     @entity_manager.add_component(@uuid, component)  
+  end
+
+  def add_all_components(components)
+    components.each do |component|
+      @entity_manager.add_component(@uuid, component)  
+    end
   end
 
   def has_component(component_class)

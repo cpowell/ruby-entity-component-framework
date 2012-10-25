@@ -28,6 +28,7 @@ class Game < BasicGame
 
     @bg = Image.new(RELATIVE_ROOT + 'res/bg.png')
     @entity_manager = EntityManager.new(self)
+    MetaEntity.default_entity_manager=@entity_manager
 
     # Using direct entities:
     # p1_lander = @entity_manager.create_named_entity('p1_lander')
@@ -38,7 +39,7 @@ class Game < BasicGame
     # @entity_manager.add_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
 
     # Using "meta" entities:
-    p1_lander = MetaEntity.new(@entity_manager, 'p1_lander')
+    p1_lander = MetaEntity.new('p1_lander')
     p1_lander.add_component SpatialState.new(50, 50, 0, 0)
     #p1_lander.add_component Engine.new(0.01)
     p1_lander.add_component Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)

@@ -53,7 +53,7 @@ class EntityManager_test < Test::Unit::TestCase
     string_component = 'This is a string'
     @em.add_component(id, string_component)
 
-    assert_equal(true, @em.has_component(id,String))
+    assert_equal(true, @em.has_component(id,string_component))
 
     assert_equal(string_component, @em.get_all_components_on_entity(id)[0])
 
@@ -65,10 +65,10 @@ class EntityManager_test < Test::Unit::TestCase
     string_component = 'This is a string'
     @em.add_component(id, string_component)
 
-    assert_equal(true, @em.has_component(id,String))
+    assert_equal(true, @em.has_component(id,string_component))
 
-    @em.remove_component(id, String)
+    @em.remove_component(id, string_component)
 
-    assert_equal(false, @em.has_component(id,String))
+    assert_equal(false, @em.has_component(id,string_component))
   end
 end

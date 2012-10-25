@@ -1,3 +1,9 @@
+# FIXME this whole thing needs to be refactored to permit an Entity to have more than
+# one Component of a certain type. Right now it's flawed because an Entity only gets one
+# Gun, MissileLauncher, whatever.
+
+require 'SecureRandom'
+
 # A Entity in a game is an object that exists in the world defined by the game.
 #
 # This means that almost everything is a game entity, from the player character 
@@ -29,6 +35,10 @@ class EntityManager
     return uuid
   end
 
+  def create_entity_with_uuid
+    
+  end
+
   def set_entity_name(entity_uuid, human_readable_name)
     @entity_names[entity_uuid]=human_readable_name
   end
@@ -44,6 +54,7 @@ class EntityManager
     @entities.delete(entity_uuid)
   end
 
+  # Pretty much exists just for the unit tests:
   def get_known_entities
     @entities
   end
@@ -57,8 +68,8 @@ class EntityManager
     store[entity_uuid]=component
   end
 
-  def has_component(entity_uuid, component_class)
-    store = @component_stores[component_class]
+  def has_component(entity_uuid, component)
+    store = @component_stores[component.class]
     if store.nil?
       return false
     else
