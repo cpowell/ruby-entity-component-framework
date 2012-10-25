@@ -1,9 +1,8 @@
 require 'systems/system'
-require 'renderable'
 require 'spatial_state'
 
 class Physics < System
-  # This could conceivably live in the gravity component...
+  # This constant could conceivably live in the gravity component...
   ACCELERATION = 0.005 # m/s^2
 
   def process_one_game_tick(container, delta, entity_mgr)

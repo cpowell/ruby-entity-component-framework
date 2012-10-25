@@ -25,17 +25,25 @@ class Game < BasicGame
     @bg = Image.new(RELATIVE_ROOT + 'res/bg.png')
     @em = EntityManager.new(self)
 
-    lander = @em.create_named_entity('lander')
-    @em.add_component lander, SpatialState.new(50, 50, 0, 0)
-    @em.add_component lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
-    @em.add_component lander, GravitySensitive.new
-    @em.add_component lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
+    p1_lander = @em.create_named_entity('p1_lander')
+    @em.add_component p1_lander, SpatialState.new(50, 50, 0, 0)
+    @em.add_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
+    @em.add_component p1_lander, GravitySensitive.new
+    @em.add_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
+
+    p2_lander = @em.create_named_entity('p2_lander')
+    @em.add_component p2_lander, SpatialState.new(250, 50, 0, 0)
+    @em.add_component p2_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
+    @em.add_component p2_lander, GravitySensitive.new
+    @em.add_component p2_lander, PlayerInput.new([Input::KEY_J,Input::KEY_K,Input::KEY_L])
+
     @em.dump_to_screen
 
     # Initialize any runnable systems
-    @renderer = Renderer.new
-    @physics  = Physics.new
-    @input    = InputSystem.new
+    @renderer = Renderer.new(self)
+    @physics  = Physics.new(self)
+    @input    = InputSystem.new(self)
+    @systems = [@physics, @input, @renderer]
   end
 
   # The update method is called during the game to update the logic in our world, 
@@ -68,6 +76,17 @@ class Game < BasicGame
 
     @renderer.process_one_game_tick(@em)
   end
+
+  # id is the name of the method called, the * syntax collects
+  # all the arguments in an array named 'arguments'
+  def broadcast_message( id, *arguments )
+    #puts "Method #{id} was called, but not found. It has these arguments: #{arguments.join(", ")}"
+    @systems.each do |sys|
+      if sys.respond_to?(id)
+        sys.send id, *arguments
+      end
+    end
+  end  
 end
 
 
