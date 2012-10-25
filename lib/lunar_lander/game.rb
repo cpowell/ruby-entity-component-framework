@@ -7,6 +7,7 @@ require 'meta_entity'
 require 'spatial_state'
 require 'gravity_sensitive'
 require 'player_input'
+require 'fuel'
 
 # Necessary systems
 require 'rendering_system'
@@ -34,6 +35,7 @@ class Game < BasicGame
     p1_lander = @entity_manager.create_named_entity('p1_lander')
     @entity_manager.add_component p1_lander, SpatialState.new(50, 50, 0, 0)
     @entity_manager.add_component p1_lander, Engine.new(0.01)
+    @entity_manager.add_component p1_lander, Fuel.new(25)
     @entity_manager.add_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
     @entity_manager.add_component p1_lander, GravitySensitive.new
     @entity_manager.add_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
@@ -49,6 +51,7 @@ class Game < BasicGame
     p2_lander = @entity_manager.create_named_entity('p2_lander')
     @entity_manager.add_component p2_lander, SpatialState.new(250, 50, 0, 0)
     @entity_manager.add_component p2_lander, Engine.new(0.02)
+    @entity_manager.add_component p2_lander, Fuel.new(25)
     @entity_manager.add_component p2_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
     @entity_manager.add_component p2_lander, GravitySensitive.new
     @entity_manager.add_component p2_lander, PlayerInput.new([Input::KEY_J,Input::KEY_K,Input::KEY_L])
@@ -93,7 +96,7 @@ class Game < BasicGame
     @bg.draw(0, 0)
     graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
 
-    @renderer.process_one_game_tick(@entity_manager)
+    @renderer.process_one_game_tick(@entity_manager, container, graphics)
   end
 
   # # id is the name of the method called, the * syntax collects
