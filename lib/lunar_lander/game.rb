@@ -46,12 +46,12 @@ class Game < BasicGame
     # p1_lander.add_component GravitySensitive.new
     # p1_lander.add_component PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
 
-    # p2_lander = @entity_manager.create_named_entity('p2_lander')
-    # @entity_manager.add_component p2_lander, SpatialState.new(250, 50, 0, 0)
-    # @entity_manager.add_component p1_lander, Engine.new(0.02)
-    # @entity_manager.add_component p2_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
-    # @entity_manager.add_component p2_lander, GravitySensitive.new
-    # @entity_manager.add_component p2_lander, PlayerInput.new([Input::KEY_J,Input::KEY_K,Input::KEY_L])
+    p2_lander = @entity_manager.create_named_entity('p2_lander')
+    @entity_manager.add_component p2_lander, SpatialState.new(250, 50, 0, 0)
+    @entity_manager.add_component p2_lander, Engine.new(0.02)
+    @entity_manager.add_component p2_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
+    @entity_manager.add_component p2_lander, GravitySensitive.new
+    @entity_manager.add_component p2_lander, PlayerInput.new([Input::KEY_J,Input::KEY_K,Input::KEY_L])
 
     @entity_manager.dump_to_screen
 
