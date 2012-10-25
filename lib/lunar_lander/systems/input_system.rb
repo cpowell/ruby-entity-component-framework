@@ -38,6 +38,7 @@ class InputSystem < System
          (input_system.is_key_down(P2_KEY_ROTL) && 
           input_component.responsive_keys.include?(P2_KEY_ROTL))
           
+        renderable_component=entity_mgr.get_component(entity, Renderable)
         renderable_component.rotate(delta * -0.1)
       end
 
@@ -46,6 +47,7 @@ class InputSystem < System
          (input_system.is_key_down(P2_KEY_ROTR) && 
           input_component.responsive_keys.include?(P2_KEY_ROTR))
         
+        renderable_component=entity_mgr.get_component(entity, Renderable)
         renderable_component.rotate(delta * 0.1)
       end
     end
