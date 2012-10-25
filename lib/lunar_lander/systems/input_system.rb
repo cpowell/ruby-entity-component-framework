@@ -28,9 +28,10 @@ class InputSystem < System
          (input_system.is_key_down(P2_KEY_THRUST) && 
           input_component.responsive_keys.include?(P2_KEY_THRUST) &&
           entity_mgr.has_component_type(entity, Engine))
-        engine_system = EngineSystem.new(self) #FIXME
-        engine_system.fire_engine(delta, entity_mgr, entity)
 
+         engine_component = entity_mgr.get_component(entity, Engine)
+         engine_component.on=true
+         
         # location_component = entity_mgr.get_component(e, SpatialState)
         # current_rotation   = renderable_component.rotation
 

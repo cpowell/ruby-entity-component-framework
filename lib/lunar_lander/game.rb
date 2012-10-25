@@ -77,6 +77,7 @@ class Game < BasicGame
     container.exit if input.is_key_down(Input::KEY_ESCAPE)
 
     # Nice because I can dictate the order things are processed
+    @engine.process_one_game_tick(container, delta, @entity_manager)
     @physics.process_one_game_tick(container, delta, @entity_manager)
     @input.process_one_game_tick(container, delta, @entity_manager)
   end
