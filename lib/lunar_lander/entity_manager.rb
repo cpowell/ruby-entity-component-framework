@@ -35,10 +35,6 @@ class EntityManager
     return uuid
   end
 
-  def create_entity_with_uuid
-    
-  end
-
   def set_entity_name(entity_uuid, human_readable_name)
     @entity_names[entity_uuid]=human_readable_name
   end
@@ -70,6 +66,15 @@ class EntityManager
 
   def has_component(entity_uuid, component)
     store = @component_stores[component.class]
+    if store.nil?
+      return false
+    else
+      return store.has_key? entity_uuid
+    end
+  end
+
+  def has_component_type(entity_uuid, component_class)
+    store = @component_stores[component_class]
     if store.nil?
       return false
     else

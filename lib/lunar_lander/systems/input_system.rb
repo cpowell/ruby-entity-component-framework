@@ -1,6 +1,7 @@
-require 'systems/system'
 require 'renderable'
-require 'spatial_state'
+require 'engine'
+
+require 'engine_system'
 
 class InputSystem < System
   THRUST=0.01
@@ -14,31 +15,30 @@ class InputSystem < System
   P2_KEY_ROTR   = Input::KEY_L
 
   def process_one_game_tick(container, delta, entity_mgr)
+    #TODO turn this into a listener
     input_system = container.get_input
 
-    entities = entity_mgr.get_all_entities_possessing_component(PlayerInput)
-    entities.each do |e|
-      input_component      = entity_mgr.get_component(e, PlayerInput)
-      renderable_component = entity_mgr.get_component(e, Renderable)
+    inputtable_entities = entity_mgr.get_all_entities_possessing_component(PlayerInput)
+    inputtable_entities.each do |entity|
+      input_component = entity_mgr.get_component(entity, PlayerInput)
 
-      #TODO turn this into a listener
+      if (input_system.is_key_down(P1_KEY_THRUST) && 
+         input_component.responsive_keys.include?(P1_KEY_THRUST) && 
+         entity_mgr.has_component_type(entity, Engine)) || 
+         (input_system.is_key_down(P2_KEY_THRUST) && 
+          input_component.responsive_keys.include?(P2_KEY_THRUST) &&
+          entity_mgr.has_component_type(entity, Engine))
+        engine_system = EngineSystem.new(self) #FIXME
+        engine_system.fire_engine(delta, entity_mgr, entity)
 
-      if (input_system.is_key_down(P1_KEY_THRUST) && input_component.responsive_keys.include?(P1_KEY_THRUST)) ||
-        (input_system.is_key_down(P2_KEY_THRUST) && input_component.responsive_keys.include?(P2_KEY_THRUST))
+        # location_component = entity_mgr.get_component(e, SpatialState)
+        # current_rotation   = renderable_component.rotation
 
-        location_component = entity_mgr.get_component(e, SpatialState)
-        current_rotation   = renderable_component.rotation
+        # x_vector =  (THRUST*delta) * Math.sin(current_rotation * Math::PI / 180.0);
+        # y_vector = -(THRUST*delta) * Math.cos(current_rotation * Math::PI / 180.0);
 
-        x_vector =  (THRUST*delta) * Math.sin(current_rotation * Math::PI / 180.0);
-        y_vector = -(THRUST*delta) * Math.cos(current_rotation * Math::PI / 180.0);
-
-        location_component.dy += y_vector
-        location_component.dx += x_vector
-
-        #if (@fuel > 0)
-        #  @fuel -= THRUST*delta
-        #  @fuel = 0 if @fuel < 0
-        #end
+        # location_component.dy += y_vector
+        # location_component.dx += x_vector
       end
 
       if (input_system.is_key_down(P1_KEY_ROTL) && input_component.responsive_keys.include?(P1_KEY_ROTL)) ||
