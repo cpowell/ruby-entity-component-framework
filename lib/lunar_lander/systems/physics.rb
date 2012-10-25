@@ -1,29 +1,24 @@
-require 'systems/system'
-require 'renderable'
-require 'spatial_state'
-
 class Physics < System
-  # This could conceivably live in the gravity component...
+  # This constant could conceivably live in the gravity component...
   ACCELERATION = 0.005 # m/s^2
+  DOWN = Math.cos(Math::PI)
 
   def process_one_game_tick(container, delta, entity_mgr)
-    entities = entity_mgr.get_all_entities_possessing_component(GravitySensitive)
+    gravity_entities = entity_mgr.get_all_entities_possessing_component(GravitySensitive)
 
-    entities.each do |e|
-      loc_comp    = entity_mgr.get_component(e, SpatialState)
-      grav_comp   = entity_mgr.get_component(e, GravitySensitive)
+    gravity_entities.each do |e|
+      spatial_component = entity_mgr.get_component(e, SpatialState)
+
+      # move horizontally according to dx
+      amount = 0.01 * delta * spatial_component.dx
+      spatial_component.x += (amount)
 
       # vertical speed will feel gravity's effect
-      loc_comp.dy += ACCELERATION * delta
+      spatial_component.dy += ACCELERATION * delta
 
-      # fall by dy
-      direction = Math.cos(Math::PI)
-      amount    = -0.01 * delta * loc_comp.dy
-      loc_comp.y += (amount * direction)
-
-      # move horizontally by dx
-      amount     = 0.01 * delta * loc_comp.dx
-      loc_comp.x += (amount)
+      # now fall according to dy
+      amount = -0.01 * delta * spatial_component.dy
+      spatial_component.y += (amount * DOWN)
     end
   end
 end

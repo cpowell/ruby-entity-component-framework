@@ -6,19 +6,26 @@ class InputSystem < System
   THRUST=0.01
 
   # Presumably these would be DRYed into a config file...
-  KEY_THRUST = Input::KEY_S
-  KEY_ROTL   = Input::KEY_A
-  KEY_ROTR   = Input::KEY_D
+  P1_KEY_THRUST = Input::KEY_S
+  P1_KEY_ROTL   = Input::KEY_A
+  P1_KEY_ROTR   = Input::KEY_D
+  P2_KEY_THRUST = Input::KEY_K
+  P2_KEY_ROTL   = Input::KEY_J
+  P2_KEY_ROTR   = Input::KEY_L
 
   def process_one_game_tick(container, delta, entity_mgr)
-    entities = entity_mgr.get_all_entities_possessing_component(PlayerInput)
-    user_input = container.get_input
+    input_system = container.get_input
 
+    entities = entity_mgr.get_all_entities_possessing_component(PlayerInput)
     entities.each do |e|
       input_component      = entity_mgr.get_component(e, PlayerInput)
       renderable_component = entity_mgr.get_component(e, Renderable)
 
-      if user_input.is_key_down(KEY_THRUST) && input_component.responsive_keys.include?(KEY_THRUST)
+      #TODO turn this into a listener
+
+      if (input_system.is_key_down(P1_KEY_THRUST) && input_component.responsive_keys.include?(P1_KEY_THRUST)) ||
+        (input_system.is_key_down(P2_KEY_THRUST) && input_component.responsive_keys.include?(P2_KEY_THRUST))
+
         location_component = entity_mgr.get_component(e, SpatialState)
         current_rotation   = renderable_component.rotation
 
@@ -34,11 +41,13 @@ class InputSystem < System
         #end
       end
 
-      if user_input.is_key_down(KEY_ROTL) && input_component.responsive_keys.include?(KEY_ROTL)
+      if (input_system.is_key_down(P1_KEY_ROTL) && input_component.responsive_keys.include?(P1_KEY_ROTL)) ||
+        (input_system.is_key_down(P2_KEY_ROTL) && input_component.responsive_keys.include?(P2_KEY_ROTL))
         renderable_component.rotate(delta * -0.1)
       end
 
-      if user_input.is_key_down(KEY_ROTR) && input_component.responsive_keys.include?(KEY_ROTR)
+      if (input_system.is_key_down(P1_KEY_ROTR) && input_component.responsive_keys.include?(P1_KEY_ROTR)) ||
+        (input_system.is_key_down(P2_KEY_ROTR) && input_component.responsive_keys.include?(P2_KEY_ROTR))
         renderable_component.rotate(delta * 0.1)
       end
     end

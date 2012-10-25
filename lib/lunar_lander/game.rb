@@ -10,8 +10,10 @@ require 'player_input'
 require 'renderer'
 require 'physics'
 require 'input_system'
+require 'spatial_system'
 
 class Game < BasicGame
+  attr_reader :entity_manager
 
   # Before you start the game loop, you can initialize any data you wish inside the method init.
   #
@@ -23,19 +25,28 @@ class Game < BasicGame
     container.setAlwaysRender(true)
 
     @bg = Image.new(RELATIVE_ROOT + 'res/bg.png')
-    @em = EntityManager.new(self)
+    @entity_manager = EntityManager.new(self)
 
-    lander = @em.create_named_entity('lander')
-    @em.add_component lander, SpatialState.new(50, 50, 0, 0)
-    @em.add_component lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
-    @em.add_component lander, GravitySensitive.new
-    @em.add_component lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
-    @em.dump_to_screen
+    p1_lander = @entity_manager.create_named_entity('p1_lander')
+    @entity_manager.add_component p1_lander, SpatialState.new(50, 50, 0, 0)
+    @entity_manager.add_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
+    @entity_manager.add_component p1_lander, GravitySensitive.new
+    @entity_manager.add_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
+
+    p2_lander = @entity_manager.create_named_entity('p2_lander')
+    @entity_manager.add_component p2_lander, SpatialState.new(250, 50, 0, 0)
+    @entity_manager.add_component p2_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
+    @entity_manager.add_component p2_lander, GravitySensitive.new
+    @entity_manager.add_component p2_lander, PlayerInput.new([Input::KEY_J,Input::KEY_K,Input::KEY_L])
+
+    @entity_manager.dump_to_screen
 
     # Initialize any runnable systems
-    @renderer = Renderer.new
-    @physics  = Physics.new
-    @input    = InputSystem.new
+    @physics  = Physics.new(self)
+    @input    = InputSystem.new(self)
+    @renderer = Renderer.new(self)
+    @systems = [@physics, @input, @renderer]
+
   end
 
   # The update method is called during the game to update the logic in our world, 
@@ -50,8 +61,9 @@ class Game < BasicGame
     input = container.get_input
     container.exit if input.is_key_down(Input::KEY_ESCAPE)
 
-    @physics.process_one_game_tick(container, delta, @em)
-    @input.process_one_game_tick(container, delta, @em)
+    # Nice because I can dictate the order things are processed
+    @physics.process_one_game_tick(container, delta, @entity_manager)
+    @input.process_one_game_tick(container, delta, @entity_manager)
   end
 
   # After that the render method allows us to draw the world we designed accordingly 
@@ -65,8 +77,29 @@ class Game < BasicGame
     @bg.draw(0, 0)
     graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
 
-    @renderer.process_one_game_tick(@em)
+    @renderer.process_one_game_tick(@entity_manager)
   end
+
+  # # id is the name of the method called, the * syntax collects
+  # # all the arguments in an array named 'arguments'
+  # def broadcast_systems_message(method, *arguments )
+  #   #puts "Method #{method} was called, but not found. It has these arguments: #{arguments.join(", ")}"
+  #   @systems.each do |sys|
+  #     if sys.respond_to?(method)
+  #       sys.send method, *arguments
+  #     end
+  #   end
+  # end  
+
+  # # Stops at the first system who replies to the interrogatory
+  # def broadcast_systems_interrogatory(method, *arguments)
+  #   @systems.each do |sys|
+  #     if sys.respond_to?(method)
+  #       reply=sys.send method, *arguments
+  #       return reply
+  #     end
+  #   end
+  # end
 end
 
 
