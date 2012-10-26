@@ -1,21 +1,20 @@
-# FIXME this whole thing needs to be refactored to permit an Entity to have more than
-# one Component of a certain type. Right now it's flawed because an Entity only gets one
-# Gun, MissileLauncher, whatever.
-
-require 'SecureRandom'
-
 # A Entity in a game is an object that exists in the world defined by the game.
 #
 # This means that almost everything is a game entity, from the player character 
 # to the box that holds the score. Some entities may be visible, others may be mobile, 
 # but all of them are part of the world of the game (even if invisible).
+
+require 'SecureRandom'
+
 class EntityManager
   attr_reader :game
   attr_reader :entities
 
+  #TODO a method to get all entities matching a basket of components
+
   def initialize(game)
-    @game     = game
-    @entities = []
+    @game         = game
+    @entities     = []
     @entity_names = Hash.new
 
     # "Stores" hash: key=component class, value=a component store
@@ -50,8 +49,6 @@ class EntityManager
     @entities.delete(entity_uuid)
   end
 
-  #TODO a method to get all entities matching a basket of components
-
   def add_entity_component(entity_uuid, component)
     # Get the store for this component class.
     # If it doesn't exist, make it.
@@ -71,8 +68,7 @@ class EntityManager
   def entity_has_component(entity_uuid, component)
     store = @component_stores[component.class]
     if store.nil?
-      # NOBODY has this component type
-      return false
+      return false # NOBODY has this component type
     else
       return store.has_key?(entity_uuid) && store[entity_uuid].include?(component)
     end
