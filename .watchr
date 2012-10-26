@@ -1,5 +1,5 @@
 watch( 'test/test_.*\.rb' )          { |m| run_test_file(m[0]) }
-watch( 'lib/lunar_lander/(.*)\.rb' ) { |md| system("ruby test/test_#{md[1]}.rb") }
+watch( 'lib/lunar_lander/(.*)\.rb' ) { |m| run_test_file("test/test_#{m[1]}.rb") }
 
 def run(cmd)
   puts cmd
@@ -8,27 +8,16 @@ end
 
 def run_test_file(file)
   system('clear')
-  result = run(%Q(ruby -I"lib:test" -rubygems #{file}))
-  #growl result.split("\n").last rescue nil
+  result = run(%Q(ruby -I"minitest" -rpurdytest #{file}))
   puts result
 end
 
 def run_all_tests
+  @interrupted = false
   system('clear')
-  result = run "rake test"
-  #growl result.split("\n").last rescue nil
+  result = run "ruby --tty test/all_suite.rb"
   puts result
 end
-
-def run_suite
-  run_all_tests
-end
-
-# Ctrl-\
-#Signal.trap 'QUIT' do
-#  puts " --- Running all tests ---\n\n"
-#  run_all_tests
-#end
 
 @interrupted = false
 
@@ -42,6 +31,6 @@ Signal.trap 'INT' do
     @interrupted = true
     Kernel.sleep 1.5
     # raise Interrupt, nil # let the run loop catch it
-    run_suite
+    run_all_tests
   end
 end

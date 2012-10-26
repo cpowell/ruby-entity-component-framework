@@ -1,4 +1,6 @@
-require "test/unit"
+require 'minitest/autorun' # from minitest
+require 'purdytest'
+
 require "lib/lunar_lander/entity_manager"
 require "lib/lunar_lander/components/component"
 
