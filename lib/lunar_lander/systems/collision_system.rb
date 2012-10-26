@@ -7,33 +7,51 @@ java_import org.newdawn.slick.geom.Transform
 class CollisionSystem < System
 
   def process_one_game_tick(container, delta, entity_mgr)
-    collidable_entities = entity_mgr.get_all_entities_possessing_component(PolygonCollidable)
+    collidable_entities=[]
+
+    polygon_entities = entity_mgr.get_all_entities_possessing_component_of_type(PolygonCollidable)
+    update_bounding_polygons(entity_mgr, polygon_entities)
+    collidable_entities += polygon_entities
+
+    # circle_entities = ...
+    # update_bounding_circles(circle_entities)
+    # collidable_entites += circle_entities
+
+    bounding_areas={}
+    collidable_entities.each do |e| 
+      bounding_areas[e]=entity_mgr.get_component(e, PolygonCollidable).bounding_polygon
+    end
 
     # Naive O(n^2)
-    polygons=[]
-    collidable_entities.each do |e|
-      spatial_component = entity_mgr.get_component(e, SpatialState)
-      renderable_component = entity_mgr.get_component(e, Renderable)
+    bounding_areas.each_key do |entity|
+      bounding_areas.each_key do |other|
+        next if entity==other
 
-      polygons << make_polygon(spatial_component.x, 
+        if bounding_areas[entity].intersects bounding_areas[other]
+          puts "BANG: #{entity} and #{other}"
+        end
+      end
+    end
+  end
+
+  def update_bounding_circles(entities)
+    # placeholder for thought
+  end
+
+  def update_bounding_polygons(entity_mgr, entities)
+    entities.each do |e|
+      spatial_component    = entity_mgr.get_component(e, SpatialState)
+      renderable_component = entity_mgr.get_component(e, Renderable)
+      collidable_component = entity_mgr.get_component(e, PolygonCollidable)
+
+      collidable_component.bounding_polygon = 
+                   make_polygon(spatial_component.x, 
                                 renderable_component.width,
                                 spatial_component.y, 
                                 renderable_component.height, 
                                 renderable_component.rotation, 
                                 renderable_component.scale)
     end
-
-    for poly_1 in polygons
-      for poly_2 in polygons
-        if poly_1 != poly_2 && poly_1.intersects(poly_2)
-          puts 'intersection'
-        end
-      end
-    end
-  end
-
-  def intersects(polygon_1, polygon_2)
-    return polygon_1.intersects(polygon_2)
   end
 
   def make_polygon(position_x, width, position_y, height, rotation, scale)
