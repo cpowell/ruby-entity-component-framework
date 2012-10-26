@@ -1,6 +1,9 @@
 # This is a whole test suite.
 # $ ruby test/all_suite.rb
 
-require "test/unit"
+require 'minitest/autorun' # from minitest
+#require 'purdytest'
+begin; require 'turn/autorun'; rescue LoadError; end
+Turn.config.format = :progress
 
-require "test/entity_manager_test"
+require "test/test_entity_manager"

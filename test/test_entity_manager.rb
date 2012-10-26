@@ -2,7 +2,7 @@ require "test/unit"
 require "lib/lunar_lander/entity_manager"
 require "lib/lunar_lander/components/component"
 
-class EntityManager_test < Test::Unit::TestCase
+class TestEntityManager < Test::Unit::TestCase
   def setup
     @em = EntityManager.new(nil)
     @comp = Component.new
