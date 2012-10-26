@@ -1,4 +1,5 @@
-require 'minitest/autorun' # from minitest
+gem 'minitest'
+require 'minitest/autorun'
 require 'purdytest'
 
 require "lib/lunar_lander/entity_manager"
@@ -16,15 +17,15 @@ class TestEntityManager < MiniTest::Unit::TestCase
   
   def test_create_entity
     id=@em.create_basic_entity
-    assert_not_nil(id)
-    assert_not_equal([], @em.entities)
+    refute_nil(id)
+    refute_equal([], @em.entities)
     assert_equal(1, @em.entities.size)
   end
 
   def test_create_named_entity
     id=@em.create_named_entity('blah')
-    assert_not_nil(id)
-    assert_not_equal([], @em.entities)
+    refute_nil(id)
+    refute_equal([], @em.entities)
     assert_equal(1, @em.entities.size)
     assert_equal('blah', @em.get_entity_name(id))
   end
