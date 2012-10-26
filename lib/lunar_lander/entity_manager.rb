@@ -11,6 +11,7 @@ require 'SecureRandom'
 # but all of them are part of the world of the game (even if invisible).
 class EntityManager
   attr_reader :game
+  attr_reader :entities
 
   def initialize(game)
     @game     = game
@@ -47,11 +48,6 @@ class EntityManager
       store.delete(entity_uuid)
     end
     @entities.delete(entity_uuid)
-  end
-
-  # Pretty much exists just for the unit tests:
-  def get_known_entities
-    @entities
   end
 
   #TODO a method to get all entities matching a basket of components
@@ -132,25 +128,7 @@ class EntityManager
     components
   end
 
-  # def get_all_components_on_entity_of_type(entity, component_class)
-  #   store = @component_stores[component_class]
-  #   if store.nil?
-  #     return []
-  #   else
-  #     store.values.each 
-  #   end
-  # end
-
-  # def get_all_components_of_type(component_class)
-  #   store = @component_stores[component_class]
-  #   if store.nil?
-  #     return []
-  #   else
-  #     return store.values
-  #   end
-  # end
-
-  def get_all_entities_possessing_component_of_type(component_class)
+  def get_all_entities_with_component_of_type(component_class)
     store = @component_stores[component_class]
     if store.nil?
       return []

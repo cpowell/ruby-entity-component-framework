@@ -1,7 +1,7 @@
 class EngineSystem < System
 
   def process_one_game_tick(container, delta, entity_mgr)
-    engine_entities = entity_mgr.get_all_entities_possessing_component_of_type(Engine)
+    engine_entities = entity_mgr.get_all_entities_with_component_of_type(Engine)
     engine_entities.each do |entity|
       engine_component = entity_mgr.get_entity_component_of_type(entity, Engine)
       fuel_component   = entity_mgr.get_entity_component_of_type(entity, Fuel)

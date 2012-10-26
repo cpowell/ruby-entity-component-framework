@@ -9,21 +9,21 @@ class EntityManager_test < Test::Unit::TestCase
   end
 
   def test_initialization_is_sane
-    assert_equal([], @em.get_known_entities)
+    assert_equal([], @em.entities)
   end
   
   def test_create_entity
     id=@em.create_basic_entity
     assert_not_nil(id)
-    assert_not_equal([], @em.get_known_entities)
-    assert_equal(1, @em.get_known_entities.size)
+    assert_not_equal([], @em.entities)
+    assert_equal(1, @em.entities.size)
   end
 
   def test_create_named_entity
     id=@em.create_named_entity('blah')
     assert_not_nil(id)
-    assert_not_equal([], @em.get_known_entities)
-    assert_equal(1, @em.get_known_entities.size)
+    assert_not_equal([], @em.entities)
+    assert_equal(1, @em.entities.size)
     assert_equal('blah', @em.get_entity_name(id))
   end
 
@@ -34,20 +34,20 @@ class EntityManager_test < Test::Unit::TestCase
     assert_equal('foobar', @em.get_entity_name(id))
   end
 
-  def test_get_known_entities
+  def test_entities
     id1=@em.create_named_entity('blah')
     id2=@em.create_named_entity('foobar')
-    assert_equal([id1,id2], @em.get_known_entities)
+    assert_equal([id1,id2], @em.entities)
   end
 
   def test_kill_entity
     id1=@em.create_named_entity('blah')
     id2=@em.create_named_entity('foobar')
-    assert_equal(2, @em.get_known_entities.size)
+    assert_equal(2, @em.entities.size)
 
     @em.kill_entity(id1)
 
-    assert_equal(1, @em.get_known_entities.size)
+    assert_equal(1, @em.entities.size)
   end
 
   def test_add_entity_component_and_test_for_its_existence
