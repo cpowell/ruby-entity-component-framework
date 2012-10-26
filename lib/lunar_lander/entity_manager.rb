@@ -55,6 +55,8 @@ class EntityManager
     @entities
   end
 
+  #TODO a method to get all entities matching a basket of components
+
   def add_component(entity_uuid, component)
     store = @component_stores[component.class]
     if store.nil?
@@ -125,6 +127,15 @@ class EntityManager
     end
     components
   end
+
+  # def get_all_components_on_entity_of_type(entity, component_class)
+  #   store = @component_stores[component_class]
+  #   if store.nil?
+  #     return []
+  #   else
+  #     store.values.each 
+  #   end
+  # end
 
   def get_all_components_of_type(component_class)
     store = @component_stores[component_class]
