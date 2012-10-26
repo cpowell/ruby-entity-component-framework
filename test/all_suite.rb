@@ -4,7 +4,7 @@
 require 'minitest/autorun' # from minitest
 require 'purdytest'
 
-begin; require 'turn/autorun'; rescue LoadError; end
+#begin; require 'turn/autorun'; rescue LoadError; end
 #Turn.config.format = :progress
 
 require "test/test_entity_manager"

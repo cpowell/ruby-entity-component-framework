@@ -4,7 +4,7 @@ require 'purdytest'
 require "lib/lunar_lander/entity_manager"
 require "lib/lunar_lander/components/component"
 
-class TestEntityManager < Test::Unit::TestCase
+class TestEntityManager < MiniTest::Unit::TestCase
   def setup
     @em = EntityManager.new(nil)
     @comp = Component.new
