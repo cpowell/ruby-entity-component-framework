@@ -54,7 +54,11 @@ class EntityManager
     @component_stores.each_value do |store|
       store.delete(entity_uuid)
     end
-    @entities.delete(entity_uuid)
+    if @entities.delete(entity_uuid)==nil
+      return false
+    else
+      return true
+    end
   end
 
   def add_entity_component(entity_uuid, component)
@@ -69,7 +73,7 @@ class EntityManager
     end
 
     if store.has_key? entity_uuid
-      store[entity_uuid] << component
+      store[entity_uuid] << component unless store[entity_uuid].include? component
     else
       store[entity_uuid] = [component]
     end
@@ -94,7 +98,8 @@ class EntityManager
       # NOBODY has this component type
       return false
     else
-      return store.has_key? entity_uuid
+      #puts "Store: #{store[entity_uuid]}"
+      return store.has_key?(entity_uuid) && store[entity_uuid].size > 0
     end
   end
 
