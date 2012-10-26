@@ -110,25 +110,25 @@ class MetaEntity
   # end
 
   def add_component(component)
-    @entity_manager.add_component(@uuid, component)  
+    @entity_manager.add_entity_component(@uuid, component)  
   end
 
   def add_all_components(components)
     components.each do |component|
-      @entity_manager.add_component(@uuid, component)  
+      @entity_manager.add_entity_component(@uuid, component)  
     end
   end
 
   def has_component(component_class)
-    @entity_manager.has_component(@uuid, component)      
+    @entity_manager.entity_has_component(@uuid, component)      
   end
 
   def get_component(component_class)
-    @entity_manager.get_component(@uuid, component)  
+    @entity_manager.get_entity_component_of_type(@uuid, component_class)  
   end
 
   def remove_component(component)
-    @entity_manager.remove_component(@uuid, component)
+    @entity_manager.remove_entity_component(@uuid, component)
   end
 
   def get_all_components
@@ -137,7 +137,7 @@ class MetaEntity
 
   def remove_all_components
     @components.each do |c|
-      remove_component c.class
+      remove_entity_component c.class
     end
   end
 
