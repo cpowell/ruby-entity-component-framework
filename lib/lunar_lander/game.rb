@@ -130,7 +130,3 @@ class Game < BasicGame
   # end
 end
 
-    #@entities.each {|e| e.update(container, delta) }
-    # if @lander.intersects(@pad)
-    #   Logger.global.log Level::SEVERE, "Intersection"
-    # end
