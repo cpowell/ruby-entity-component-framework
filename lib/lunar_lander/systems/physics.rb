@@ -10,7 +10,7 @@ class Physics < System
     # gravity_entity_ids.each do |uuid|
     #   me = MetaEntity.load_from_entity_manager(uuid)
 
-    #   spatial_component = me.get_component(SpatialState)
+    #   spatial_component = me.get_entity_component_of_type(SpatialState)
 
     #   # move horizontally according to dx
     #   amount = 0.01 * delta * spatial_component.dx
@@ -26,7 +26,7 @@ class Physics < System
 
     gravity_entities = entity_mgr.get_all_entities_possessing_component_of_type(GravitySensitive)
     gravity_entities.each do |e|
-      spatial_component = entity_mgr.get_component(e, SpatialState)
+      spatial_component = entity_mgr.get_entity_component_of_type(e, SpatialState)
 
       # move horizontally according to dx
       amount = 0.01 * delta * spatial_component.dx

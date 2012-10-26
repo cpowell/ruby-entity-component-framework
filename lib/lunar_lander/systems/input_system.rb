@@ -20,16 +20,16 @@ class InputSystem < System
 
     inputtable_entities = entity_mgr.get_all_entities_possessing_component_of_type(PlayerInput)
     inputtable_entities.each do |entity|
-      input_component = entity_mgr.get_component(entity, PlayerInput)
+      input_component = entity_mgr.get_entity_component_of_type(entity, PlayerInput)
 
       if (input_system.is_key_down(P1_KEY_THRUST) && 
           input_component.responsive_keys.include?(P1_KEY_THRUST) && 
-          entity_mgr.has_component_type(entity, Engine)) || 
+          entity_mgr.entity_has_component_of_type(entity, Engine)) || 
          (input_system.is_key_down(P2_KEY_THRUST) && 
           input_component.responsive_keys.include?(P2_KEY_THRUST) &&
-          entity_mgr.has_component_type(entity, Engine))
+          entity_mgr.entity_has_component_of_type(entity, Engine))
 
-        engine_component=entity_mgr.get_component(entity, Engine)
+        engine_component=entity_mgr.get_entity_component_of_type(entity, Engine)
         engine_component.on=true
       end
 
@@ -38,7 +38,7 @@ class InputSystem < System
          (input_system.is_key_down(P2_KEY_ROTL) && 
           input_component.responsive_keys.include?(P2_KEY_ROTL))
           
-        renderable_component=entity_mgr.get_component(entity, Renderable)
+        renderable_component=entity_mgr.get_entity_component_of_type(entity, Renderable)
         renderable_component.rotate(delta * -0.1)
       end
 
@@ -47,7 +47,7 @@ class InputSystem < System
          (input_system.is_key_down(P2_KEY_ROTR) && 
           input_component.responsive_keys.include?(P2_KEY_ROTR))
         
-        renderable_component=entity_mgr.get_component(entity, Renderable)
+        renderable_component=entity_mgr.get_entity_component_of_type(entity, Renderable)
         renderable_component.rotate(delta * 0.1)
       end
     end

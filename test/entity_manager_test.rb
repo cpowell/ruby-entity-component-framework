@@ -1,9 +1,11 @@
 require "test/unit"
 require "lib/lunar_lander/entity_manager"
+require "lib/lunar_lander/components/component"
 
 class EntityManager_test < Test::Unit::TestCase
   def setup
     @em = EntityManager.new(nil)
+    @comp = Component.new
   end
 
   def test_initialization_is_sane
@@ -48,27 +50,25 @@ class EntityManager_test < Test::Unit::TestCase
     assert_equal(1, @em.get_known_entities.size)
   end
 
-  def test_add_component_and_test_for_its_existence
+  def test_add_entity_component_and_test_for_its_existence
     id=@em.create_named_entity('blah')
-    string_component = 'This is a string'
-    @em.add_component(id, string_component)
+    @em.add_entity_component(id, @comp)
 
-    assert_equal(true, @em.has_component(id,string_component))
+    assert_equal(true, @em.entity_has_component(id, @comp))
 
-    assert_equal(string_component, @em.get_all_components_on_entity(id)[0])
+    assert_equal(@comp, @em.get_all_components_on_entity(id)[0])
 
-    assert_equal(string_component, @em.get_component(id, String))
+    assert_equal(@comp, @em.get_entity_component_of_type(id, Component))
   end
 
-  def test_add_and_remove_component
+  def test_add_and_remove_entity_component
     id=@em.create_named_entity('blah')
-    string_component = 'This is a string'
-    @em.add_component(id, string_component)
+    @em.add_entity_component(id, @comp)
 
-    assert_equal(true, @em.has_component(id,string_component))
+    assert_equal(true, @em.entity_has_component(id,@comp))
 
-    @em.remove_component(id, string_component)
+    @em.remove_entity_component(id, @comp)
 
-    assert_equal(false, @em.has_component(id,string_component))
+    assert_equal(false, @em.entity_has_component(id,@comp))
   end
 end
