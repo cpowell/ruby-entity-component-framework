@@ -29,20 +29,28 @@ class EntityManager
   end
 
   def create_named_entity(human_readable_name)
+    raise ArgumentError, "Must specify name" if human_readable_name.nil?
+
     uuid=create_basic_entity
     @entity_names[uuid]=human_readable_name    
     return uuid
   end
 
   def set_entity_name(entity_uuid, human_readable_name)
+    raise ArgumentError, "UUID and name must be specified" if entity_uuid.nil? || human_readable_name.nil?
+
     @entity_names[entity_uuid]=human_readable_name
   end
 
   def get_entity_name(entity_uuid)
+    raise ArgumentError, "UUID must be specified" if entity_uuid.nil?
+
     @entity_names[entity_uuid]
   end
 
   def kill_entity(entity_uuid)
+    raise ArgumentError, "UUID must be specified" if entity_uuid.nil?
+
     @component_stores.each_value do |store|
       store.delete(entity_uuid)
     end
@@ -50,6 +58,8 @@ class EntityManager
   end
 
   def add_entity_component(entity_uuid, component)
+    raise ArgumentError, "UUID and component must be specified" if entity_uuid.nil? || component.nil?
+
     # Get the store for this component class.
     # If it doesn't exist, make it.
     store = @component_stores[component.class]
@@ -66,6 +76,8 @@ class EntityManager
   end
 
   def entity_has_component(entity_uuid, component)
+    raise ArgumentError, "UUID and component must be specified" if entity_uuid.nil? || component.nil?
+
     store = @component_stores[component.class]
     if store.nil?
       return false # NOBODY has this component type
@@ -75,6 +87,8 @@ class EntityManager
   end
 
   def entity_has_component_of_type(entity_uuid, component_class)
+    raise ArgumentError, "UUID and component class must be specified" if entity_uuid.nil? || component_class.nil?
+
     store = @component_stores[component_class]
     if store.nil?
       # NOBODY has this component type
@@ -85,6 +99,8 @@ class EntityManager
   end
 
   def get_entity_component_of_type(entity_uuid, component_class)
+    raise ArgumentError, "UUID and component class must be specified" if entity_uuid.nil? || component_class.nil?
+
     # return nil unless entity_has_component_of_type(entity_uuid, component.class)
     store = @component_stores[component_class]
     return nil if store.nil?
@@ -100,6 +116,8 @@ class EntityManager
   end
 
   def remove_entity_component(entity_uuid, component)
+    raise ArgumentError, "UUID and component must be specified" if entity_uuid.nil? || component.nil?
+
     store = @component_stores[component.class]
     return nil if store.nil?
 
@@ -115,6 +133,8 @@ class EntityManager
   end
 
   def get_all_components_on_entity(entity_uuid)
+    raise ArgumentError, "UUID must be specified" if entity_uuid.nil?
+
     components = []
     @component_stores.values.each do |store|
       if store[entity_uuid]
@@ -125,6 +145,8 @@ class EntityManager
   end
 
   def get_all_entities_with_component_of_type(component_class)
+    raise ArgumentError, "Component class must be specified" if component_class.nil?
+
     store = @component_stores[component_class]
     if store.nil?
       return []
