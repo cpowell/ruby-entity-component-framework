@@ -8,14 +8,14 @@ end
 
 def run_test_file(file)
   system('clear')
-  result = run(%Q(ruby -I"minitest" -rpurdytest #{file}))
+  result = run "ruby #{file}"
   puts result
 end
 
 def run_all_tests
   @interrupted = false
   system('clear')
-  result = run "ruby --tty test/all_suite.rb"
+  result = run "ruby test/all_suite.rb"
   puts result
 end
 
