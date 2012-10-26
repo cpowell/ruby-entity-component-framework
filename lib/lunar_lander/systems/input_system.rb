@@ -18,7 +18,7 @@ class InputSystem < System
     #TODO turn this into a listener
     input_system = container.get_input
 
-    inputtable_entities = entity_mgr.get_all_entities_possessing_component(PlayerInput)
+    inputtable_entities = entity_mgr.get_all_entities_possessing_component_of_type(PlayerInput)
     inputtable_entities.each do |entity|
       input_component = entity_mgr.get_component(entity, PlayerInput)
 

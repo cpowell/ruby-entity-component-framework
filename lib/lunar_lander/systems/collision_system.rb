@@ -9,7 +9,7 @@ class CollisionSystem < System
   def process_one_game_tick(container, delta, entity_mgr)
     collidable_entities=[]
 
-    polygon_entities = entity_mgr.get_all_entities_possessing_component(PolygonCollidable)
+    polygon_entities = entity_mgr.get_all_entities_possessing_component_of_type(PolygonCollidable)
     update_bounding_polygons(entity_mgr, polygon_entities)
     collidable_entities += polygon_entities
 

@@ -135,7 +135,7 @@ class EntityManager
     end
   end
 
-  def get_all_entities_possessing_component(component_class)
+  def get_all_entities_possessing_component_of_type(component_class)
     store = @component_stores[component_class]
     if store.nil?
       return []
