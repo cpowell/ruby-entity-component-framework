@@ -27,6 +27,24 @@ class EntityManager_test < Test::Unit::TestCase
     assert_equal('blah', @em.get_entity_name(id))
   end
 
+  def test_create_named_entity_should_barf_on_missing_name
+    begin
+      id=@em.create_named_entity
+      flunk "Should not have gotten here"
+    rescue ArgumentError => e
+      # nop
+    end
+  end
+
+  def test_set_entity_name_should_barf_on_missing_args
+    begin
+      id=@em.set_entity_name(nil, 'name')
+      flunk "Should not have gotten here"
+    rescue ArgumentError => e
+      # nop
+    end
+  end
+
   def test_change_name_of_entity
     id=@em.create_named_entity('blah')
     assert_equal('blah', @em.get_entity_name(id))
