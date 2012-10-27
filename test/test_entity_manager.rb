@@ -160,4 +160,47 @@ class TestEntityManager < MiniTest::Unit::TestCase
     assert_equal(@comp, comp)
   end
 
+  def test_get_all_entities_with_components_of_type_should_barf_on_bad_argument
+    begin
+      @em.get_all_entities_with_components_of_type(nil)
+      flunk "Should not have gotten here"
+    rescue ArgumentError => e
+      # nop
+    end
+  end
+
+  def test_get_all_entities_with_components_of_type
+    id1=@em.create_named_entity('foo')
+    id2=@em.create_named_entity('bar')
+    id3=@em.create_named_entity('baz')
+
+    @em.add_entity_component(id1, @comp)
+    @em.add_entity_component(id3, @comp)
+
+    @comp2="string component"
+    @em.add_entity_component(id2, @comp2)
+    @em.add_entity_component(id3, @comp2)
+
+    @comp3=12345
+    @em.add_entity_component(id1, @comp3)
+    @em.add_entity_component(id2, @comp3)
+
+    entities = @em.get_all_entities_with_components_of_type([@comp.class])
+    assert_equal([id1,id3], entities)
+
+    entities = @em.get_all_entities_with_components_of_type([@comp2.class])
+    assert_equal([id2,id3], entities)
+
+    entities = @em.get_all_entities_with_components_of_type([@comp3.class])
+    assert_equal([id1,id2], entities)
+
+    entities = @em.get_all_entities_with_components_of_type([@comp2.class, @comp.class, @comp3.class])
+    assert_equal([], entities)
+
+    entities = @em.get_all_entities_with_components_of_type([@comp2.class, @comp3.class])
+    assert_equal([id2], entities)
+
+    entities = @em.get_all_entities_with_components_of_type([@comp.class, @comp3.class])
+    assert_equal([id1], entities)
+  end
 end

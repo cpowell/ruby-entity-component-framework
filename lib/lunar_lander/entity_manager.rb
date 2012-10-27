@@ -160,6 +160,17 @@ class EntityManager
     end
   end
 
+  def get_all_entities_with_components_of_type(component_classes)
+    raise ArgumentError, "Component classes must be specified" if component_classes.nil?
+
+    entities = @entities
+    component_classes.each do |klass|
+      entities = entities & get_all_entities_with_component_of_type(klass)
+    end
+
+    return entities.flatten.uniq
+  end
+
   def dump_to_screen
     @entities.each do |e|
       puts "#{e} (#{@entity_names[e]})"
