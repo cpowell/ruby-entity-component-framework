@@ -4,8 +4,7 @@ require 'spatial_state'
 
 class RenderingSystem < System
   def process_one_game_tick(entity_mgr, container, graphics)
-    entities = entity_mgr.get_all_entities_with_component_of_type(Renderable)
-
+    entities = entity_mgr.get_all_entities_with_components_of_type([Renderable, SpatialState])
     entities.each do |e|
       loc_comp    = entity_mgr.get_entity_component_of_type(e, SpatialState)
       render_comp = entity_mgr.get_entity_component_of_type(e, Renderable)

@@ -167,8 +167,7 @@ class EntityManager
     component_classes.each do |klass|
       entities = entities & get_all_entities_with_component_of_type(klass)
     end
-
-    return entities.flatten.uniq
+    return entities
   end
 
   def dump_to_screen
