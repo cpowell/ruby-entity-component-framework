@@ -8,8 +8,10 @@ require 'SecureRandom'
 
 class EntityManager
   attr_reader :game
+  attr_reader :id
 
   def initialize(game)
+    @id          = SecureRandom.uuid
     @game        = game
     @ids_to_tags = Hash.new
     @tags_to_ids = Hash.new
@@ -189,11 +191,12 @@ class EntityManager
   end
 
   def dump_to_screen
+    puts to_s
     all_entities.each do |e|
-      puts "#{e} (#{@ids_to_tags[e]})"
+      puts " #{e} (#{@ids_to_tags[e]})"
       comps = get_all_components_on_entity(e)
       comps.each do |c|
-        puts "  #{c.to_s}"
+        puts "   #{c.to_s}"
       end
     end
   end
