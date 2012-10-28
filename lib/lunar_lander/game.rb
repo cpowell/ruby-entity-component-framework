@@ -91,8 +91,6 @@ class Game < BasicGame
     @physics.process_one_game_tick(container, delta, @entity_manager)
     @landed = @landing.process_one_game_tick(container, delta, @entity_manager)
     @game_over = @collision.process_one_game_tick(container, delta, @entity_manager)
-
-    puts @entity_manager.entities.size
   end
 
   # After that the render method allows us to draw the world we designed accordingly 
