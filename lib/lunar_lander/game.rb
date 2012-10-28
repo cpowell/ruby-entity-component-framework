@@ -59,6 +59,13 @@ class Game < BasicGame
     @entity_manager.add_entity_component ground, Renderable.new(RELATIVE_ROOT + "res/ground.png", 1.0, 0)
     @entity_manager.add_entity_component ground, PolygonCollidable.new
 
+    asteroid = @entity_manager.create_named_entity('asteroid')
+    @entity_manager.add_entity_component asteroid, SpatialState.new(-100, 50, 10, 4)
+    @entity_manager.add_entity_component asteroid, Renderable.new(RELATIVE_ROOT + "res/asteroid.png", 1.0, 0)
+    @entity_manager.add_entity_component asteroid, PolygonCollidable.new
+    @entity_manager.add_entity_component asteroid, Motion.new
+
+
     @entity_manager.dump_to_screen
 
     # Initialize any runnable systems
