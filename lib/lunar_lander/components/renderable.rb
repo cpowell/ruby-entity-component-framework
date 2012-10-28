@@ -34,16 +34,17 @@ class Renderable < Component
     @scale    = coder['scale']
     @rotation = coder['rotation']
     @image    = Image.new(image_fn)
+    @image.setRotation(@rotation)
   end
 
-  # Future use (when Jruby gets its marshaling fixed)
-  # def marshal_dump
-  #   [@image_fn, @scale, @rotation]
-  # end
+  def marshal_dump
+    [@image_fn, @scale, @rotation]
+  end
 
-  # def marshal_load(array)
-  #   @image_fn, @scale, @rotation = array
-  #   @image = Image.new(image_fn)
-  # end
+  def marshal_load(array)
+    @image_fn, @scale, @rotation = array
+    @image = Image.new(image_fn)
+    @image.setRotation(@rotation)
+  end
 
 end

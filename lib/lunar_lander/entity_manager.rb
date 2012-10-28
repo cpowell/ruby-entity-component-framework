@@ -201,6 +201,14 @@ class EntityManager
     end
   end
 
+  def marshal_dump
+    [@id, @ids_to_tags, @tags_to_ids, @component_stores]
+  end
+
+  def marshal_load(array)
+    @id, @ids_to_tags, @tags_to_ids, @component_stores = array
+  end
+
   def to_s
     "EntityManager {#{id}: #{all_entities.size} managed entities}"
   end
