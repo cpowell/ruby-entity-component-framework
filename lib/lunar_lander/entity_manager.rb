@@ -7,7 +7,7 @@
 require 'SecureRandom'
 
 class EntityManager
-  attr_reader :game
+  attr_accessor :game
   attr_reader :id
 
   def initialize(game)

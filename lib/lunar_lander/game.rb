@@ -1,7 +1,7 @@
 require 'SecureRandom'
+require "yaml"
 
 require 'entity_manager'
-require 'meta_entity'
 
 # Necesssary components
 require 'spatial_state'
@@ -34,31 +34,33 @@ class Game < BasicGame
     container.setTargetFrameRate(60)
     container.setAlwaysRender(true)
 
-    @bg = Image.new(RELATIVE_ROOT + 'res/bg.png')
-    @entity_manager = EntityManager.new(self)
-    @game_over=false
-    @landed=false
+    if File.size? 'savedgame.yaml'
+      @entity_manager = YAML::load( File.open( 'savedgame.yaml' ) )
+      @entity_manager.game = self
+    else
+      @entity_manager = EntityManager.new(self)
+  
+      p1_lander = @entity_manager.create_tagged_entity('p1_lander')
+      @entity_manager.add_entity_component p1_lander, SpatialState.new(50, 250, 0, 0)
+      @entity_manager.add_entity_component p1_lander, Engine.new(0.01)
+      @entity_manager.add_entity_component p1_lander, Fuel.new(250)
+      @entity_manager.add_entity_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
+      @entity_manager.add_entity_component p1_lander, GravitySensitive.new
+      @entity_manager.add_entity_component p1_lander, Motion.new
+      @entity_manager.add_entity_component p1_lander, PolygonCollidable.new
+      @entity_manager.add_entity_component p1_lander, Landable.new
+      @entity_manager.add_entity_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
 
-    p1_lander = @entity_manager.create_tagged_entity('p1_lander')
-    @entity_manager.add_entity_component p1_lander, SpatialState.new(50, 250, 0, 0)
-    @entity_manager.add_entity_component p1_lander, Engine.new(0.01)
-    @entity_manager.add_entity_component p1_lander, Fuel.new(250)
-    @entity_manager.add_entity_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
-    @entity_manager.add_entity_component p1_lander, GravitySensitive.new
-    @entity_manager.add_entity_component p1_lander, Motion.new
-    @entity_manager.add_entity_component p1_lander, PolygonCollidable.new
-    @entity_manager.add_entity_component p1_lander, Landable.new
-    @entity_manager.add_entity_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
+      platform = @entity_manager.create_tagged_entity('platform')
+      @entity_manager.add_entity_component platform, SpatialState.new(350, container.height - 125, 0, 0)
+      @entity_manager.add_entity_component platform, Renderable.new(RELATIVE_ROOT + "res/shelf.png", 1.0, 0)
+      @entity_manager.add_entity_component platform, Pad.new
 
-    platform = @entity_manager.create_tagged_entity('platform')
-    @entity_manager.add_entity_component platform, SpatialState.new(350, container.height - 125, 0, 0)
-    @entity_manager.add_entity_component platform, Renderable.new(RELATIVE_ROOT + "res/shelf.png", 1.0, 0)
-    @entity_manager.add_entity_component platform, Pad.new
-
-    ground = @entity_manager.create_tagged_entity('ground')
-    @entity_manager.add_entity_component ground, SpatialState.new(0, container.height - 118, 0, 0)
-    @entity_manager.add_entity_component ground, Renderable.new(RELATIVE_ROOT + "res/ground.png", 1.0, 0)
-    @entity_manager.add_entity_component ground, PolygonCollidable.new
+      ground = @entity_manager.create_tagged_entity('ground')
+      @entity_manager.add_entity_component ground, SpatialState.new(0, container.height - 118, 0, 0)
+      @entity_manager.add_entity_component ground, Renderable.new(RELATIVE_ROOT + "res/ground.png", 1.0, 0)
+      @entity_manager.add_entity_component ground, PolygonCollidable.new
+    end
 
     @entity_manager.dump_to_screen
 
@@ -70,6 +72,11 @@ class Game < BasicGame
     @collision = CollisionSystem.new(self)
     @landing   = LandingSystem.new(self)
     @asteroid  = AsteroidSystem.new(self)
+
+    @bg = Image.new(RELATIVE_ROOT + 'res/bg.png')
+    
+    @game_over=false
+    @landed=false
   end
 
   # The update method is called during the game to update the logic in our world, 
@@ -82,7 +89,15 @@ class Game < BasicGame
   #
   def update(container, delta)
     input = container.get_input
-    container.exit if input.is_key_down(Input::KEY_ESCAPE)
+    if input.is_key_down(Input::KEY_ESCAPE)
+      if !@game_over && !@landed
+        File.open("savedgame.yaml", "w") do |file|
+          file.puts YAML::dump(@entity_manager)
+          #file.print Marshal::dump(@entity_manager)
+        end
+      end
+      container.exit 
+    end
 
     # Nice because I can dictate the order things are processed
     @asteroid.process_one_game_tick(container, delta, @entity_manager)
