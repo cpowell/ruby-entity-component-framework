@@ -62,7 +62,7 @@ class Game < BasicGame
       @entity_manager.add_entity_component ground, PolygonCollidable.new
     end
 
-    @entity_manager.dump_to_screen
+    #@entity_manager.dump_to_screen
 
     # Initialize any runnable systems
     @physics   = Physics.new(self)
