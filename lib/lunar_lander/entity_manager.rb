@@ -8,14 +8,15 @@ require 'SecureRandom'
 
 class EntityManager
   attr_reader :game
-  attr_reader :entities
+  attr_reader :entities # FIXME remove and replace with @ids_to_names.keys
 
   #TODO a method to get all entities matching a basket of components
 
   def initialize(game)
     @game         = game
     @entities     = []
-    @entity_names = Hash.new
+    @ids_to_names = Hash.new
+    @names_to_ids = Hash.new
 
     # "Stores" hash: key=component class, value=a component store
     # Each "component store" hash: key=entity UUID, value=an array of components
@@ -32,20 +33,32 @@ class EntityManager
     raise ArgumentError, "Must specify name" if human_readable_name.nil?
 
     uuid=create_basic_entity
-    @entity_names[uuid]=human_readable_name    
+    @ids_to_names[uuid]=human_readable_name
+    if @names_to_ids.has_key? human_readable_name
+      @names_to_ids[human_readable_name]<<uuid
+    else
+      @names_to_ids[human_readable_name]=[uuid]
+    end
+
     return uuid
   end
 
-  def set_entity_name(entity_uuid, human_readable_name)
-    raise ArgumentError, "UUID and name must be specified" if entity_uuid.nil? || human_readable_name.nil?
+  # def set_entity_name(entity_uuid, human_readable_name)
+  #   raise ArgumentError, "UUID and name must be specified" if entity_uuid.nil? || human_readable_name.nil?
 
-    @entity_names[entity_uuid]=human_readable_name
-  end
+  #   @ids_to_names[entity_uuid]=human_readable_name
+  #   @names_to_ids[]
+  #   @names_to_ids[human_readable_name]<<entity_uuid
+  # end
 
   def get_entity_name(entity_uuid)
     raise ArgumentError, "UUID must be specified" if entity_uuid.nil?
 
-    @entity_names[entity_uuid]
+    @ids_to_names[entity_uuid]
+  end
+
+  def get_all_entities_with_name(name)
+    @names_to_ids[name]  
   end
 
   def kill_entity(entity_uuid)
@@ -54,6 +67,13 @@ class EntityManager
     @component_stores.each_value do |store|
       store.delete(entity_uuid)
     end
+    @names_to_ids.each_key do |name|
+      if @names_to_ids[name].include? entity_uuid
+        @names_to_ids[name].delete entity_uuid
+      end
+    end
+    @ids_to_names.delete entity_uuid
+
     if @entities.delete(entity_uuid)==nil
       return false
     else
@@ -172,7 +192,7 @@ class EntityManager
 
   def dump_to_screen
     @entities.each do |e|
-      puts "#{e} (#{@entity_names[e]})"
+      puts "#{e} (#{@ids_to_names[e]})"
       comps = get_all_components_on_entity(e)
       comps.each do |c|
         puts "  #{c.to_s}"

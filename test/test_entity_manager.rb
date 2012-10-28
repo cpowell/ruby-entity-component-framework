@@ -39,36 +39,44 @@ class TestEntityManager < MiniTest::Unit::TestCase
     end
   end
 
-  def test_set_entity_name_should_barf_on_missing_args
-    begin
-      id=@em.set_entity_name(nil, 'name')
-      flunk "Should not have gotten here"
-    rescue ArgumentError => e
-      # nop
-    end
-  end
+  # def test_set_entity_name_should_barf_on_missing_args
+  #   begin
+  #     id=@em.set_entity_name(nil, 'name')
+  #     flunk "Should not have gotten here"
+  #   rescue ArgumentError => e
+  #     # nop
+  #   end
+  # end
 
-  def test_change_name_of_entity
-    id=@em.create_named_entity('blah')
-    assert_equal('blah', @em.get_entity_name(id))
-    @em.set_entity_name(id, 'foobar')  
-    assert_equal('foobar', @em.get_entity_name(id))
-  end
+  # def test_change_name_of_entity
+  #   id=@em.create_named_entity('blah')
+  #   assert_equal('blah', @em.get_entity_name(id))
+  #   @em.set_entity_name(id, 'foobar')  
+  #   assert_equal('foobar', @em.get_entity_name(id))
+  # end
 
-  def test_get_entity_name_should_barf_on_missing_args
-    id=@em.create_named_entity('blah')
-    begin
-      @em.set_entity_name(id, nil)
-      flunk "Should not have gotten here"
-    rescue ArgumentError => e
-      # nop
-    end
-  end
+  # def test_get_entity_name_should_barf_on_missing_args
+  #   id=@em.create_named_entity('blah')
+  #   begin
+  #     @em.set_entity_name(id, nil)
+  #     flunk "Should not have gotten here"
+  #   rescue ArgumentError => e
+  #     # nop
+  #   end
+  # end
 
   def test_list_of_known_entities
     id1=@em.create_named_entity('blah')
     id2=@em.create_named_entity('foobar')
     assert_equal([id1,id2], @em.entities)
+  end
+
+  def test_get_all_entities_with_tag
+    id1=@em.create_named_entity('asteroid')
+    id2=@em.create_named_entity('asteroid')
+    id3=@em.create_named_entity('ship')
+    id4=@em.create_named_entity('base')
+    assert_equal([id1, id2], @em.get_all_entities_with_name('asteroid'))
   end
 
   def test_kill_entity_should_barf_on_missing_args
@@ -86,14 +94,19 @@ class TestEntityManager < MiniTest::Unit::TestCase
   end
 
   def test_kill_entity_should_work
-    id1=@em.create_named_entity('blah')
-    id2=@em.create_named_entity('foobar')
-    assert_equal(2, @em.entities.size)
+    id1=@em.create_named_entity('asteroid')
+    id2=@em.create_named_entity('asteroid')
+    id3=@em.create_named_entity('ship')
+    assert_equal(3, @em.entities.size)
+    assert_equal([id1, id2], @em.get_all_entities_with_name('asteroid'))
+    assert_equal('asteroid', @em.get_entity_name(id1))
 
     result=@em.kill_entity(id1)
-
-    assert_equal(1, @em.entities.size)
+    assert_equal(2, @em.entities.size)
     assert_equal(true, result)
+    assert_equal([id2], @em.get_all_entities_with_name('asteroid'))
+    assert_equal(nil, @em.get_entity_name(id1))
+
   end
 
   def test_add_entity_component_should_barf_on_bad_args

@@ -20,6 +20,7 @@ require 'input_system'
 require 'spatial_system'
 require 'collision_system'
 require 'landing_system'
+require 'asteroid_system'
 
 class Game < BasicGame
   attr_reader :entity_manager
@@ -68,6 +69,7 @@ class Game < BasicGame
     @engine    = EngineSystem.new(self)
     @collision = CollisionSystem.new(self)
     @landing   = LandingSystem.new(self)
+    @asteroid  = AsteroidSystem.new(self)
   end
 
   # The update method is called during the game to update the logic in our world, 
@@ -82,24 +84,15 @@ class Game < BasicGame
     input = container.get_input
     container.exit if input.is_key_down(Input::KEY_ESCAPE)
 
-    if rand(50)==0
-      starting_x = -100
-      starting_y = rand(300) - 150
-      starting_dx = rand(15) + 2
-      starting_dy = rand(20) - 10
-      asteroid = @entity_manager.create_named_entity('asteroid')
-      @entity_manager.add_entity_component asteroid, SpatialState.new(starting_x, starting_y, starting_dx, starting_dy)
-      @entity_manager.add_entity_component asteroid, Renderable.new(RELATIVE_ROOT + "res/asteroid.png", 1.0, 0)
-      @entity_manager.add_entity_component asteroid, PolygonCollidable.new
-      @entity_manager.add_entity_component asteroid, Motion.new
-    end
-
     # Nice because I can dictate the order things are processed
+    @asteroid.process_one_game_tick(container, delta, @entity_manager)
+    @input.process_one_game_tick(container, delta, @entity_manager)
     @engine.process_one_game_tick(container, delta, @entity_manager)
     @physics.process_one_game_tick(container, delta, @entity_manager)
-    @input.process_one_game_tick(container, delta, @entity_manager)
     @landed = @landing.process_one_game_tick(container, delta, @entity_manager)
     @game_over = @collision.process_one_game_tick(container, delta, @entity_manager)
+
+    puts @entity_manager.entities.size
   end
 
   # After that the render method allows us to draw the world we designed accordingly 
