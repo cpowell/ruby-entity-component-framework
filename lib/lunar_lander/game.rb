@@ -34,8 +34,9 @@ class Game < BasicGame
     container.setTargetFrameRate(60)
     container.setAlwaysRender(true)
 
-    if File.size? 'savedgame.yaml'
-      @entity_manager = YAML::load( File.open( 'savedgame.yaml' ) )
+    if File.size? 'savedgame.dat'
+      #@entity_manager = YAML::load( File.open( 'savedgame.yaml' ) )
+      @entity_manager = Marshal::load( File.open( 'savedgame.dat' ) )
       @entity_manager.game = self
     else
       @entity_manager = EntityManager.new(self)
@@ -62,7 +63,7 @@ class Game < BasicGame
       @entity_manager.add_entity_component ground, PolygonCollidable.new
     end
 
-    @entity_manager.dump_to_screen
+    #@entity_manager.dump_to_screen
 
     # Initialize any runnable systems
     @physics   = Physics.new(self)
@@ -91,13 +92,12 @@ class Game < BasicGame
     input = container.get_input
     if input.is_key_down(Input::KEY_ESCAPE)
       if !@game_over && !@landed
-        File.open("savedgame.yaml", "w") do |file|
-          file.puts YAML::dump(@entity_manager)
-        end
-        # It appears that this currently is broken in Jruby, see http://jira.codehaus.org/browse/JRUBY-6886
-        # File.open("savedgame.dat", "w") do |file|
-        #   file.print Marshal::dump(@entity_manager)
+        # File.open("savedgame.yaml", "w") do |file|
+        #   file.puts YAML::dump(@entity_manager)
         # end
+        File.open("savedgame.dat", "w") do |file|
+          file.print Marshal::dump(@entity_manager)
+        end
       end
       container.exit 
     end
