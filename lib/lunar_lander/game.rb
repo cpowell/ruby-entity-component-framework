@@ -84,9 +84,9 @@ class Game < BasicGame
 
     if rand(50)==0
       starting_x = -100
-      starting_y = rand(200) - 100
-      starting_dx = rand(10) + 5
-      starting_dy = rand(10) - 5
+      starting_y = rand(300) - 150
+      starting_dx = rand(15) + 2
+      starting_dy = rand(20) - 10
       asteroid = @entity_manager.create_named_entity('asteroid')
       @entity_manager.add_entity_component asteroid, SpatialState.new(starting_x, starting_y, starting_dx, starting_dy)
       @entity_manager.add_entity_component asteroid, Renderable.new(RELATIVE_ROOT + "res/asteroid.png", 1.0, 0)
