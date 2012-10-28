@@ -29,11 +29,11 @@ class LandingSystem < System
         ur_y = ul_y
 
         if (bl_y>=ul_y-FUDGE && bl_y <= ul_y+FUDGE) && ( bc_x>=ul_x && bc_x <= ur_x)
-          puts "OK!"
+          return true
         end
-
       end
 
+      return false
     end
   end
 end

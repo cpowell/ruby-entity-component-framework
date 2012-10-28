@@ -28,10 +28,13 @@ class CollisionSystem < System
         next if entity==other
 
         if bounding_areas[entity].intersects bounding_areas[other]
-          puts "BANG: #{entity} and #{other}"
+          #puts "BANG: #{entity} and #{other}"
+          return true
         end
       end
     end
+
+    return false
   end
 
   def update_bounding_circles(entities)

@@ -34,11 +34,11 @@ class Game < BasicGame
 
     @bg = Image.new(RELATIVE_ROOT + 'res/bg.png')
     @entity_manager = EntityManager.new(self)
-    #MetaEntity.default_entity_manager=@entity_manager
+    @game_over=false
+    @landed=false
 
-      # Using direct entities:
     p1_lander = @entity_manager.create_named_entity('p1_lander')
-    @entity_manager.add_entity_component p1_lander, SpatialState.new(50, 50, 0, 0)
+    @entity_manager.add_entity_component p1_lander, SpatialState.new(50, 250, 0, 0)
     @entity_manager.add_entity_component p1_lander, Engine.new(0.01)
     @entity_manager.add_entity_component p1_lander, Fuel.new(250)
     @entity_manager.add_entity_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
@@ -47,28 +47,15 @@ class Game < BasicGame
     @entity_manager.add_entity_component p1_lander, Landable.new
     @entity_manager.add_entity_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
 
-    # Using "meta" entities:
-    # p1_lander = MetaEntity.new('p1_lander')
-    # p1_lander.add_component SpatialState.new(50, 50, 0, 0)
-    # p1_lander.add_component Engine.new(0.01)
-    # p1_lander.add_component Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
-    # p1_lander.add_component GravitySensitive.new
-    # p1_lander.add_component PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
-
-    # p2_lander = @entity_manager.create_named_entity('p2_lander')
-    # @entity_manager.add_entity_component p2_lander, SpatialState.new(250, 50, 0, 0)
-    # @entity_manager.add_entity_component p2_lander, Engine.new(0.02)
-    # @entity_manager.add_entity_component p2_lander, Fuel.new(250)
-    # @entity_manager.add_entity_component p2_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
-    # @entity_manager.add_entity_component p2_lander, GravitySensitive.new
-    # @entity_manager.add_entity_component p2_lander, PolygonCollidable.new
-    # @entity_manager.add_entity_component p2_lander, PlayerInput.new([Input::KEY_J,Input::KEY_K,Input::KEY_L])
-
     platform = @entity_manager.create_named_entity('platform')
     @entity_manager.add_entity_component platform, SpatialState.new(350, container.height - 125, 0, 0)
     @entity_manager.add_entity_component platform, Renderable.new(RELATIVE_ROOT + "res/shelf.png", 1.0, 0)
     @entity_manager.add_entity_component platform, Pad.new
-    #@entity_manager.add_entity_component platform, PolygonCollidable.new
+
+    ground = @entity_manager.create_named_entity('ground')
+    @entity_manager.add_entity_component ground, SpatialState.new(0, container.height - 118, 0, 0)
+    @entity_manager.add_entity_component ground, Renderable.new(RELATIVE_ROOT + "res/ground.png", 1.0, 0)
+    @entity_manager.add_entity_component ground, PolygonCollidable.new
 
     @entity_manager.dump_to_screen
 
@@ -97,8 +84,8 @@ class Game < BasicGame
     @engine.process_one_game_tick(container, delta, @entity_manager)
     @physics.process_one_game_tick(container, delta, @entity_manager)
     @input.process_one_game_tick(container, delta, @entity_manager)
-    @landing.process_one_game_tick(container, delta, @entity_manager)
-    @collision.process_one_game_tick(container, delta, @entity_manager)
+    @landed = @landing.process_one_game_tick(container, delta, @entity_manager)
+    @game_over = @collision.process_one_game_tick(container, delta, @entity_manager)
   end
 
   # After that the render method allows us to draw the world we designed accordingly 
@@ -113,27 +100,16 @@ class Game < BasicGame
     graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
 
     @renderer.process_one_game_tick(@entity_manager, container, graphics)
+
+    if @landed
+      container.graphics.draw_string("Hooray you made it!", 50, 50)
+      container.pause
+    elsif @game_over
+      container.graphics.draw_string("BANG you're dead", 50, 50)
+      container.pause
+    end
+
   end
 
-  # # id is the name of the method called, the * syntax collects
-  # # all the arguments in an array named 'arguments'
-  # def broadcast_systems_message(method, *arguments )
-  #   #puts "Method #{method} was called, but not found. It has these arguments: #{arguments.join(", ")}"
-  #   @systems.each do |sys|
-  #     if sys.respond_to?(method)
-  #       sys.send method, *arguments
-  #     end
-  #   end
-  # end  
-
-  # # Stops at the first system who replies to the interrogatory
-  # def broadcast_systems_interrogatory(method, *arguments)
-  #   @systems.each do |sys|
-  #     if sys.respond_to?(method)
-  #       reply=sys.send method, *arguments
-  #       return reply
-  #     end
-  #   end
-  # end
 end
 
