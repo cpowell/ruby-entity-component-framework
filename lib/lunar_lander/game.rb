@@ -9,6 +9,8 @@ require 'gravity_sensitive'
 require 'player_input'
 require 'fuel'
 require 'polygon_collidable'
+require 'landable'
+require 'pad'
 
 # Necessary systems
 require 'rendering_system'
@@ -16,6 +18,7 @@ require 'physics'
 require 'input_system'
 require 'spatial_system'
 require 'collision_system'
+require 'landing_system'
 
 class Game < BasicGame
   attr_reader :entity_manager
@@ -33,7 +36,7 @@ class Game < BasicGame
     @entity_manager = EntityManager.new(self)
     #MetaEntity.default_entity_manager=@entity_manager
 
-    # Using direct entities:
+      # Using direct entities:
     p1_lander = @entity_manager.create_named_entity('p1_lander')
     @entity_manager.add_entity_component p1_lander, SpatialState.new(50, 50, 0, 0)
     @entity_manager.add_entity_component p1_lander, Engine.new(0.01)
@@ -41,6 +44,7 @@ class Game < BasicGame
     @entity_manager.add_entity_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
     @entity_manager.add_entity_component p1_lander, GravitySensitive.new
     @entity_manager.add_entity_component p1_lander, PolygonCollidable.new
+    @entity_manager.add_entity_component p1_lander, Landable.new
     @entity_manager.add_entity_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
 
     # Using "meta" entities:
@@ -51,19 +55,20 @@ class Game < BasicGame
     # p1_lander.add_component GravitySensitive.new
     # p1_lander.add_component PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
 
-    p2_lander = @entity_manager.create_named_entity('p2_lander')
-    @entity_manager.add_entity_component p2_lander, SpatialState.new(250, 50, 0, 0)
-    @entity_manager.add_entity_component p2_lander, Engine.new(0.02)
-    @entity_manager.add_entity_component p2_lander, Fuel.new(250)
-    @entity_manager.add_entity_component p2_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
-    @entity_manager.add_entity_component p2_lander, GravitySensitive.new
-    @entity_manager.add_entity_component p2_lander, PolygonCollidable.new
-    @entity_manager.add_entity_component p2_lander, PlayerInput.new([Input::KEY_J,Input::KEY_K,Input::KEY_L])
+    # p2_lander = @entity_manager.create_named_entity('p2_lander')
+    # @entity_manager.add_entity_component p2_lander, SpatialState.new(250, 50, 0, 0)
+    # @entity_manager.add_entity_component p2_lander, Engine.new(0.02)
+    # @entity_manager.add_entity_component p2_lander, Fuel.new(250)
+    # @entity_manager.add_entity_component p2_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
+    # @entity_manager.add_entity_component p2_lander, GravitySensitive.new
+    # @entity_manager.add_entity_component p2_lander, PolygonCollidable.new
+    # @entity_manager.add_entity_component p2_lander, PlayerInput.new([Input::KEY_J,Input::KEY_K,Input::KEY_L])
 
     platform = @entity_manager.create_named_entity('platform')
-    @entity_manager.add_entity_component platform, SpatialState.new(350, container.height - 25, 0, 0)
+    @entity_manager.add_entity_component platform, SpatialState.new(350, container.height - 125, 0, 0)
     @entity_manager.add_entity_component platform, Renderable.new(RELATIVE_ROOT + "res/shelf.png", 1.0, 0)
-    @entity_manager.add_entity_component platform, PolygonCollidable.new
+    @entity_manager.add_entity_component platform, Pad.new
+    #@entity_manager.add_entity_component platform, PolygonCollidable.new
 
     @entity_manager.dump_to_screen
 
@@ -73,6 +78,7 @@ class Game < BasicGame
     @renderer  = RenderingSystem.new(self)
     @engine    = EngineSystem.new(self)
     @collision = CollisionSystem.new(self)
+    @landing   = LandingSystem.new(self)
   end
 
   # The update method is called during the game to update the logic in our world, 
@@ -91,6 +97,7 @@ class Game < BasicGame
     @engine.process_one_game_tick(container, delta, @entity_manager)
     @physics.process_one_game_tick(container, delta, @entity_manager)
     @input.process_one_game_tick(container, delta, @entity_manager)
+    @landing.process_one_game_tick(container, delta, @entity_manager)
     @collision.process_one_game_tick(container, delta, @entity_manager)
   end
 

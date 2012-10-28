@@ -18,11 +18,11 @@ class RenderingSystem < System
       graphics.draw_string("Fuel remaining #{fuel_component.remaining}", 8, container.height - 30 * (index+2))
     end
 
-    entities = entity_mgr.get_all_entities_with_component_of_type(PolygonCollidable)
-    entities.each_with_index do |e, index|
-      polygon_component = entity_mgr.get_entity_component_of_type(e, PolygonCollidable)
-      graphics.draw polygon_component.bounding_polygon if polygon_component.bounding_polygon
-    end
+    # entities = entity_mgr.get_all_entities_with_component_of_type(PolygonCollidable)
+    # entities.each_with_index do |e, index|
+    #   polygon_component = entity_mgr.get_entity_component_of_type(e, PolygonCollidable)
+    #   graphics.draw polygon_component.bounding_polygon if polygon_component.bounding_polygon
+    # end
   end
 end
 
