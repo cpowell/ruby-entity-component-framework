@@ -6,6 +6,7 @@ require 'meta_entity'
 # Necesssary components
 require 'spatial_state'
 require 'gravity_sensitive'
+require 'motion'
 require 'player_input'
 require 'fuel'
 require 'polygon_collidable'
@@ -43,6 +44,7 @@ class Game < BasicGame
     @entity_manager.add_entity_component p1_lander, Fuel.new(250)
     @entity_manager.add_entity_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/lander.png", 1.0, 0)
     @entity_manager.add_entity_component p1_lander, GravitySensitive.new
+    @entity_manager.add_entity_component p1_lander, Motion.new
     @entity_manager.add_entity_component p1_lander, PolygonCollidable.new
     @entity_manager.add_entity_component p1_lander, Landable.new
     @entity_manager.add_entity_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
