@@ -1,5 +1,6 @@
 class LandingSystem < System
-  FUDGE=2
+  PIXEL_FUDGE=2
+  MAX_SPEED=5
 
   def process_one_game_tick(container, delta, entity_mgr)
     landable_entities = entity_mgr.get_all_entities_with_component_of_type(Landable)
@@ -28,7 +29,9 @@ class LandingSystem < System
         ur_x = ul_x+pad_rend_component.width
         ur_y = ul_y
 
-        if (bl_y>=ul_y-FUDGE && bl_y <= ul_y+FUDGE) && ( bc_x>=ul_x && bc_x <= ur_x)
+        if (bl_y>=ul_y-PIXEL_FUDGE && bl_y <= ul_y+PIXEL_FUDGE) && 
+            ( bc_x>=ul_x && bc_x <= ur_x) &&
+            ( location_component.dy <= MAX_SPEED)
           return true
         end
       end
