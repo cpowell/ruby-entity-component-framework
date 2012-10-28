@@ -28,8 +28,7 @@ class CollisionSystem < System
         next if entity==other
 
         if bounding_areas[entity].intersects bounding_areas[other]
-          #puts "BANG: #{entity} and #{other}"
-          return true
+          return true if entity_mgr.get_entity_name(entity)=='p1_lander' || entity_mgr.get_entity_name(other)=='p1_lander'
         end
       end
     end
