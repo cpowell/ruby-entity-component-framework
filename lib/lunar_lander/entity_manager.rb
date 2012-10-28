@@ -8,57 +8,58 @@ require 'SecureRandom'
 
 class EntityManager
   attr_reader :game
-  attr_reader :entities # FIXME remove and replace with @ids_to_names.keys
-
-  #TODO a method to get all entities matching a basket of components
 
   def initialize(game)
-    @game         = game
-    @entities     = []
-    @ids_to_names = Hash.new
-    @names_to_ids = Hash.new
+    @game        = game
+    @ids_to_tags = Hash.new
+    @tags_to_ids = Hash.new
 
     # "Stores" hash: key=component class, value=a component store
     # Each "component store" hash: key=entity UUID, value=an array of components
     @component_stores = Hash.new
   end
 
+  def all_entities
+    return @ids_to_tags.keys
+  end
+
   def create_basic_entity
     uuid = SecureRandom.uuid
-    @entities << uuid
+    @ids_to_tags[uuid]='-' # means "untagged" so it doesn't go into tags_to_ids
     return uuid
   end
 
-  def create_named_entity(human_readable_name)
-    raise ArgumentError, "Must specify name" if human_readable_name.nil?
+  def create_tagged_entity(human_readable_tag)
+    raise ArgumentError, "Must specify tag" if human_readable_tag.nil?
+    raise ArgumentError, "Tag '-' is reserved and cannot be used" if human_readable_tag=='-'
 
     uuid=create_basic_entity
-    @ids_to_names[uuid]=human_readable_name
-    if @names_to_ids.has_key? human_readable_name
-      @names_to_ids[human_readable_name]<<uuid
+    @ids_to_tags[uuid]=human_readable_tag
+    if @tags_to_ids.has_key? human_readable_tag
+      @tags_to_ids[human_readable_tag]<<uuid
     else
-      @names_to_ids[human_readable_name]=[uuid]
+      @tags_to_ids[human_readable_tag]=[uuid]
     end
 
     return uuid
   end
 
-  # def set_entity_name(entity_uuid, human_readable_name)
-  #   raise ArgumentError, "UUID and name must be specified" if entity_uuid.nil? || human_readable_name.nil?
+  # def set_entity_tag(entity_uuid, human_readable_tag)
+  #   raise ArgumentError, "UUID and tag must be specified" if entity_uuid.nil? || human_readable_tag.nil?
 
-  #   @ids_to_names[entity_uuid]=human_readable_name
-  #   @names_to_ids[]
-  #   @names_to_ids[human_readable_name]<<entity_uuid
+  #   @ids_to_tags[entity_uuid]=human_readable_tag
+  #   @tags_to_ids[]
+  #   @tags_to_ids[human_readable_tag]<<entity_uuid
   # end
 
-  def get_entity_name(entity_uuid)
+  def get_entity_tag(entity_uuid)
     raise ArgumentError, "UUID must be specified" if entity_uuid.nil?
 
-    @ids_to_names[entity_uuid]
+    @ids_to_tags[entity_uuid]
   end
 
-  def get_all_entities_with_name(name)
-    @names_to_ids[name]  
+  def get_all_entities_with_tag(tag)
+    @tags_to_ids[tag]  
   end
 
   def kill_entity(entity_uuid)
@@ -67,14 +68,13 @@ class EntityManager
     @component_stores.each_value do |store|
       store.delete(entity_uuid)
     end
-    @names_to_ids.each_key do |name|
-      if @names_to_ids[name].include? entity_uuid
-        @names_to_ids[name].delete entity_uuid
+    @tags_to_ids.each_key do |tag|
+      if @tags_to_ids[tag].include? entity_uuid
+        @tags_to_ids[tag].delete entity_uuid
       end
     end
-    @ids_to_names.delete entity_uuid
 
-    if @entities.delete(entity_uuid)==nil
+    if @ids_to_tags.delete(entity_uuid)==nil
       return false
     else
       return true
@@ -115,10 +115,8 @@ class EntityManager
 
     store = @component_stores[component_class]
     if store.nil?
-      # NOBODY has this component type
-      return false
+      return false # NOBODY has this component type
     else
-      #puts "Store: #{store[entity_uuid]}"
       return store.has_key?(entity_uuid) && store[entity_uuid].size > 0
     end
   end
@@ -183,7 +181,7 @@ class EntityManager
   def get_all_entities_with_components_of_type(component_classes)
     raise ArgumentError, "Component classes must be specified" if component_classes.nil?
 
-    entities = @entities
+    entities = all_entities
     component_classes.each do |klass|
       entities = entities & get_all_entities_with_component_of_type(klass)
     end
@@ -191,8 +189,8 @@ class EntityManager
   end
 
   def dump_to_screen
-    @entities.each do |e|
-      puts "#{e} (#{@ids_to_names[e]})"
+    all_entities.each do |e|
+      puts "#{e} (#{@ids_to_tags[e]})"
       comps = get_all_components_on_entity(e)
       comps.each do |c|
         puts "  #{c.to_s}"
@@ -201,11 +199,6 @@ class EntityManager
   end
 
   def to_s
-    "EntityManager {#{id}}"
+    "EntityManager {#{id}: #{all_entities.size} managed entities}"
   end
-
-  #===============================================
-  private
-
-
 end

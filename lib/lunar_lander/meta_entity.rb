@@ -11,8 +11,8 @@
 # - An object-instance per entity
 # - A reference to the EntityManager where the Entity lives (if you only have a
 #   single EntityManager in your app, then this is just wasting memory)
-# - A (possibly null) internal "name" that is easier for humans to read than the
-#   UUID when debugging
+# - A (possibly null, not unique) "tag" that helps identify the entity and 
+#   is easier for humans to read than the UUID when debugging
 #
 # Usage suggestions: To avoid performance degradation, it's expected that you'll
 # only use MetaEntity objects sparingly, and temporarily.
@@ -69,7 +69,7 @@ class MetaEntity
     when 0
       @uuid = @entity_manager.create_basic_entity
     when 1
-      @uuid = @entity_manager.create_named_entity(varargs[0])
+      @uuid = @entity_manager.create_tagged_entity(varargs[0])
     end
   end
 
@@ -82,7 +82,7 @@ class MetaEntity
   # # 
   # # @param n the internal name that will be attached to this entity, and reported in debugging info
   # # @param components
-  # def self.init_with_name_and_components(name, components)
+  # def self.init_with_tag_and_components(name, components)
   #   me = MetaEntity.new(name)
   #   me.internal_name=name
   #   me.add_all_components(components)
@@ -106,7 +106,7 @@ class MetaEntity
   # def initialize(entity_manager, name, components)
   #   @entity_manager = entity_manager
   #   @internal_name  = name
-  #   @uuid           = @entity_manager.create_named_entity(name)
+  #   @uuid           = @entity_manager.create_tagged_entity(name)
   # end
 
   def add_component(component)

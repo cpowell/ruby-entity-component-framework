@@ -39,7 +39,7 @@ class Game < BasicGame
     @game_over=false
     @landed=false
 
-    p1_lander = @entity_manager.create_named_entity('p1_lander')
+    p1_lander = @entity_manager.create_tagged_entity('p1_lander')
     @entity_manager.add_entity_component p1_lander, SpatialState.new(50, 250, 0, 0)
     @entity_manager.add_entity_component p1_lander, Engine.new(0.01)
     @entity_manager.add_entity_component p1_lander, Fuel.new(250)
@@ -50,12 +50,12 @@ class Game < BasicGame
     @entity_manager.add_entity_component p1_lander, Landable.new
     @entity_manager.add_entity_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
 
-    platform = @entity_manager.create_named_entity('platform')
+    platform = @entity_manager.create_tagged_entity('platform')
     @entity_manager.add_entity_component platform, SpatialState.new(350, container.height - 125, 0, 0)
     @entity_manager.add_entity_component platform, Renderable.new(RELATIVE_ROOT + "res/shelf.png", 1.0, 0)
     @entity_manager.add_entity_component platform, Pad.new
 
-    ground = @entity_manager.create_named_entity('ground')
+    ground = @entity_manager.create_tagged_entity('ground')
     @entity_manager.add_entity_component ground, SpatialState.new(0, container.height - 118, 0, 0)
     @entity_manager.add_entity_component ground, Renderable.new(RELATIVE_ROOT + "res/ground.png", 1.0, 0)
     @entity_manager.add_entity_component ground, PolygonCollidable.new

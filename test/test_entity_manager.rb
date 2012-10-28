@@ -12,53 +12,62 @@ class TestEntityManager < MiniTest::Unit::TestCase
   end
 
   def test_initialization_is_sane
-    assert_equal([], @em.entities)
+    assert_equal([], @em.all_entities)
   end
   
   def test_create_entity
     id=@em.create_basic_entity
     refute_nil(id)
-    refute_equal([], @em.entities)
-    assert_equal(1, @em.entities.size)
+    refute_equal([], @em.all_entities)
+    assert_equal(1, @em.all_entities.size)
   end
 
-  def test_create_named_entity
-    id=@em.create_named_entity('blah')
+  def test_create_tagged_entity
+    id=@em.create_tagged_entity('blah')
     refute_nil(id)
-    refute_equal([], @em.entities)
-    assert_equal(1, @em.entities.size)
-    assert_equal('blah', @em.get_entity_name(id))
+    refute_equal([], @em.all_entities)
+    assert_equal(1, @em.all_entities.size)
+    assert_equal('blah', @em.get_entity_tag(id))
   end
 
-  def test_create_named_entity_should_barf_on_missing_name
+  def test_create_tagged_entity_should_disallow_dash
     begin
-      id=@em.create_named_entity
+      id=@em.create_tagged_entity('-')
       flunk "Should not have gotten here"
     rescue ArgumentError => e
       # nop
     end
   end
 
-  # def test_set_entity_name_should_barf_on_missing_args
+  def test_create_tagged_entity_should_barf_on_missing_tag
+    begin
+      id=@em.create_tagged_entity
+      flunk "Should not have gotten here"
+    rescue ArgumentError => e
+      # nop
+    end
+  end
+
+  # def test_set_entity_tag_should_barf_on_missing_args
   #   begin
-  #     id=@em.set_entity_name(nil, 'name')
+  #     id=@em.set_entity_tag(nil, 'tag')
   #     flunk "Should not have gotten here"
   #   rescue ArgumentError => e
   #     # nop
   #   end
   # end
 
-  # def test_change_name_of_entity
-  #   id=@em.create_named_entity('blah')
-  #   assert_equal('blah', @em.get_entity_name(id))
-  #   @em.set_entity_name(id, 'foobar')  
-  #   assert_equal('foobar', @em.get_entity_name(id))
+  # def test_change_tag_of_entity
+  #   id=@em.create_tagged_entity('blah')
+  #   assert_equal('blah', @em.get_entity_tag(id))
+  #   @em.set_entity_tag(id, 'foobar')  
+  #   assert_equal('foobar', @em.get_entity_tag(id))
   # end
 
-  # def test_get_entity_name_should_barf_on_missing_args
-  #   id=@em.create_named_entity('blah')
+  # def test_get_entity_tag_should_barf_on_missing_args
+  #   id=@em.create_tagged_entity('blah')
   #   begin
-  #     @em.set_entity_name(id, nil)
+  #     @em.set_entity_tag(id, nil)
   #     flunk "Should not have gotten here"
   #   rescue ArgumentError => e
   #     # nop
@@ -66,17 +75,17 @@ class TestEntityManager < MiniTest::Unit::TestCase
   # end
 
   def test_list_of_known_entities
-    id1=@em.create_named_entity('blah')
-    id2=@em.create_named_entity('foobar')
-    assert_equal([id1,id2], @em.entities)
+    id1=@em.create_tagged_entity('blah')
+    id2=@em.create_tagged_entity('foobar')
+    assert_equal([id1,id2], @em.all_entities)
   end
 
   def test_get_all_entities_with_tag
-    id1=@em.create_named_entity('asteroid')
-    id2=@em.create_named_entity('asteroid')
-    id3=@em.create_named_entity('ship')
-    id4=@em.create_named_entity('base')
-    assert_equal([id1, id2], @em.get_all_entities_with_name('asteroid'))
+    id1=@em.create_tagged_entity('asteroid')
+    id2=@em.create_tagged_entity('asteroid')
+    id3=@em.create_tagged_entity('ship')
+    id4=@em.create_tagged_entity('base')
+    assert_equal([id1, id2], @em.get_all_entities_with_tag('asteroid'))
   end
 
   def test_kill_entity_should_barf_on_missing_args
@@ -89,28 +98,27 @@ class TestEntityManager < MiniTest::Unit::TestCase
   end
 
   def test_kill_entity_should_return_false_on_no_such_entity
-    result=@em.kill_entity('no_such_id')
+    result=@em.kill_entity('uuid that does not exist')
     assert_equal(false, result)
   end
 
   def test_kill_entity_should_work
-    id1=@em.create_named_entity('asteroid')
-    id2=@em.create_named_entity('asteroid')
-    id3=@em.create_named_entity('ship')
-    assert_equal(3, @em.entities.size)
-    assert_equal([id1, id2], @em.get_all_entities_with_name('asteroid'))
-    assert_equal('asteroid', @em.get_entity_name(id1))
+    id1=@em.create_tagged_entity('asteroid')
+    id2=@em.create_tagged_entity('asteroid')
+    id3=@em.create_tagged_entity('ship')
+    assert_equal(3, @em.all_entities.size)
+    assert_equal([id1, id2], @em.get_all_entities_with_tag('asteroid'))
+    assert_equal('asteroid', @em.get_entity_tag(id1))
 
     result=@em.kill_entity(id1)
-    assert_equal(2, @em.entities.size)
+    assert_equal(2, @em.all_entities.size)
     assert_equal(true, result)
-    assert_equal([id2], @em.get_all_entities_with_name('asteroid'))
-    assert_equal(nil, @em.get_entity_name(id1))
-
+    assert_equal([id2], @em.get_all_entities_with_tag('asteroid'))
+    assert_equal(nil, @em.get_entity_tag(id1))
   end
 
   def test_add_entity_component_should_barf_on_bad_args
-    id=@em.create_named_entity('blah')
+    id=@em.create_tagged_entity('blah')
     begin
       @em.add_entity_component(id, nil)
       flunk "Should not have gotten here"
@@ -127,7 +135,7 @@ class TestEntityManager < MiniTest::Unit::TestCase
   end
 
   def test_add_entity_component_should_disallow_component_duplication
-    id=@em.create_named_entity('blah')
+    id=@em.create_tagged_entity('blah')
     @em.add_entity_component(id, @comp)
     assert_equal(1, @em.get_all_components_on_entity(id).size)
 
@@ -136,7 +144,7 @@ class TestEntityManager < MiniTest::Unit::TestCase
   end
 
   def test_add_entity_component_and_test_for_its_existence
-    id=@em.create_named_entity('blah')
+    id=@em.create_tagged_entity('blah')
     @em.add_entity_component(id, @comp)
 
     assert_equal(true, @em.entity_has_component(id, @comp))
@@ -147,7 +155,7 @@ class TestEntityManager < MiniTest::Unit::TestCase
   end
 
   def test_add_and_remove_entity_component
-    id=@em.create_named_entity('blah')
+    id=@em.create_tagged_entity('blah')
     @em.add_entity_component(id, @comp)
 
     assert(@em.entity_has_component(id,@comp))
@@ -163,7 +171,7 @@ class TestEntityManager < MiniTest::Unit::TestCase
   end
 
   def test_get_component_of_type
-    id=@em.create_named_entity('blah')
+    id=@em.create_tagged_entity('blah')
     @em.add_entity_component(id, @comp)
 
     assert(@em.entity_has_component(id,@comp))
@@ -183,9 +191,9 @@ class TestEntityManager < MiniTest::Unit::TestCase
   end
 
   def test_get_all_entities_with_components_of_type
-    id1=@em.create_named_entity('foo')
-    id2=@em.create_named_entity('bar')
-    id3=@em.create_named_entity('baz')
+    id1=@em.create_tagged_entity('foo')
+    id2=@em.create_tagged_entity('bar')
+    id3=@em.create_tagged_entity('baz')
 
     @em.add_entity_component(id1, @comp)
     @em.add_entity_component(id3, @comp)
