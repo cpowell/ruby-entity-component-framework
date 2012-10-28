@@ -93,8 +93,11 @@ class Game < BasicGame
       if !@game_over && !@landed
         File.open("savedgame.yaml", "w") do |file|
           file.puts YAML::dump(@entity_manager)
-          #file.print Marshal::dump(@entity_manager)
         end
+        # It appears that this currently is broken in Jruby, see http://jira.codehaus.org/browse/JRUBY-6886
+        # File.open("savedgame.dat", "w") do |file|
+        #   file.print Marshal::dump(@entity_manager)
+        # end
       end
       container.exit 
     end
