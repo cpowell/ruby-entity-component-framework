@@ -59,13 +59,6 @@ class Game < BasicGame
     @entity_manager.add_entity_component ground, Renderable.new(RELATIVE_ROOT + "res/ground.png", 1.0, 0)
     @entity_manager.add_entity_component ground, PolygonCollidable.new
 
-    asteroid = @entity_manager.create_named_entity('asteroid')
-    @entity_manager.add_entity_component asteroid, SpatialState.new(-100, 50, 10, 4)
-    @entity_manager.add_entity_component asteroid, Renderable.new(RELATIVE_ROOT + "res/asteroid.png", 1.0, 0)
-    @entity_manager.add_entity_component asteroid, PolygonCollidable.new
-    @entity_manager.add_entity_component asteroid, Motion.new
-
-
     @entity_manager.dump_to_screen
 
     # Initialize any runnable systems
@@ -88,6 +81,18 @@ class Game < BasicGame
   def update(container, delta)
     input = container.get_input
     container.exit if input.is_key_down(Input::KEY_ESCAPE)
+
+    if rand(50)==0
+      starting_x = -100
+      starting_y = rand(200) - 100
+      starting_dx = rand(10) + 5
+      starting_dy = rand(10) - 5
+      asteroid = @entity_manager.create_named_entity('asteroid')
+      @entity_manager.add_entity_component asteroid, SpatialState.new(starting_x, starting_y, starting_dx, starting_dy)
+      @entity_manager.add_entity_component asteroid, Renderable.new(RELATIVE_ROOT + "res/asteroid.png", 1.0, 0)
+      @entity_manager.add_entity_component asteroid, PolygonCollidable.new
+      @entity_manager.add_entity_component asteroid, Motion.new
+    end
 
     # Nice because I can dictate the order things are processed
     @engine.process_one_game_tick(container, delta, @entity_manager)
