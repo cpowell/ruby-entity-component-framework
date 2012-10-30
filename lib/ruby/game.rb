@@ -1,4 +1,3 @@
-require 'SecureRandom'
 require "yaml"
 
 require 'entity_manager'

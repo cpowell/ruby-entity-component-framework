@@ -2,7 +2,7 @@ class Component
   attr_reader :id
 
   def initialize
-    @id = SecureRandom.uuid
+    @id = java.util.UUID.randomUUID().to_s  
   end
 
   def to_s
