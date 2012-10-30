@@ -42,7 +42,7 @@ class Game < BasicGame
       @entity_manager = EntityManager.new(self)
   
       p1_lander = @entity_manager.create_tagged_entity('p1_lander')
-      @entity_manager.add_entity_component p1_lander, SpatialState.new(50, 250, 0, 0)
+      @entity_manager.add_entity_component p1_lander, SpatialState.new(container.width-50, 50, 0, 0)
       @entity_manager.add_entity_component p1_lander, Engine.new(0.01)
       @entity_manager.add_entity_component p1_lander, Fuel.new(250)
       @entity_manager.add_entity_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/images/lander.png", 1.0, 0)
@@ -53,7 +53,7 @@ class Game < BasicGame
       @entity_manager.add_entity_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
 
       platform = @entity_manager.create_tagged_entity('platform')
-      @entity_manager.add_entity_component platform, SpatialState.new(350, container.height - 125, 0, 0)
+      @entity_manager.add_entity_component platform, SpatialState.new(50, container.height - 124, 0, 0)
       @entity_manager.add_entity_component platform, Renderable.new(RELATIVE_ROOT + "res/images/shelf.png", 1.0, 0)
       @entity_manager.add_entity_component platform, Pad.new
 

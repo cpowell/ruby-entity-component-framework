@@ -4,8 +4,6 @@ require 'components/engine'
 require 'systems/engine_system'
 
 class InputSystem < System
-  THRUST=0.01
-
   # Presumably these would be DRYed into a config file...
   P1_KEY_THRUST = Input::KEY_S
   P1_KEY_ROTL   = Input::KEY_A

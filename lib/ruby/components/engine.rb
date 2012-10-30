@@ -1,7 +1,6 @@
 require 'components/component'
 
 class Engine < Component
-  #attr_accessor :fuel
   attr_accessor :thrust
   attr_accessor :on
 
