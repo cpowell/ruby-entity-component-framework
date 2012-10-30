@@ -1,0 +1,25 @@
+LWJGL expects to find its platform-specific native libraries here. Recommend you download
+LWJGL from http://www.lwjgl.org/download.php and unpack the distro here in a FLAT, SINGLE
+HIERARCHY. Example:
+
+% ll native 
+total 8936
+-rw-r--r--  1 user  staff   184320 Oct 25 15:50 OpenAL32.dll
+-rw-r--r--  1 user  staff   376320 Oct 25 15:50 OpenAL64.dll
+-rw-r--r--  1 user  staff    61952 Oct 25 15:50 jinput-dx8.dll
+-rw-r--r--  1 user  staff    65024 Oct 25 15:50 jinput-dx8_64.dll
+-rw-r--r--  1 user  staff    59392 Oct 25 15:50 jinput-raw.dll
+-rw-r--r--  1 user  staff    62464 Oct 25 15:50 jinput-raw_64.dll
+-rw-r--r--  1 user  staff    13824 Oct 25 15:50 libjinput-linux.so
+-rw-r--r--  1 user  staff    14512 Oct 25 15:50 libjinput-linux64.so
+-rw-r--r--  1 user  staff    64608 Oct 25 15:50 libjinput-osx.jnilib
+-rw-r--r--  1 user  staff  1123272 Oct 25 15:50 liblwjgl.jnilib
+-rw-r--r--  1 user  staff   374744 Oct 25 15:50 liblwjgl.so
+-rw-r--r--  1 user  staff   437176 Oct 25 15:50 liblwjgl64.so
+-rw-r--r--  1 user  staff   353148 Oct 25 15:50 libopenal.so
+-rw-r--r--  1 user  staff   383860 Oct 25 15:50 libopenal64.so
+-rw-r--r--  1 user  staff   290304 Oct 25 15:50 lwjgl.dll
+-rw-r--r--  1 user  staff   301056 Oct 25 15:50 lwjgl64.dll
+-rw-r--r--  1 user  staff   378384 Oct 25 15:50 openal.dylib
+
+See? The Windows, Linux and Mac libs are all side-by-side in the directory.
