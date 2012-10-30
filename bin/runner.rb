@@ -41,6 +41,8 @@ java_import org.newdawn.slick.AppGameContainer
 java_import java.util.logging.Logger
 java_import java.util.logging.Level
 
+puts 'This game was built using The Ruby Entity-Component Framework, Copyright 2012 Christopher Powell'
+
 require 'game'
 
 app = AppGameContainer.new(Game.new('LunarLander'))
