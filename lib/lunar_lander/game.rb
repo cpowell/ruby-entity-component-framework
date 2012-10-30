@@ -4,23 +4,23 @@ require "yaml"
 require 'entity_manager'
 
 # Necesssary components
-require 'spatial_state'
-require 'gravity_sensitive'
-require 'motion'
-require 'player_input'
-require 'fuel'
-require 'polygon_collidable'
-require 'landable'
-require 'pad'
+require 'components/spatial_state'
+require 'components/gravity_sensitive'
+require 'components/motion'
+require 'components/player_input'
+require 'components/fuel'
+require 'components/polygon_collidable'
+require 'components/landable'
+require 'components/pad'
 
 # Necessary systems
-require 'rendering_system'
-require 'physics'
-require 'input_system'
-require 'spatial_system'
-require 'collision_system'
-require 'landing_system'
-require 'asteroid_system'
+require 'systems/rendering_system'
+require 'systems/physics'
+require 'systems/input_system'
+require 'systems/spatial_system'
+require 'systems/collision_system'
+require 'systems/landing_system'
+require 'systems/asteroid_system'
 
 class Game < BasicGame
   attr_reader :entity_manager

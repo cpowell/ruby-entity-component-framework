@@ -1,4 +1,4 @@
-require 'component'
+require 'components/component'
 
 class Fuel < Component
   attr_accessor :remaining

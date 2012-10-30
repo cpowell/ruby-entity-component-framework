@@ -1,4 +1,4 @@
-require 'component'
+require 'components/component'
 require 'forwardable'
 
 class Renderable < Component

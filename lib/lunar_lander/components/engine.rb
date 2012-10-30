@@ -1,4 +1,4 @@
-require 'component'
+require 'components/component'
 
 class Engine < Component
   #attr_accessor :fuel

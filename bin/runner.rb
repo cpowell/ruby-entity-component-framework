@@ -4,8 +4,6 @@
 
 $:.push File.expand_path('../../lib/', __FILE__)
 $:.push File.expand_path('../../lib/lunar_lander/', __FILE__)
-$:.push File.expand_path('../../lib/lunar_lander/components', __FILE__)
-$:.push File.expand_path('../../lib/lunar_lander/systems', __FILE__)
 
 # Need a different root when inside the jar, luckily $0 is "<script>" in that case
 RELATIVE_ROOT = $0['<'] ? 'mygame/' : ''

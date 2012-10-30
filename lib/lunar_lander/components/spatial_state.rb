@@ -1,4 +1,4 @@
-require 'component'
+require 'components/component'
 
 class SpatialState < Component
   attr_accessor :x, :y, :dx, :dy

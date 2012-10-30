@@ -1,7 +1,7 @@
-require 'renderable'
-require 'engine'
+require 'components/renderable'
+require 'components/engine'
 
-require 'engine_system'
+require 'systems/engine_system'
 
 class InputSystem < System
   THRUST=0.01

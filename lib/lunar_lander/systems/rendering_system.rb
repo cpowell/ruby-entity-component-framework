@@ -1,6 +1,6 @@
 require 'systems/system'
-require 'renderable'
-require 'spatial_state'
+require 'components/renderable'
+require 'components/spatial_state'
 
 class RenderingSystem < System
   def process_one_game_tick(entity_mgr, container, graphics)
