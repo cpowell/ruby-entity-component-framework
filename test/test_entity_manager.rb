@@ -2,8 +2,8 @@ gem 'minitest'
 require 'minitest/autorun'
 require 'purdytest'
 
-require "lib/lunar_lander/entity_manager"
-require "lib/lunar_lander/components/component"
+require "lib/ruby/entity_manager"
+require "lib/ruby/components/component"
 
 class TestEntityManager < MiniTest::Unit::TestCase
   def setup

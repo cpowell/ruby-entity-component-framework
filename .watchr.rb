@@ -1,5 +1,5 @@
 watch( 'test/test_.*\.rb' )          { |m| run_test_file(m[0]) }
-watch( 'lib/lunar_lander/(.*)\.rb' ) { |m| run_test_file("test/test_#{m[1]}.rb") }
+watch( 'lib/ruby/(.*)\.rb' ) { |m| run_test_file("test/test_#{m[1]}.rb") }
 
 def run(cmd)
   puts cmd
