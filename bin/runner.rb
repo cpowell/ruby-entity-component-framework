@@ -1,6 +1,5 @@
-# ruby -J-Djava.library.path=./native -rubygems bin/runner.rb
-# or
-# rm -f ruby_ec.jar && warble jar && java -Djava.library.path=./native -jar ruby_ec.jar
+# This class exists as a main entry point for the JRuby application,
+# whether run from the .rb files or as a compiled jar.
 
 $:.push File.expand_path('../../lib/', __FILE__)
 $:.push File.expand_path('../../lib/ruby/', __FILE__)
