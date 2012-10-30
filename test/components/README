@@ -1,1 +1,5 @@
 Tests for your components go in this directory.
+
+Components, being logic-less bags of data, should need minimal (if any) testing.
+If you have some sort of specialized setter -- and be careful not to overstep
+by putting logic there -- then perhaps you'll want to write a test for it.
