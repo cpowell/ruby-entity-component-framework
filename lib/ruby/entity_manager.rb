@@ -4,14 +4,12 @@
 # to the box that holds the score. Some entities may be visible, others may be mobile, 
 # but all of them are part of the world of the game (even if invisible).
 
-require 'SecureRandom'
-
 class EntityManager
   attr_accessor :game
   attr_reader :id
 
   def initialize(game)
-    @id          = SecureRandom.uuid
+    @id          = java.util.UUID.randomUUID().to_s
     @game        = game
     @ids_to_tags = Hash.new
     @tags_to_ids = Hash.new
@@ -26,7 +24,7 @@ class EntityManager
   end
 
   def create_basic_entity
-    uuid = SecureRandom.uuid
+    uuid = java.util.UUID.randomUUID().to_s
     @ids_to_tags[uuid]='-' # means "untagged" so it doesn't go into tags_to_ids
     return uuid
   end
