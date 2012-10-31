@@ -38,10 +38,11 @@ java_import org.newdawn.slick.Image
 java_import org.newdawn.slick.Input
 java_import org.newdawn.slick.SlickException
 java_import org.newdawn.slick.AppGameContainer
-java_import java.util.logging.Logger
-java_import java.util.logging.Level
 
-Logger.global.log Level::INFO, 'This game was built using The Ruby Entity-Component Framework, Copyright 2012 Christopher Powell'
+require 'logger'
+@@logger = Logger.new(STDERR)
+@@logger.level = Logger::DEBUG
+@@logger.info 'This game was built using The Ruby Entity-Component Framework, Copyright 2012 Christopher Powell'
 
 require 'game'
 

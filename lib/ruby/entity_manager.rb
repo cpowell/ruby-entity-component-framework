@@ -207,15 +207,17 @@ class EntityManager
     return entities
   end
 
-  def dump_to_screen
-    puts to_s
+  def dump_details
+    output = to_s
     all_entities.each do |e|
-      puts " #{e} (#{@ids_to_tags[e]})"
+      output << "\n #{e} (#{@ids_to_tags[e]})"
       comps = get_all_components_on_entity(e)
       comps.each do |c|
-        puts "   #{c.to_s}"
+        output << "\n   #{c.to_s}"
       end
     end
+
+    output
   end
 
   def marshal_dump
