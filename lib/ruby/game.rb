@@ -13,5 +13,11 @@ class Game < StateBasedGame
   def initStatesList(container)
     addState StateOfGame.new(container, self)
   end  
+
+  def run
+    container = AppGameContainer.new(self)
+    container.set_display_mode(640, 480, false)
+    container.start
+  end
 end
 
