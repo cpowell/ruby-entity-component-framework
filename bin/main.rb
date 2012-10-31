@@ -41,7 +41,8 @@ Log.setVerbose false # If set to false, info and debug messages will not be prin
 
 @@logger = Logger.new(STDERR) # or ("log.txt")
 @@logger.level = Logger::DEBUG
-@@logger.info 'This game was built using The Ruby Entity-Component Framework, Copyright 2012 Christopher Powell'
+@@logger.info 'Uses The Ruby Entity-Component Framework, Copyright 2012 Prylis Inc.'
+@@logger.info 'See https://github.com/cpowell/ruby-entity-component-framework'
 @@logger.info 'Please preserve this notice in your own games. Thanks for playing fair!'
 
 game = Game.new('LunarLander')
