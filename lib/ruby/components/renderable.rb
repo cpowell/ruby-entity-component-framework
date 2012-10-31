@@ -57,11 +57,11 @@ class Renderable < Component
   end
 
   def marshal_dump
-    [@image_fn, @scale, @rotation]
+    [@id, @image_fn, @scale, @rotation]
   end
 
   def marshal_load(array)
-    @image_fn, @scale, @rotation = array
+    @id, @image_fn, @scale, @rotation = array
     @image = Image.new(image_fn)
     @image.setRotation(@rotation)
   end
