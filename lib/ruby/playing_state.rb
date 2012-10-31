@@ -81,7 +81,7 @@ class PlayingState < BasicGameState
     @landing   = LandingSystem.new(self)
     @asteroid  = AsteroidSystem.new(self)
 
-    @bg = Image.new(RELATIVE_ROOT + 'res/images/bg.png')
+    @bg_image = Image.new(RELATIVE_ROOT + 'res/images/bg.png')
     
     @game_over=false
     @landed=false
@@ -126,7 +126,7 @@ class PlayingState < BasicGameState
   #   - +graphics+ -> graphics context that can be used to render. However, normal rendering routines can also be used.
   #
   def render(container, game, graphics)
-    @bg.draw(0, 0)
+    @bg_image.draw(0, 0)
     graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
 
     @renderer.process_one_game_tick(@entity_manager, container, graphics)
