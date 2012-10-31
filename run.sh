@@ -1,5 +1,5 @@
 #!/bin/sh
-ruby -J-Djava.library.path=./native -rubygems bin/runner.rb
+ruby -J-Djava.library.path=./native -rubygems bin/main.rb
 
 # To run the game as a compiled Java program (jar file):
 # $ rake jar
