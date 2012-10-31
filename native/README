@@ -2,7 +2,7 @@ LWJGL expects to find its platform-specific native libraries here. Recommend you
 LWJGL from http://www.lwjgl.org/download.php and unpack the distro here in a FLAT, SINGLE
 HIERARCHY. Example:
 
-% ll native 
+% ls -l native 
 total 8936
 -rw-r--r--  1 user  staff   184320 Oct 25 15:50 OpenAL32.dll
 -rw-r--r--  1 user  staff   376320 Oct 25 15:50 OpenAL64.dll
