@@ -31,11 +31,6 @@ class StateOfGame < BasicGameState
   attr_reader :entity_manager
   attr_reader :id
 
-  # def initStatesList(container)
-  #   # add HelloWorld to current game with id 1
-  #   addState(new HelloWorld(1, container))
-  # end  
-
   def initialize(container, game)
     super()
     @game=game
