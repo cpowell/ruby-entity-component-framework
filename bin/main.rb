@@ -20,7 +20,6 @@ require 'java'
 require 'lwjgl.jar'
 require 'slick.jar'
 
-#java_import org.newdawn.slick.BasicGame
 java_import org.newdawn.slick.state.BasicGameState
 java_import org.newdawn.slick.state.GameState
 java_import org.newdawn.slick.state.StateBasedGame
@@ -31,16 +30,19 @@ java_import org.newdawn.slick.Input
 java_import org.newdawn.slick.SlickException
 java_import org.newdawn.slick.AppGameContainer
 java_import org.newdawn.slick.util.Log # supports info, debug, warn, and error
+
+require 'game'
+require 'logger'
+
+# Think of the following as the equivalent to the Java world's 
+# "public static void main(String[] argv)" method.
  
 Log.setVerbose false # If set to false, info and debug messages will not be printed.
 
-require 'logger'
 @@logger = Logger.new(STDERR) # or ("log.txt")
 @@logger.level = Logger::DEBUG
 @@logger.info 'This game was built using The Ruby Entity-Component Framework, Copyright 2012 Christopher Powell'
 @@logger.info 'Please preserve this notice in your own games. Thanks for playing fair!'
-
-require 'game'
 
 container = AppGameContainer.new(Game.new('LunarLander'))
 container.set_display_mode(640, 480, false)
