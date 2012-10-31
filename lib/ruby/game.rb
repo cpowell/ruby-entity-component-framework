@@ -6,6 +6,7 @@
 # You can redistribute and/or modify this software only in accordance with
 # the terms found in the "LICENSE" file included with the framework.
 
+require 'startup_state'
 require 'playing_state'
 
 class Game < StateBasedGame
@@ -19,6 +20,7 @@ class Game < StateBasedGame
 
   def initStatesList(container)
     @@logger.debug "Game::initStatesList()"
+    addState StartupState.new(container, self)
     addState PlayingState.new(container, self)
     # Add other states here...
   end  

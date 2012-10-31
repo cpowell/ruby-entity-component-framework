@@ -29,6 +29,9 @@ java_import org.newdawn.slick.Image
 java_import org.newdawn.slick.Input
 java_import org.newdawn.slick.SlickException
 java_import org.newdawn.slick.AppGameContainer
+java_import org.newdawn.slick.state.transition.FadeInTransition
+java_import org.newdawn.slick.state.transition.FadeOutTransition
+java_import org.newdawn.slick.Color
 java_import org.newdawn.slick.util.Log # supports info, debug, warn, and error
 
 require 'game'

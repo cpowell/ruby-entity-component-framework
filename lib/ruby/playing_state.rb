@@ -34,14 +34,10 @@ class PlayingState < BasicGameState
   def initialize(container, game)
     super()
     @game = game
-    @id   = 1
+    @id   = 2
   end
 
   def getID
-    @id
-  end
-
-  def get_id
     @id
   end
 
