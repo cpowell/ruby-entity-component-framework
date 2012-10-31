@@ -21,7 +21,7 @@ class StartupState < BasicGameState
   #
   def init(container, game)
     @game = game
-    @container = container
+    @container = container # So I can exit later...
     container.setTargetFrameRate(60)
     container.setAlwaysRender(true)
   end

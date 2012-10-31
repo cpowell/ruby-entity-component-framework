@@ -37,8 +37,8 @@ java_import org.newdawn.slick.util.Log # supports info, debug, warn, and error
 require 'game'
 require 'logger'
 
-# Think of the following as the equivalent to the Java world's 
-# "public static void main(String[] argv)" method.
+# Think of the following as the equivalent to the stuff you'd find in the
+# Java world's "public static void main(String[] argv)" method.
  
 Log.setVerbose false # If set to false, info and debug messages will not be printed.
 

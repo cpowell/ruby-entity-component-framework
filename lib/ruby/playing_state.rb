@@ -41,6 +41,8 @@ class PlayingState < BasicGameState
   #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
   #
   def init(container, game)
+    @container = container # So I can exit later...
+
     if File.size? 'savedgame.dat'
       #@entity_manager = YAML::load( File.open( 'savedgame.yaml' ) )
       @entity_manager = Marshal::load( File.open( 'savedgame.dat' ) )
@@ -96,19 +98,6 @@ class PlayingState < BasicGameState
   #   - +delta+ -> the number of ms since update was last called. We can use it to 'weight' the changes we make.
   #
   def update(container, game, delta)
-    input = container.get_input
-    if input.is_key_down(Input::KEY_ESCAPE)
-      if !@game_over && !@landed
-        # File.open("savedgame.yaml", "w") do |file|
-        #   file.puts YAML::dump(@entity_manager)
-        # end
-        File.open("savedgame.dat", "w") do |file|
-          file.print Marshal::dump(@entity_manager)
-        end
-      end
-      container.exit 
-    end
-
     # Nice because I can dictate the order things are processed
     @asteroid.process_one_game_tick(container, delta, @entity_manager)
     @input.process_one_game_tick(container, delta, @entity_manager)
@@ -141,5 +130,30 @@ class PlayingState < BasicGameState
 
   end
 
+  # Notification that a key was released
+  #
+  # * *Args*    :
+  #   - +key+ -> the slick.Input key code that was sent
+  #   - +char+ -> the ASCII decimal character-code that was sent
+  #
+  def keyReleased(key, char)
+    if key==Input::KEY_ESCAPE
+      if !@game_over && !@landed
+        # File.open("savedgame.yaml", "w") do |file|
+        #   file.puts YAML::dump(@entity_manager)
+        # end
+        File.open("savedgame.dat", "w") do |file|
+          file.print Marshal::dump(@entity_manager)
+        end
+      end
+      @container.exit
+    elsif key==Input::KEY_P
+      if @container.isPaused
+        @container.resume
+      else
+        @container.pause
+      end
+    end
+  end
 end
 
