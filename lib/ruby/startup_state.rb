@@ -21,6 +21,7 @@ class StartupState < BasicGameState
   #
   def init(container, game)
     @game = game
+    @container = container
     container.setTargetFrameRate(60)
     container.setAlwaysRender(true)
   end
@@ -34,12 +35,6 @@ class StartupState < BasicGameState
   #   - +delta+ -> the number of ms since update was last called. We can use it to 'weight' the changes we make.
   #
   def update(container, game, delta)
-    input = container.get_input
-    if input.is_key_down(Input::KEY_ESCAPE)
-      container.exit 
-    elsif input.is_key_down(Input::KEY_P)
-      @game.enterState(PlayingState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
-    end
   end
 
   # After that the render method allows us to draw the world we designed accordingly 
@@ -50,8 +45,24 @@ class StartupState < BasicGameState
   #   - +graphics+ -> graphics context that can be used to render. However, normal rendering routines can also be used.
   #
   def render(container, game, graphics)
+    graphics.setColor(Color.white)
     graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
+    graphics.setColor(Color.red)
     graphics.draw_string("Startup state (P to play)", 8, container.height - 200)
+  end
+
+  # Notification that a key was released
+  #
+  # * *Args*    :
+  #   - +key+ -> the slick.Input key code that was sent
+  #   - +char+ -> the ASCII decimal character-code that was sent
+  #
+  def keyReleased(key, char)
+    if key==Input::KEY_P
+      @game.enterState(PlayingState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
+    elsif key==Input::KEY_ESCAPE
+      @container.exit
+    end
   end
 
 end
