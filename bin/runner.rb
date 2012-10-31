@@ -20,7 +20,10 @@ require 'java'
 require 'lwjgl.jar'
 require 'slick.jar'
 
-java_import org.newdawn.slick.BasicGame
+#java_import org.newdawn.slick.BasicGame
+java_import org.newdawn.slick.state.BasicGameState
+java_import org.newdawn.slick.state.GameState
+java_import org.newdawn.slick.state.StateBasedGame
 java_import org.newdawn.slick.GameContainer
 java_import org.newdawn.slick.Graphics
 java_import org.newdawn.slick.Image
@@ -39,6 +42,6 @@ require 'logger'
 
 require 'game'
 
-app = AppGameContainer.new(Game.new('LunarLander'))
-app.set_display_mode(640, 480, false)
-app.start
+container = AppGameContainer.new(Game.new('LunarLander'))
+container.set_display_mode(640, 480, false)
+container.start
