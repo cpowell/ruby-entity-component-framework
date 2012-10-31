@@ -1,5 +1,5 @@
 ##
-# Copyright (c) 2012, Christopher Powell.
+# Copyright 2012, Prylis Incorporated.
 #
 # This file is part of The Ruby Entity-Component Framework.
 #
