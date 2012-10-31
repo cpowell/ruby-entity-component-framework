@@ -28,17 +28,11 @@ require 'systems/landing_system'
 require 'systems/asteroid_system'
 
 class PlayingState < BasicGameState
-  attr_reader :entity_manager
-  attr_reader :id
+  ID = 2 # Unique ID for this Slick game state
 
-  def initialize(container, game)
-    super()
-    @game = game
-    @id   = 2
-  end
-
+  # Required by StateBasedGame
   def getID
-    @id
+    ID
   end
 
   # Before you start the game loop, you can initialize any data you wish inside the method init.
@@ -47,9 +41,6 @@ class PlayingState < BasicGameState
   #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
   #
   def init(container, game)
-    container.setTargetFrameRate(60)
-    container.setAlwaysRender(true)
-
     if File.size? 'savedgame.dat'
       #@entity_manager = YAML::load( File.open( 'savedgame.yaml' ) )
       @entity_manager = Marshal::load( File.open( 'savedgame.dat' ) )

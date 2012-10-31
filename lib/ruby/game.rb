@@ -20,8 +20,11 @@ class Game < StateBasedGame
 
   def initStatesList(container)
     @@logger.debug "Game::initStatesList()"
-    addState StartupState.new(container, self)
-    addState PlayingState.new(container, self)
+
+    # The order you add them is important; starting state must be first.
+    addState StartupState.new
+    addState PlayingState.new
+    
     # Add other states here...
   end  
 end

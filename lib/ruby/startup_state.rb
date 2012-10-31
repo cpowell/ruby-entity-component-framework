@@ -7,17 +7,11 @@
 # the terms found in the "LICENSE" file included with the framework.
 
 class StartupState < BasicGameState
-  attr_reader :entity_manager
-  attr_reader :id
+  ID = 1 # Unique ID for this Slick game state
 
-  def initialize(container, game)
-    super()
-    @game = game
-    @id   = 1
-  end
-
+  # Required by StateBasedGame
   def getID
-    @id
+    ID
   end
 
   # Before you start the game loop, you can initialize any data you wish inside the method init.
@@ -26,6 +20,7 @@ class StartupState < BasicGameState
   #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
   #
   def init(container, game)
+    @game = game
     container.setTargetFrameRate(60)
     container.setAlwaysRender(true)
   end
@@ -43,7 +38,7 @@ class StartupState < BasicGameState
     if input.is_key_down(Input::KEY_ESCAPE)
       container.exit 
     elsif input.is_key_down(Input::KEY_P)
-      @game.enterState(2, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
+      @game.enterState(PlayingState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     end
   end
 
