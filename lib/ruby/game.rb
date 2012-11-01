@@ -67,6 +67,8 @@ class Game
 
     #@@logger.debug @entity_manager.dump_details
 
+    Display.sync(100)
+
     # Initialize any runnable systems
     @physics   = Physics.new(self)
     @input     = InputSystem.new(self)
@@ -76,8 +78,8 @@ class Game
     @landing   = LandingSystem.new(self)
     @asteroid  = AsteroidSystem.new(self)
 
-    #@bg_image = Image.new(RELATIVE_ROOT + 'res/images/bg.png')
-    
+    @bg_image = Texture.new(Gdx.files.internal(RELATIVE_ROOT + 'res/images/bg.png'))
+
     @game_over=false
     @landed=false
     @elapsed=0
@@ -87,6 +89,7 @@ class Game
     @camera = OrthographicCamera.new
     @camera.setToOrtho(false, 640, 480);
     @batch = SpriteBatch.new
+    @font = BitmapFont.new
   end
 
   # Method called by the game loop from the application every time rendering
@@ -111,12 +114,19 @@ class Game
     #@game_over = @collision.process_one_game_tick(container, delta, @entity_manager)
 
     # Make sure you "layer" things in here from bottom to top...
-    #@bg_image.draw(0, 0)
+    @camera.update
+    @batch.setProjectionMatrix(@camera.combined)
+
+    @batch.begin
+
+    @batch.draw(@bg_image, 0, 0)
 
     @renderer.process_one_game_tick(@entity_manager, @camera, @batch)
-   
-    # graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
-    # graphics.draw_string("Time now: #{game.game_clock.to_s}", 300, container.height-45)
+
+    @font.draw(@batch, "Lunar Lander (ESC to exit)", 8, 20);
+    @font.draw(@batch, "Time now: #{@game_clock.to_s}", 8, 50);
+
+    @batch.end
 
     # if @landed
     #   container.graphics.draw_string("Hooray you made it!", 50, 50)
@@ -125,6 +135,11 @@ class Game
     #   container.graphics.draw_string("BANG you're dead", 50, 50)
     #   container.pause
     # end
+
+    if Gdx.input.isKeyPressed(Input::Keys::ESCAPE)
+      Gdx.app.exit
+    end
+
   end
 
   # This method is called every time the game screen is re-sized and the game is
