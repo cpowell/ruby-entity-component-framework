@@ -42,6 +42,7 @@ require 'logger'
  
 Log.setVerbose false # If set to false, info and debug messages will not be printed.
 
+# TODO might move these into Game
 @@logger = Logger.new(STDERR) # or ("log.txt")
 @@logger.level = Logger::DEBUG
 @@logger.info 'Uses The Ruby Entity-Component Framework, Copyright 2012 Prylis Inc.'
