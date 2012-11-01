@@ -44,7 +44,7 @@ class Game
       @entity_manager = EntityManager.new(self)
   
       p1_lander = @entity_manager.create_tagged_entity('p1_lander')
-      @entity_manager.add_entity_component p1_lander, SpatialState.new(580, 50, 0, 0)
+      @entity_manager.add_entity_component p1_lander, SpatialState.new(580, 430, 0, 0)
       @entity_manager.add_entity_component p1_lander, Engine.new(0.01)
       @entity_manager.add_entity_component p1_lander, Fuel.new(250)
       @entity_manager.add_entity_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/images/lander.png", 1.0, 0)
@@ -55,12 +55,12 @@ class Game
       @entity_manager.add_entity_component p1_lander, PlayerInput.new([Input::Keys::A, Input::Keys::S, Input::Keys::D])
 
       platform = @entity_manager.create_tagged_entity('platform')
-      @entity_manager.add_entity_component platform, SpatialState.new(50, 360, 0, 0)
+      @entity_manager.add_entity_component platform, SpatialState.new(50, 118, 0, 0)
       @entity_manager.add_entity_component platform, Renderable.new(RELATIVE_ROOT + "res/images/shelf.png", 1.0, 0)
       @entity_manager.add_entity_component platform, Pad.new
 
       ground = @entity_manager.create_tagged_entity('ground')
-      @entity_manager.add_entity_component ground, SpatialState.new(0, 362, 0, 0)
+      @entity_manager.add_entity_component ground, SpatialState.new(0, 120, 0, 0)
       @entity_manager.add_entity_component ground, Renderable.new(RELATIVE_ROOT + "res/images/ground.png", 1.0, 0)
       #@entity_manager.add_entity_component ground, PolygonCollidable.new
     end
@@ -83,13 +83,17 @@ class Game
     @elapsed=0
 
     @game_clock = Time.utc(2000,"jan",1,20,15,1)
+
+    @camera = OrthographicCamera.new
+    @camera.setToOrtho(false, 800, 480);
+    @batch = SpriteBatch.new
   end
 
   # Method called by the game loop from the application every time rendering
   # should be performed. Game logic updates are usually also performed in this
   # method.
   def render
-    delta=17
+    delta=Gdx.graphics.getDeltaTime
 
     # This shows how to do something every N milliseconds:
     @elapsed += delta;

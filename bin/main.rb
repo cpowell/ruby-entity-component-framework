@@ -25,6 +25,8 @@ java_import com.badlogic.gdx.ApplicationListener
 java_import com.badlogic.gdx.Gdx
 java_import com.badlogic.gdx.Input
 java_import com.badlogic.gdx.graphics.Texture
+java_import com.badlogic.gdx.graphics.OrthographicCamera
+java_import com.badlogic.gdx.graphics.g2d.SpriteBatch
 
 java_import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 java_import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
