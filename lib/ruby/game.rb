@@ -100,13 +100,12 @@ class Game
     if (@elapsed >= 1000)
       increment_game_clock(@elapsed/1000*Game::GAME_CLOCK_MULTIPLIER)
       @elapsed = 0
-      puts @game_clock.to_s
     end
 
     # Nice because I can dictate the order things are processed
     # @asteroid.process_one_game_tick(delta, @entity_manager)
-    #@input.process_one_game_tick(delta, @entity_manager)
-    #@engine.process_one_game_tick(delta, @entity_manager)
+    @input.process_one_game_tick(delta, @entity_manager)
+    @engine.process_one_game_tick(delta, @entity_manager)
     @physics.process_one_game_tick(delta, @entity_manager)
     #@landed = @landing.process_one_game_tick(delta, @entity_manager)
     #@game_over = @collision.process_one_game_tick(container, delta, @entity_manager)
