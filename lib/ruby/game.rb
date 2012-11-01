@@ -60,7 +60,7 @@ class Game
       @entity_manager.add_entity_component platform, Pad.new
 
       ground = @entity_manager.create_tagged_entity('ground')
-      @entity_manager.add_entity_component ground, SpatialState.new(0, 120, 0, 0)
+      @entity_manager.add_entity_component ground, SpatialState.new(0, -140, 0, 0)
       @entity_manager.add_entity_component ground, Renderable.new(RELATIVE_ROOT + "res/images/ground.png", 1.0, 0)
       #@entity_manager.add_entity_component ground, PolygonCollidable.new
     end
@@ -85,7 +85,7 @@ class Game
     @game_clock = Time.utc(2000,"jan",1,20,15,1)
 
     @camera = OrthographicCamera.new
-    @camera.setToOrtho(false, 800, 480);
+    @camera.setToOrtho(false, 640, 480);
     @batch = SpriteBatch.new
   end
 
@@ -93,13 +93,14 @@ class Game
   # should be performed. Game logic updates are usually also performed in this
   # method.
   def render
-    delta=Gdx.graphics.getDeltaTime
+    delta=Gdx.graphics.getDeltaTime # seconds
 
-    # This shows how to do something every N milliseconds:
+    # This shows how to do something every N seconds:
     @elapsed += delta;
-    if (@elapsed >= 1000)
-      increment_game_clock(@elapsed/1000*Game::GAME_CLOCK_MULTIPLIER)
+    if (@elapsed >= 1)
+      increment_game_clock(@elapsed/Game::GAME_CLOCK_MULTIPLIER)
       @elapsed = 0
+      puts @game_clock.to_s
     end
 
     # Nice because I can dictate the order things are processed
@@ -113,7 +114,7 @@ class Game
     # Make sure you "layer" things in here from bottom to top...
     #@bg_image.draw(0, 0)
 
-   # @renderer.process_one_game_tick(@entity_manager, graphics)
+    @renderer.process_one_game_tick(@entity_manager, @camera, @batch)
    
     # graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
     # graphics.draw_string("Time now: #{game.game_clock.to_s}", 300, container.height-45)
