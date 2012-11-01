@@ -18,7 +18,7 @@ class Renderable < Component
   def initialize(image_fn, scale, rotation)
     super()
     @image_fn   = image_fn
-    @image      = Image.new(image_fn)
+    @image      = Texture.new(Gdx.files.internal(image_fn))
     @scale      = scale
     @rotation   = rotation
   end
@@ -41,7 +41,7 @@ class Renderable < Component
     @image_fn = coder['image_fn']
     @scale    = coder['scale']
     @rotation = coder['rotation']
-    @image    = Image.new(image_fn)
+    @image    = Texture.new(Gdx.files.internal(image_fn))
     @image.setRotation(@rotation)
   end
 

@@ -23,10 +23,8 @@ Dir["lib/\*.jar"].each { |jar| require jar }
 java_import com.badlogic.gdx.ApplicationListener
 
 java_import com.badlogic.gdx.Gdx
-java_import com.badlogic.gdx.graphics.GL10
-java_import com.badlogic.gdx.graphics.Mesh
-java_import com.badlogic.gdx.graphics.VertexAttribute
-java_import com.badlogic.gdx.graphics.VertexAttributes
+java_import com.badlogic.gdx.Input
+java_import com.badlogic.gdx.graphics.Texture
 
 java_import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 java_import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
@@ -46,7 +44,7 @@ require 'logger'
 
 cfg = LwjglApplicationConfiguration.new
 cfg.title = "LunarLander";
-cfg.useGL20 = false;
+cfg.useGL20 = true;
 cfg.width = 640;
 cfg.height = 480;
 LwjglApplication.new(Game.new, cfg)

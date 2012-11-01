@@ -11,7 +11,7 @@ class Physics < System
   ACCELERATION = 0.005 # m/s^2
   DOWN = Math.cos(Math::PI)
 
-  def process_one_game_tick(container, delta, entity_mgr)
+  def process_one_game_tick(delta, entity_mgr)
     gravity_entities = entity_mgr.get_all_entities_with_component_of_type(GravitySensitive)
     gravity_entities.each do |e|
       spatial_component = entity_mgr.get_entity_component_of_type(e, SpatialState)
