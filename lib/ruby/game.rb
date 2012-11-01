@@ -12,7 +12,7 @@ require 'playing_state'
 class Game < StateBasedGame
   attr_reader :game_clock
 
-  GAME_CLOCK_MULTIPLIER=2
+  GAME_CLOCK_MULTIPLIER=1
 
   def initialize(name)
     super(name)
