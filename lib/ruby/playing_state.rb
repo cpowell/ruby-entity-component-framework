@@ -101,8 +101,8 @@ class PlayingState < BasicGameState
   def update(container, game, delta)
     # This shows how to do something every N milliseconds:
     @elapsed += delta;
-    if (@elapsed >= Game::GAME_CLOCK_STEP_MS)
-      game.increment_game_clock(@elapsed/1000)
+    if (@elapsed >= 1000)
+      game.increment_game_clock(@elapsed/1000*Game::GAME_CLOCK_MULTIPLIER)
       @elapsed = 0
     end
 
