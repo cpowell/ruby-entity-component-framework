@@ -29,6 +29,7 @@ java_import com.badlogic.gdx.graphics.VertexAttribute
 java_import com.badlogic.gdx.graphics.VertexAttributes
 
 java_import com.badlogic.gdx.backends.lwjgl.LwjglApplication
+java_import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 
 require 'game'
 require 'logger'
@@ -43,4 +44,9 @@ require 'logger'
 @@logger.info 'See https://github.com/cpowell/ruby-entity-component-framework'
 @@logger.info 'Please preserve this notice in your own games. Thanks for playing fair!'
 
-LwjglApplication.new(Game.new, "LunarLander", 640, 480, false)
+cfg = LwjglApplicationConfiguration.new
+cfg.title = "LunarLander";
+cfg.useGL20 = false;
+cfg.width = 640;
+cfg.height = 480;
+LwjglApplication.new(Game.new, cfg)
