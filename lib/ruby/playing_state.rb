@@ -87,6 +87,7 @@ class PlayingState < BasicGameState
     
     @game_over=false
     @landed=false
+    @elapsed=0
   end
 
   # The update method is called during the game to update the logic in our world, 
@@ -98,6 +99,13 @@ class PlayingState < BasicGameState
   #   - +delta+ -> the number of ms since update was last called. We can use it to 'weight' the changes we make.
   #
   def update(container, game, delta)
+    # This shows how to do something every N milliseconds:
+    @elapsed += delta;
+    if (@elapsed >= Game::GAME_CLOCK_STEP_MS)
+      game.increment_game_clock(@elapsed/1000)
+      @elapsed = 0
+    end
+
     # Nice because I can dictate the order things are processed
     @asteroid.process_one_game_tick(container, delta, @entity_manager)
     @input.process_one_game_tick(container, delta, @entity_manager)
@@ -115,10 +123,13 @@ class PlayingState < BasicGameState
   #   - +graphics+ -> graphics context that can be used to render. However, normal rendering routines can also be used.
   #
   def render(container, game, graphics)
+    # Make sure you "layer" things in here from bottom to top...
     @bg_image.draw(0, 0)
-    graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
 
     @renderer.process_one_game_tick(@entity_manager, container, graphics)
+   
+    graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
+    graphics.draw_string("Time now: #{game.game_clock.to_s}", 300, container.height-45)
 
     if @landed
       container.graphics.draw_string("Hooray you made it!", 50, 50)
