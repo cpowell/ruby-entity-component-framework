@@ -93,20 +93,20 @@ class Game
   # should be performed. Game logic updates are usually also performed in this
   # method.
   def render
-    delta=Gdx.graphics.getDeltaTime # seconds
+    delta=Gdx.graphics.getDeltaTime * 1000 # seconds to ms
 
     # This shows how to do something every N seconds:
     @elapsed += delta;
-    if (@elapsed >= 1)
-      increment_game_clock(@elapsed/Game::GAME_CLOCK_MULTIPLIER)
+    if (@elapsed >= 1000)
+      increment_game_clock(@elapsed/1000*Game::GAME_CLOCK_MULTIPLIER)
       @elapsed = 0
       puts @game_clock.to_s
     end
 
     # Nice because I can dictate the order things are processed
     # @asteroid.process_one_game_tick(delta, @entity_manager)
-    @input.process_one_game_tick(delta, @entity_manager)
-    @engine.process_one_game_tick(delta, @entity_manager)
+    #@input.process_one_game_tick(delta, @entity_manager)
+    #@engine.process_one_game_tick(delta, @entity_manager)
     @physics.process_one_game_tick(delta, @entity_manager)
     #@landed = @landing.process_one_game_tick(delta, @entity_manager)
     #@game_over = @collision.process_one_game_tick(container, delta, @entity_manager)

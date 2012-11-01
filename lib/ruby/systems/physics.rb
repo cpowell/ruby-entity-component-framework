@@ -29,7 +29,7 @@ class Physics < System
       spatial_component.x += (amount)
 
       # now fall according to dy
-      amount = -0.01 * delta * spatial_component.dy
+      amount = 0.01 * delta * spatial_component.dy
       spatial_component.y += (amount * DOWN)
     end
   end
