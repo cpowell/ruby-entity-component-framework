@@ -17,30 +17,24 @@ $:.push File.expand_path('../../lib/ruby/', __FILE__)
 RELATIVE_ROOT = $0['<'] ? 'ruby_ec/' : ''
 
 require 'java'
-require 'lwjgl.jar'
-require 'slick.jar'
 
-java_import org.newdawn.slick.state.BasicGameState
-java_import org.newdawn.slick.state.GameState
-java_import org.newdawn.slick.state.StateBasedGame
-java_import org.newdawn.slick.GameContainer
-java_import org.newdawn.slick.Graphics
-java_import org.newdawn.slick.Image
-java_import org.newdawn.slick.Input
-java_import org.newdawn.slick.SlickException
-java_import org.newdawn.slick.AppGameContainer
-java_import org.newdawn.slick.state.transition.FadeInTransition
-java_import org.newdawn.slick.state.transition.FadeOutTransition
-java_import org.newdawn.slick.Color
-java_import org.newdawn.slick.util.Log # supports info, debug, warn, and error
+Dir["lib/\*.jar"].each { |jar| require jar }
+
+java_import com.badlogic.gdx.ApplicationListener
+
+java_import com.badlogic.gdx.Gdx
+java_import com.badlogic.gdx.graphics.GL10
+java_import com.badlogic.gdx.graphics.Mesh
+java_import com.badlogic.gdx.graphics.VertexAttribute
+java_import com.badlogic.gdx.graphics.VertexAttributes
+
+java_import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 
 require 'game'
 require 'logger'
 
 # Think of the following as the equivalent to the stuff you'd find in the
 # Java world's "public static void main(String[] argv)" method.
- 
-Log.setVerbose false # If set to false, info and debug messages will not be printed.
 
 # TODO might move these into Game
 @@logger = Logger.new(STDERR) # or ("log.txt")
@@ -49,5 +43,4 @@ Log.setVerbose false # If set to false, info and debug messages will not be prin
 @@logger.info 'See https://github.com/cpowell/ruby-entity-component-framework'
 @@logger.info 'Please preserve this notice in your own games. Thanks for playing fair!'
 
-game = Game.new('LunarLander')
-game.run
+LwjglApplication.new(Game.new, "LunarLander", 640, 480, false)
