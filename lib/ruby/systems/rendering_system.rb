@@ -27,7 +27,15 @@ class RenderingSystem < System
 
       #thing = Rectangle.new(loc_comp.x, loc_comp.y, render_comp.width, render_comp.height)
       
-      batch.draw(render_comp.image, loc_comp.x, loc_comp.y)
+      batch.draw(render_comp.image, loc_comp.x, loc_comp.y,
+        render_comp.width/2, render_comp.height/2,
+        render_comp.width, render_comp.height,
+        1.0, 1.0,
+        render_comp.rotation,
+        0, 0,
+        render_comp.width, render_comp.height,
+        false, false
+      )
     end
 
     batch.end

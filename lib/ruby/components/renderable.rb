@@ -24,8 +24,8 @@ class Renderable < Component
   end
 
   def rotate(amount)
-    @rotation += amount
-    @image.rotate(amount)
+    @rotation -= amount
+    #@image.rotate(amount)
   end
 
   # Deprecated in Ruby 1.9
