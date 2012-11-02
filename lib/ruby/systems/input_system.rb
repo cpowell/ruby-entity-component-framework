@@ -25,25 +25,25 @@ class InputSystem < System
     inputtable_entities.each do |entity|
       input_component = entity_mgr.get_entity_component_of_type(entity, PlayerInput)
 
-      if (Gdx.input.isKeyPressed(P1_KEY_THRUST) && 
+      if Gdx.input.isKeyPressed(P1_KEY_THRUST) && 
           input_component.responsive_keys.include?(P1_KEY_THRUST) && 
-          entity_mgr.entity_has_component_of_type(entity, Engine))
+          entity_mgr.entity_has_component_of_type(entity, Engine)
         engine_component=entity_mgr.get_entity_component_of_type(entity, Engine)
         engine_component.on=true
       end
 
-      if (Gdx.input.isKeyPressed(P1_KEY_ROTL) && 
-          input_component.responsive_keys.include?(P1_KEY_ROTL))
+      if Gdx.input.isKeyPressed(P1_KEY_ROTL) && 
+          input_component.responsive_keys.include?(P1_KEY_ROTL)
           
         renderable_component=entity_mgr.get_entity_component_of_type(entity, Renderable)
-        renderable_component.rotate(delta * -0.1)
+        renderable_component.rotate(delta * 0.1)
       end
 
-      if (Gdx.input.isKeyPressed(P1_KEY_ROTR) && 
-          input_component.responsive_keys.include?(P1_KEY_ROTR))
+      if Gdx.input.isKeyPressed(P1_KEY_ROTR) && 
+          input_component.responsive_keys.include?(P1_KEY_ROTR)
         
         renderable_component=entity_mgr.get_entity_component_of_type(entity, Renderable)
-        renderable_component.rotate(delta * 0.1)
+        renderable_component.rotate(delta * -0.1)
       end
     end
   end
