@@ -62,18 +62,15 @@ class CollisionSystem < System
   end
 
   def make_polygon(position_x, width, position_y, height, rotation, scale)
-    polygon = Polygon.new([position_x, position_y, position_x+width, position_y, position_x+width, position_y+height, position_x, position_y+height])
-    # polygon.addPoint(position_x, position_y)
-    # polygon.addPoint(position_x + width, position_y)
-    # polygon.addPoint(position_x + width, position_y + height)
-    # polygon.addPoint(position_x, position_y + height)
+    polygon = Polygon.new(
+      [0, 0, 
+      width, 0,  
+      width, height,
+      0, height])
 
-    # center = Vector2f.new(position_x + width/2.0*scale, position_y + height/2.0*scale)
+    polygon.setPosition(position_x, position_y)
+    polygon.setRotation(rotation)
 
-    # rotate_transform = Transform.createRotateTransform(rotation * Math::PI / 180.0, center.getX, center.getY)
-    # #scale_transform = Transform.createScaleTransform(scale, scale)
-
-    # polygon = polygon.transform(rotate_transform)
-    #polygon = polygon.transform(scale_transform)
+    return polygon
   end
 end
