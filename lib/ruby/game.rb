@@ -106,7 +106,7 @@ class Game
     end
 
     # Nice because I can dictate the order things are processed
-    # @asteroid.process_one_game_tick(delta, @entity_manager)
+    @asteroid.process_one_game_tick(delta, @entity_manager)
     @input.process_one_game_tick(delta, @entity_manager)
     @engine.process_one_game_tick(delta, @entity_manager)
     @physics.process_one_game_tick(delta, @entity_manager)
