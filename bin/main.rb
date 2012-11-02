@@ -33,7 +33,7 @@ java_import com.badlogic.gdx.graphics.g2d.BitmapFont
 java_import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 java_import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 
-require 'game'
+require 'my_game'
 require 'logger'
 
 # Think of the following as the equivalent to the stuff you'd find in the
@@ -51,4 +51,4 @@ cfg.title = "LunarLander";
 cfg.useGL20 = true;
 cfg.width = 640;
 cfg.height = 480;
-LwjglApplication.new(Game.new, cfg)
+LwjglApplication.new(MyGame.new, cfg)

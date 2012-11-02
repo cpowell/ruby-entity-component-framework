@@ -6,7 +6,7 @@
 # You can redistribute and/or modify this software only in accordance with
 # the terms found in the "LICENSE" file included with the framework.
 
-class StartupState < BasicGameState
+class StartupState < Screen
   ID = 1 # Unique ID for this Slick game state
 
   # Required by StateBasedGame
