@@ -67,7 +67,7 @@ class Game
 
     #@@logger.debug @entity_manager.dump_details
 
-    Display.sync(100)
+    Display.sync(60)
 
     # Initialize any runnable systems
     @physics   = Physics.new(self)
@@ -121,7 +121,7 @@ class Game
 
     @batch.draw(@bg_image, 0, 0)
 
-    @renderer.process_one_game_tick(@entity_manager, @camera, @batch)
+    @renderer.process_one_game_tick(@entity_manager, @camera, @batch, @font)
 
     @font.draw(@batch, "Lunar Lander (ESC to exit)", 8, 20);
     @font.draw(@batch, "Time now: #{@game_clock.to_s}", 8, 50);
