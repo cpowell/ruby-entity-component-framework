@@ -110,7 +110,7 @@ class Game
     @input.process_one_game_tick(delta, @entity_manager)
     @engine.process_one_game_tick(delta, @entity_manager)
     @physics.process_one_game_tick(delta, @entity_manager)
-    #@landed = @landing.process_one_game_tick(delta, @entity_manager)
+    @landed = @landing.process_one_game_tick(delta, @entity_manager)
     #@game_over = @collision.process_one_game_tick(container, delta, @entity_manager)
 
     # Make sure you "layer" things in here from bottom to top...
@@ -126,15 +126,15 @@ class Game
     @font.draw(@batch, "Lunar Lander (ESC to exit)", 8, 20);
     @font.draw(@batch, "Time now: #{@game_clock.to_s}", 8, 50);
 
-    @batch.end
 
-    # if @landed
-    #   container.graphics.draw_string("Hooray you made it!", 50, 50)
-    #   container.pause
+    if @landed
+      @font.draw(@batch,"Hooray you made it!", 50, 240)
     # elsif @game_over
     #   container.graphics.draw_string("BANG you're dead", 50, 50)
     #   container.pause
-    # end
+    end
+
+    @batch.end
 
     if Gdx.input.isKeyPressed(Input::Keys::ESCAPE)
       Gdx.app.exit

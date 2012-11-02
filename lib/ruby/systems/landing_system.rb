@@ -10,7 +10,7 @@ class LandingSystem < System
   PIXEL_FUDGE=2
   MAX_SPEED=5
 
-  def process_one_game_tick(container, delta, entity_mgr)
+  def process_one_game_tick(delta, entity_mgr)
     landable_entities = entity_mgr.get_all_entities_with_component_of_type(Landable)
     pad_entities      = entity_mgr.get_all_entities_with_component_of_type(Pad)
 
@@ -19,7 +19,7 @@ class LandingSystem < System
       renderable_component = entity_mgr.get_entity_component_of_type(entity, Renderable)
 
       bl_x = location_component.x
-      bl_y = location_component.y + renderable_component.height
+      bl_y = location_component.y 
 
       bc_x = bl_x + (renderable_component.width/2)
 
@@ -31,7 +31,7 @@ class LandingSystem < System
         pad_rend_component = entity_mgr.get_entity_component_of_type(pad, Renderable)
 
         ul_x = pad_loc_component.x
-        ul_y = pad_loc_component.y
+        ul_y = pad_loc_component.y+pad_rend_component.height
         #puts "lander x: #{bc_x} y: #{bl_y} / Pad x: #{ul_x} y: #{ul_y}"
 
         ur_x = ul_x+pad_rend_component.width
