@@ -8,22 +8,20 @@
 
 require 'components/renderable'
 
-java_import org.newdawn.slick.geom.Polygon
-java_import org.newdawn.slick.geom.Vector2f
-java_import org.newdawn.slick.geom.Transform
+# java_import org.newdawn.slick.geom.Polygon
+# java_import org.newdawn.slick.geom.Vector2f
+# java_import org.newdawn.slick.geom.Transform
+java_import com.badlogic.gdx.math.Polygon
+java_import com.badlogic.gdx.math.Intersector
 
 class CollisionSystem < System
 
-  def process_one_game_tick(container, delta, entity_mgr)
+  def process_one_game_tick(delta, entity_mgr)
     collidable_entities=[]
 
     polygon_entities = entity_mgr.get_all_entities_with_component_of_type(PolygonCollidable)
     update_bounding_polygons(entity_mgr, polygon_entities)
     collidable_entities += polygon_entities
-
-    # circle_entities = ...
-    # update_bounding_circles(circle_entities)
-    # collidable_entites += circle_entities
 
     bounding_areas={}
     collidable_entities.each do |e| 
@@ -35,17 +33,16 @@ class CollisionSystem < System
       bounding_areas.each_key do |other|
         next if entity==other
 
-        if bounding_areas[entity].intersects bounding_areas[other]
-          return true if entity_mgr.get_entity_tag(entity)=='p1_lander' || entity_mgr.get_entity_tag(other)=='p1_lander'
+        if Intersector.overlapConvexPolygons(bounding_areas[entity], bounding_areas[other]) 
+          if entity_mgr.get_entity_tag(entity)=='p1_lander' || entity_mgr.get_entity_tag(other)=='p1_lander'
+            #puts "Intersection!"
+            return true 
+          end
         end
       end
     end
 
     return false
-  end
-
-  def update_bounding_circles(entities)
-    # placeholder for thought
   end
 
   def update_bounding_polygons(entity_mgr, entities)
@@ -65,18 +62,18 @@ class CollisionSystem < System
   end
 
   def make_polygon(position_x, width, position_y, height, rotation, scale)
-    polygon = Polygon.new
-    polygon.addPoint(position_x, position_y)
-    polygon.addPoint(position_x + width, position_y)
-    polygon.addPoint(position_x + width, position_y + height)
-    polygon.addPoint(position_x, position_y + height)
+    polygon = Polygon.new([position_x, position_y, position_x+width, position_y, position_x+width, position_y+height, position_x, position_y+height])
+    # polygon.addPoint(position_x, position_y)
+    # polygon.addPoint(position_x + width, position_y)
+    # polygon.addPoint(position_x + width, position_y + height)
+    # polygon.addPoint(position_x, position_y + height)
 
-    center = Vector2f.new(position_x + width/2.0*scale, position_y + height/2.0*scale)
+    # center = Vector2f.new(position_x + width/2.0*scale, position_y + height/2.0*scale)
 
-    rotate_transform = Transform.createRotateTransform(rotation * Math::PI / 180.0, center.getX, center.getY)
-    #scale_transform = Transform.createScaleTransform(scale, scale)
+    # rotate_transform = Transform.createRotateTransform(rotation * Math::PI / 180.0, center.getX, center.getY)
+    # #scale_transform = Transform.createScaleTransform(scale, scale)
 
-    polygon = polygon.transform(rotate_transform)
+    # polygon = polygon.transform(rotate_transform)
     #polygon = polygon.transform(scale_transform)
   end
 end

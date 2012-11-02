@@ -14,7 +14,7 @@ require 'components/gravity_sensitive'
 require 'components/motion'
 require 'components/player_input'
 require 'components/fuel'
-#require 'components/polygon_collidable'
+require 'components/polygon_collidable'
 require 'components/landable'
 require 'components/pad'
 
@@ -23,7 +23,7 @@ require 'systems/rendering_system'
 require 'systems/physics'
 require 'systems/input_system'
 require 'systems/spatial_system'
-#require 'systems/collision_system'
+require 'systems/collision_system'
 require 'systems/landing_system'
 require 'systems/asteroid_system'
 
@@ -50,7 +50,7 @@ class Game
       @entity_manager.add_entity_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/images/lander.png", 1.0, 0)
       @entity_manager.add_entity_component p1_lander, GravitySensitive.new
       @entity_manager.add_entity_component p1_lander, Motion.new
-      #@entity_manager.add_entity_component p1_lander, PolygonCollidable.new
+      @entity_manager.add_entity_component p1_lander, PolygonCollidable.new
       @entity_manager.add_entity_component p1_lander, Landable.new
       @entity_manager.add_entity_component p1_lander, PlayerInput.new([Input::Keys::A, Input::Keys::S, Input::Keys::D])
 
@@ -62,7 +62,7 @@ class Game
       ground = @entity_manager.create_tagged_entity('ground')
       @entity_manager.add_entity_component ground, SpatialState.new(0, -140, 0, 0)
       @entity_manager.add_entity_component ground, Renderable.new(RELATIVE_ROOT + "res/images/ground.png", 1.0, 0)
-      #@entity_manager.add_entity_component ground, PolygonCollidable.new
+      @entity_manager.add_entity_component ground, PolygonCollidable.new
     end
 
     #@@logger.debug @entity_manager.dump_details
@@ -74,7 +74,7 @@ class Game
     @input     = InputSystem.new(self)
     @renderer  = RenderingSystem.new(self)
     @engine    = EngineSystem.new(self)
-    #@collision = CollisionSystem.new(self)
+    @collision = CollisionSystem.new(self)
     @landing   = LandingSystem.new(self)
     @asteroid  = AsteroidSystem.new(self)
 
@@ -111,7 +111,7 @@ class Game
     @engine.process_one_game_tick(delta, @entity_manager)
     @physics.process_one_game_tick(delta, @entity_manager)
     @landed = @landing.process_one_game_tick(delta, @entity_manager)
-    #@game_over = @collision.process_one_game_tick(container, delta, @entity_manager)
+    @game_over = @collision.process_one_game_tick(delta, @entity_manager)
 
     # Make sure you "layer" things in here from bottom to top...
     @camera.update
@@ -129,9 +129,8 @@ class Game
 
     if @landed
       @font.draw(@batch,"Hooray you made it!", 50, 240)
-    # elsif @game_over
-    #   container.graphics.draw_string("BANG you're dead", 50, 50)
-    #   container.pause
+    elsif @game_over
+      @font.draw(@batch,"Bang, you're dead!", 50, 240)
     end
 
     @batch.end
