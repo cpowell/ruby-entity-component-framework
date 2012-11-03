@@ -6,6 +6,8 @@
 # You can redistribute and/or modify this software only in accordance with
 # the terms found in the "LICENSE" file included with the framework.
 
+java_import com.badlogic.gdx.Screen
+
 require 'entity_manager'
 
 # Necesssary components
@@ -27,22 +29,15 @@ require 'systems/collision_system'
 require 'systems/landing_system'
 require 'systems/asteroid_system'
 
-class PlayingState < BasicGameState
-  ID = 2 # Unique ID for this Slick game state
+class PlayingState
+  include Screen
 
-  # Required by StateBasedGame
-  def getID
-    ID
+  def initialize(game)
+    @game = game
   end
 
-  # Before you start the game loop, you can initialize any data you wish inside the method init.
-  #
-  # * *Args*    :
-  #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
-  #
-  def init(container, game)
-    @container = container # So I can exit later...
-
+  # Method called once when the application is created.
+  def show
     if File.size? 'savedgame.dat'
       #@entity_manager = YAML::load( File.open( 'savedgame.yaml' ) )
       @entity_manager = Marshal::load( File.open( 'savedgame.dat' ) )
@@ -51,7 +46,7 @@ class PlayingState < BasicGameState
       @entity_manager = EntityManager.new(self)
   
       p1_lander = @entity_manager.create_tagged_entity('p1_lander')
-      @entity_manager.add_entity_component p1_lander, SpatialState.new(container.width-50, 50, 0, 0)
+      @entity_manager.add_entity_component p1_lander, SpatialState.new(580, 430, 0, 0)
       @entity_manager.add_entity_component p1_lander, Engine.new(0.01)
       @entity_manager.add_entity_component p1_lander, Fuel.new(250)
       @entity_manager.add_entity_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/images/lander.png", 1.0, 0)
@@ -59,20 +54,22 @@ class PlayingState < BasicGameState
       @entity_manager.add_entity_component p1_lander, Motion.new
       @entity_manager.add_entity_component p1_lander, PolygonCollidable.new
       @entity_manager.add_entity_component p1_lander, Landable.new
-      @entity_manager.add_entity_component p1_lander, PlayerInput.new([Input::KEY_A,Input::KEY_D,Input::KEY_S])
+      @entity_manager.add_entity_component p1_lander, PlayerInput.new([Input::Keys::A, Input::Keys::S, Input::Keys::D])
 
       platform = @entity_manager.create_tagged_entity('platform')
-      @entity_manager.add_entity_component platform, SpatialState.new(50, container.height - 124, 0, 0)
+      @entity_manager.add_entity_component platform, SpatialState.new(50, 118, 0, 0)
       @entity_manager.add_entity_component platform, Renderable.new(RELATIVE_ROOT + "res/images/shelf.png", 1.0, 0)
       @entity_manager.add_entity_component platform, Pad.new
 
       ground = @entity_manager.create_tagged_entity('ground')
-      @entity_manager.add_entity_component ground, SpatialState.new(0, container.height - 118, 0, 0)
+      @entity_manager.add_entity_component ground, SpatialState.new(0, -140, 0, 0)
       @entity_manager.add_entity_component ground, Renderable.new(RELATIVE_ROOT + "res/images/ground.png", 1.0, 0)
       @entity_manager.add_entity_component ground, PolygonCollidable.new
     end
 
     #@@logger.debug @entity_manager.dump_details
+
+    Display.sync(60)
 
     # Initialize any runnable systems
     @physics   = Physics.new(self)
@@ -83,88 +80,105 @@ class PlayingState < BasicGameState
     @landing   = LandingSystem.new(self)
     @asteroid  = AsteroidSystem.new(self)
 
-    @bg_image = Image.new(RELATIVE_ROOT + 'res/images/bg.png')
-    
+    @bg_image = Texture.new(Gdx.files.internal(RELATIVE_ROOT + 'res/images/bg.png'))
+
     @game_over=false
     @landed=false
     @elapsed=0
+
+    @camera = OrthographicCamera.new
+    @camera.setToOrtho(false, 640, 480);
+    @batch = SpriteBatch.new
+    @font = BitmapFont.new
   end
 
-  # The update method is called during the game to update the logic in our world, 
-  # within this method we can obtain the user input, calculate the world response 
-  # to the input, do extra calculation like the AI of the enemies, etc. Your game logic goes here.
-  #
-  # * *Args*    :
-  #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
-  #   - +delta+ -> the number of ms since update was last called. We can use it to 'weight' the changes we make.
-  #
-  def update(container, game, delta)
-    # This shows how to do something every N milliseconds:
+  def hide
+    
+  end
+
+  # Method called by the game loop from the application every time rendering
+  # should be performed. Game logic updates are usually also performed in this
+  # method.
+  def render(gdx_delta)
+    #delta=Gdx.graphics.getDeltaTime * 1000 # seconds to ms
+    delta = gdx_delta * 1000
+
+    # This shows how to do something every N seconds:
     @elapsed += delta;
     if (@elapsed >= 1000)
-      game.increment_game_clock(@elapsed/1000*Game::GAME_CLOCK_MULTIPLIER)
+      @game.increment_game_clock(@elapsed/1000*MyGame::GAME_CLOCK_MULTIPLIER)
       @elapsed = 0
     end
 
     # Nice because I can dictate the order things are processed
-    @asteroid.process_one_game_tick(container, delta, @entity_manager)
-    @input.process_one_game_tick(container, delta, @entity_manager)
-    @engine.process_one_game_tick(container, delta, @entity_manager)
-    @physics.process_one_game_tick(container, delta, @entity_manager)
-    @landed = @landing.process_one_game_tick(container, delta, @entity_manager)
-    @game_over = @collision.process_one_game_tick(container, delta, @entity_manager)
-  end
+    @asteroid.process_one_game_tick(delta, @entity_manager)
+    @input.process_one_game_tick(delta, @entity_manager)
+    @engine.process_one_game_tick(delta, @entity_manager)
+    @physics.process_one_game_tick(delta, @entity_manager)
+    @landed = @landing.process_one_game_tick(delta, @entity_manager)
+    @game_over = @collision.process_one_game_tick(delta, @entity_manager)
 
-  # After that the render method allows us to draw the world we designed accordingly 
-  # to the variables calculated in the update method.
-  #
-  # * *Args*    :
-  #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
-  #   - +graphics+ -> graphics context that can be used to render. However, normal rendering routines can also be used.
-  #
-  def render(container, game, graphics)
     # Make sure you "layer" things in here from bottom to top...
-    @bg_image.draw(0, 0)
+    @camera.update
+    @batch.setProjectionMatrix(@camera.combined)
 
-    @renderer.process_one_game_tick(@entity_manager, container, graphics)
-   
-    graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
-    graphics.draw_string("Time now: #{game.game_clock.to_s}", 300, container.height-45)
+    @batch.begin
+
+    @batch.draw(@bg_image, 0, 0)
+
+    @renderer.process_one_game_tick(@entity_manager, @camera, @batch, @font)
+
+    @font.draw(@batch, "ESC to exit", 8, 20);
+    @font.draw(@batch, "Time now: #{@game.game_clock.to_s}", 8, 50);
+
 
     if @landed
-      container.graphics.draw_string("Hooray you made it!", 50, 50)
-      container.pause
+      @font.draw(@batch,"Hooray you made it!", 50, 240)
     elsif @game_over
-      container.graphics.draw_string("BANG you're dead", 50, 50)
-      container.pause
+      @font.draw(@batch,"Bang, you're dead!", 50, 240)
     end
 
-  end
+    @batch.end
 
-  # Notification that a key was released
-  #
-  # * *Args*    :
-  #   - +key+ -> the slick.Input key code that was sent
-  #   - +char+ -> the ASCII decimal character-code that was sent
-  #
-  def keyReleased(key, char)
-    if key==Input::KEY_ESCAPE
-      if !@game_over && !@landed
-        # File.open("savedgame.yaml", "w") do |file|
-        #   file.puts YAML::dump(@entity_manager)
-        # end
+    if Gdx.input.isKeyPressed(Input::Keys::ESCAPE)
+      if !(@game_over || @landed)
         File.open("savedgame.dat", "w") do |file|
           file.print Marshal::dump(@entity_manager)
         end
-      end
-      @container.exit
-    elsif key==Input::KEY_P
-      if @container.isPaused
-        @container.resume
-      else
-        @container.pause
-      end
+      end      
+      @game.setScreen StartupState.new(@game)
     end
+
   end
+
+  # This method is called every time the game screen is re-sized and the game is
+  # not in the paused state. It is also called once just after the create()
+  # method.
+
+  # The parameters are the new width and height the screen has been resized to in
+  # pixels.
+  def resize width, height
+  end
+
+  # On Android this method is called when the Home button is pressed or an
+  # incoming call is received. On desktop this is called just before dispose()
+  # when exiting the application.
+
+  # A good place to save the game state.
+  def pause
+
+  end
+
+  # This method is only called on Android, when the application resumes from a
+  # paused state.
+  def resume
+
+  end
+
+  # Called when the application is destroyed. It is preceded by a call to pause().
+  def dispose
+
+  end
+
 end
 
