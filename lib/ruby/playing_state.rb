@@ -69,8 +69,6 @@ class PlayingState
 
     #@@logger.debug @entity_manager.dump_details
 
-    Display.sync(60)
-
     # Initialize any runnable systems
     @physics   = Physics.new(self)
     @input     = InputSystem.new(self)
@@ -90,6 +88,8 @@ class PlayingState
     @camera.setToOrtho(false, 640, 480);
     @batch = SpriteBatch.new
     @font = BitmapFont.new
+    @fps = 0
+    @last_fps = 0
   end
 
   def hide
@@ -100,15 +100,11 @@ class PlayingState
   # should be performed. Game logic updates are usually also performed in this
   # method.
   def render(gdx_delta)
+    #Display.sync(120)
+
+    @fps+=1
     #delta=Gdx.graphics.getDeltaTime * 1000 # seconds to ms
     delta = gdx_delta * 1000
-
-    # This shows how to do something every N seconds:
-    @elapsed += delta;
-    if (@elapsed >= 1000)
-      @game.increment_game_clock(@elapsed/1000*MyGame::GAME_CLOCK_MULTIPLIER)
-      @elapsed = 0
-    end
 
     # Nice because I can dictate the order things are processed
     @asteroid.process_one_game_tick(delta, @entity_manager)
@@ -128,9 +124,18 @@ class PlayingState
 
     @renderer.process_one_game_tick(@entity_manager, @camera, @batch, @font)
 
+    # This shows how to do something every N seconds:
+    @elapsed += delta;
+    if (@elapsed >= 1000)
+      @game.increment_game_clock(@elapsed/1000*MyGame::GAME_CLOCK_MULTIPLIER)
+      @last_fps=@fps
+      @fps=0
+      @elapsed = 0
+    end
+
+    @font.draw(@batch, "FPS: #{@last_fps}", 8, 460);
     @font.draw(@batch, "ESC to exit", 8, 20);
     @font.draw(@batch, "Time now: #{@game.game_clock.to_s}", 8, 50);
-
 
     if @landed
       @font.draw(@batch,"Hooray you made it!", 50, 240)
