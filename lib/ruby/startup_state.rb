@@ -47,11 +47,11 @@ class StartupState
     @batch.draw(@bg_image, 0, 0)
 
     @font.draw(@batch, "P to play!", 8, 250);
-    @font.draw(@batch, "Lunar Lander (ESC to exit)", 8, 20);
+    @font.draw(@batch, "Lunar Lander (Q to exit)", 8, 20);
 
     @batch.end
 
-    if Gdx.input.isKeyPressed(Input::Keys::ESCAPE)
+    if Gdx.input.isKeyPressed(Input::Keys::Q)
       Gdx.app.exit
     elsif Gdx.input.isKeyPressed(Input::Keys::P)
       @game.setScreen PlayingState.new(@game)

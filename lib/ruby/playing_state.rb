@@ -128,7 +128,7 @@ class PlayingState
 
     @renderer.process_one_game_tick(@entity_manager, @camera, @batch, @font)
 
-    @font.draw(@batch, "Lunar Lander (ESC to exit)", 8, 20);
+    @font.draw(@batch, "ESC to exit", 8, 20);
     @font.draw(@batch, "Time now: #{@game.game_clock.to_s}", 8, 50);
 
 
@@ -146,7 +146,7 @@ class PlayingState
           file.print Marshal::dump(@entity_manager)
         end
       end      
-      Gdx.app.exit
+      @game.setScreen StartupState.new(@game)
     end
 
   end
