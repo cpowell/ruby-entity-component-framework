@@ -97,7 +97,7 @@ class PlayingState
   def hide
     
   end
-  
+
   # Method called by the game loop from the application every time rendering
   # should be performed. Game logic updates are usually also performed in this
   # method.
@@ -143,6 +143,11 @@ class PlayingState
     @batch.end
 
     if Gdx.input.isKeyPressed(Input::Keys::ESCAPE)
+      if !(@game_over || @landed)
+        File.open("savedgame.dat", "w") do |file|
+          file.print Marshal::dump(@entity_manager)
+        end
+      end      
       Gdx.app.exit
     end
 

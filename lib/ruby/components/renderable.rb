@@ -41,7 +41,6 @@ class Renderable < Component
     @scale    = coder['scale']
     @rotation = coder['rotation']
     @image    = Texture.new(Gdx.files.internal(image_fn))
-    @image.setRotation(@rotation)
   end
 
   def marshal_dump
@@ -50,8 +49,7 @@ class Renderable < Component
 
   def marshal_load(array)
     @id, @image_fn, @scale, @rotation = array
-    @image = Image.new(image_fn)
-    @image.setRotation(@rotation)
+    @image = Texture.new(Gdx.files.internal(image_fn))
   end
 
 end
