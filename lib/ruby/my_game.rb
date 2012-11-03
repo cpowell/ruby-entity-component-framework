@@ -8,7 +8,7 @@
 
 java_import com.badlogic.gdx.Game
 
-require 'playing_state'
+require 'startup_state'
 
 class MyGame < Game
   include ApplicationListener
@@ -18,7 +18,14 @@ class MyGame < Game
   GAME_CLOCK_MULTIPLIER=1
 
   def create
+    @game_clock = Time.utc(2000,"jan",1,20,15,1)
+
     # this.setScreen(new Splash(this));
-    setScreen(PlayingState.new(self))
+    setScreen(StartupState.new(self))
   end
+
+  def increment_game_clock(seconds)
+    @game_clock += (seconds)
+  end
+
 end

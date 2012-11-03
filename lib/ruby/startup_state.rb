@@ -6,64 +6,86 @@
 # You can redistribute and/or modify this software only in accordance with
 # the terms found in the "LICENSE" file included with the framework.
 
-class StartupState < Screen
-  ID = 1 # Unique ID for this Slick game state
+java_import com.badlogic.gdx.Screen
 
-  # Required by StateBasedGame
-  def getID
-    ID
-  end
+require 'playing_state'
 
-  # Before you start the game loop, you can initialize any data you wish inside the method init.
-  #
-  # * *Args*    :
-  #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
-  #
-  def init(container, game)
+class StartupState
+  include Screen
+
+  def initialize(game)
     @game = game
-    @container = container # So I can exit later...
-    container.setTargetFrameRate(60)
-    container.setAlwaysRender(true)
   end
 
-  # The update method is called during the game to update the logic in our world, 
-  # within this method we can obtain the user input, calculate the world response 
-  # to the input, do extra calculation like the AI of the enemies, etc. Your game logic goes here.
-  #
-  # * *Args*    :
-  #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
-  #   - +delta+ -> the number of ms since update was last called. We can use it to 'weight' the changes we make.
-  #
-  def update(container, game, delta)
+  # Method called once when the application is created.
+  def show
+    @bg_image = Texture.new(Gdx.files.internal(RELATIVE_ROOT + 'res/images/bg.png'))
+
+    @camera = OrthographicCamera.new
+    @camera.setToOrtho(false, 640, 480);
+    @batch = SpriteBatch.new
+    @font = BitmapFont.new
   end
 
-  # After that the render method allows us to draw the world we designed accordingly 
-  # to the variables calculated in the update method.
-  #
-  # * *Args*    :
-  #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
-  #   - +graphics+ -> graphics context that can be used to render. However, normal rendering routines can also be used.
-  #
-  def render(container, game, graphics)
-    graphics.setColor(Color.white)
-    graphics.draw_string("Lunar Lander (ESC to exit)", 8, container.height - 30)
-    graphics.setColor(Color.red)
-    graphics.draw_string("Startup state (P to play)", 8, container.height - 200)
+  def hide
+    
   end
 
-  # Notification that a key was released
-  #
-  # * *Args*    :
-  #   - +key+ -> the slick.Input key code that was sent
-  #   - +char+ -> the ASCII decimal character-code that was sent
-  #
-  def keyReleased(key, char)
-    if key==Input::KEY_P
-      @game.enterState(PlayingState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
-    elsif key==Input::KEY_ESCAPE
-      @container.exit
+  # Method called by the game loop from the application every time rendering
+  # should be performed. Game logic updates are usually also performed in this
+  # method.
+  def render(gdx_delta)
+    #delta=Gdx.graphics.getDeltaTime * 1000 # seconds to ms
+    delta = gdx_delta * 1000
+
+    # Make sure you "layer" things in here from bottom to top...
+    @camera.update
+    @batch.setProjectionMatrix(@camera.combined)
+
+    @batch.begin
+
+    @batch.draw(@bg_image, 0, 0)
+
+    @font.draw(@batch, "P to play!", 8, 250);
+    @font.draw(@batch, "Lunar Lander (ESC to exit)", 8, 20);
+
+    @batch.end
+
+    if Gdx.input.isKeyPressed(Input::Keys::ESCAPE)
+      Gdx.app.exit
+    elsif Gdx.input.isKeyPressed(Input::Keys::P)
+      @game.setScreen PlayingState.new(@game)
     end
+
   end
 
+  # This method is called every time the game screen is re-sized and the game is
+  # not in the paused state. It is also called once just after the create()
+  # method.
+
+  # The parameters are the new width and height the screen has been resized to in
+  # pixels.
+  def resize width, height
+  end
+
+  # On Android this method is called when the Home button is pressed or an
+  # incoming call is received. On desktop this is called just before dispose()
+  # when exiting the application.
+
+  # A good place to save the game state.
+  def pause
+
+  end
+
+  # This method is only called on Android, when the application resumes from a
+  # paused state.
+  def resume
+
+  end
+
+  # Called when the application is destroyed. It is preceded by a call to pause().
+  def dispose
+
+  end
 end
 

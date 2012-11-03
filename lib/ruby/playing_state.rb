@@ -86,8 +86,6 @@ class PlayingState
     @landed=false
     @elapsed=0
 
-    @game_clock = Time.utc(2000,"jan",1,20,15,1)
-
     @camera = OrthographicCamera.new
     @camera.setToOrtho(false, 640, 480);
     @batch = SpriteBatch.new
@@ -108,7 +106,7 @@ class PlayingState
     # This shows how to do something every N seconds:
     @elapsed += delta;
     if (@elapsed >= 1000)
-      increment_game_clock(@elapsed/1000*MyGame::GAME_CLOCK_MULTIPLIER)
+      @game.increment_game_clock(@elapsed/1000*MyGame::GAME_CLOCK_MULTIPLIER)
       @elapsed = 0
     end
 
@@ -131,7 +129,7 @@ class PlayingState
     @renderer.process_one_game_tick(@entity_manager, @camera, @batch, @font)
 
     @font.draw(@batch, "Lunar Lander (ESC to exit)", 8, 20);
-    @font.draw(@batch, "Time now: #{@game_clock.to_s}", 8, 50);
+    @font.draw(@batch, "Time now: #{@game.game_clock.to_s}", 8, 50);
 
 
     if @landed
@@ -182,8 +180,5 @@ class PlayingState
 
   end
 
-  def increment_game_clock(seconds)
-    @game_clock += (seconds)
-  end
 end
 
