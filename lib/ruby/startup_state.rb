@@ -17,7 +17,7 @@ class StartupState
     @game = game
   end
 
-  # Method called once when the application is created.
+  # Called when this screen becomes the current screen for a Game.
   def show
     @bg_image = Texture.new(Gdx.files.internal(RELATIVE_ROOT + 'res/images/bg.png'))
 
@@ -35,9 +35,6 @@ class StartupState
   # should be performed. Game logic updates are usually also performed in this
   # method.
   def render(gdx_delta)
-    #delta=Gdx.graphics.getDeltaTime * 1000 # seconds to ms
-    delta = gdx_delta * 1000
-
     # Make sure you "layer" things in here from bottom to top...
     @camera.update
     @batch.setProjectionMatrix(@camera.combined)

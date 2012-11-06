@@ -36,7 +36,7 @@ class PlayingState
     @game = game
   end
 
-  # Method called once when the application is created.
+  # Called when this screen becomes the current screen for a Game.
   def show
     if File.size? 'savedgame.dat'
       #@entity_manager = YAML::load( File.open( 'savedgame.yaml' ) )
@@ -88,12 +88,10 @@ class PlayingState
     @camera.setToOrtho(false, 640, 480);
     @batch = SpriteBatch.new
     @font = BitmapFont.new
-    @fps = 0
-    @last_fps = 0
   end
 
+  # Called when this screen is no longer the current screen for a Game.
   def hide
-    
   end
 
   # Method called by the game loop from the application every time rendering
@@ -101,9 +99,6 @@ class PlayingState
   # method.
   def render(gdx_delta)
     #Display.sync(120)
-
-    @fps+=1
-    #delta=Gdx.graphics.getDeltaTime * 1000 # seconds to ms
     delta = gdx_delta * 1000
 
     # Nice because I can dictate the order things are processed
@@ -128,12 +123,10 @@ class PlayingState
     @elapsed += delta;
     if (@elapsed >= 1000)
       @game.increment_game_clock(@elapsed/1000*MyGame::GAME_CLOCK_MULTIPLIER)
-      @last_fps=@fps
-      @fps=0
       @elapsed = 0
     end
 
-    @font.draw(@batch, "FPS: #{@last_fps}", 8, 460);
+    @font.draw(@batch, "FPS: #{Gdx.graphics.getFramesPerSecond}", 8, 460);
     @font.draw(@batch, "ESC to exit", 8, 20);
     @font.draw(@batch, "Time now: #{@game.game_clock.to_s}", 8, 50);
 
