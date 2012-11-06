@@ -47,8 +47,8 @@ require 'logger'
 @@logger.info 'Please preserve this notice in your own games. Thanks for playing fair!'
 
 cfg = LwjglApplicationConfiguration.new
-cfg.title = "LunarLander";
-cfg.useGL20 = true;
-cfg.width = 640;
-cfg.height = 480;
+cfg.title = "LunarLander"
+cfg.useGL20 = true
+cfg.width = 640
+cfg.height = 480
 LwjglApplication.new(MyGame.new, cfg)
