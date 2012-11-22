@@ -137,9 +137,9 @@ class EntityManager
     return nil if store.nil?
 
     components = store[entity_uuid]
-    return nil if components.nil?
+    return nil if components.nil? || components.empty?
 
-    if components.size > 1
+    if components.size != 1
       puts "Warning: you probably expected #{entity_uuid} to have just one #{component_class.to_s} but it had #{components.size}...returning first."
     end
 
@@ -159,6 +159,7 @@ class EntityManager
     if result.nil?
       raise ArgumentError, "Entity #{entity_uuid} did not possess #{component} to remove"
     else
+      store.delete(entity_uuid) if store[entity_uuid].empty?
       return true
     end
   end
