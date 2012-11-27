@@ -60,7 +60,7 @@ class EntityManager
   #   @tags_to_ids[human_readable_tag]<<entity_uuid
   # end
 
-  def get_entity_tag(entity_uuid)
+  def get_tag(entity_uuid)
     raise ArgumentError, "UUID must be specified" if entity_uuid.nil?
 
     @ids_to_tags[entity_uuid]
@@ -89,7 +89,7 @@ class EntityManager
     end
   end
 
-  def add_entity_component(entity_uuid, component)
+  def add_component(entity_uuid, component)
     raise ArgumentError, "UUID and component must be specified" if entity_uuid.nil? || component.nil?
 
     # Get the store for this component class.
@@ -107,7 +107,7 @@ class EntityManager
     end
   end
 
-  def entity_has_component(entity_uuid, component)
+  def has_component(entity_uuid, component)
     raise ArgumentError, "UUID and component must be specified" if entity_uuid.nil? || component.nil?
 
     store = @component_stores[component.class]
@@ -118,7 +118,7 @@ class EntityManager
     end
   end
 
-  def entity_has_component_of_type(entity_uuid, component_class)
+  def has_component_of_type(entity_uuid, component_class)
     raise ArgumentError, "UUID and component class must be specified" if entity_uuid.nil? || component_class.nil?
 
     store = @component_stores[component_class]
@@ -129,10 +129,10 @@ class EntityManager
     end
   end
 
-  def get_entity_component_of_type(entity_uuid, component_class)
+  def get_component_of_type(entity_uuid, component_class)
     raise ArgumentError, "UUID and component class must be specified" if entity_uuid.nil? || component_class.nil?
 
-    # return nil unless entity_has_component_of_type(entity_uuid, component.class)
+    # return nil unless has_component_of_type(entity_uuid, component.class)
     store = @component_stores[component_class]
     return nil if store.nil?
 
@@ -146,7 +146,7 @@ class EntityManager
     return components.first
   end
 
-  def remove_entity_component(entity_uuid, component)
+  def remove_component(entity_uuid, component)
     raise ArgumentError, "UUID and component must be specified" if entity_uuid.nil? || component.nil?
 
     store = @component_stores[component.class]
@@ -164,7 +164,7 @@ class EntityManager
     end
   end
 
-  def get_all_components_on_entity(entity_uuid)
+  def get_all_components(entity_uuid)
     raise ArgumentError, "UUID must be specified" if entity_uuid.nil?
 
     components = []
@@ -201,7 +201,7 @@ class EntityManager
     output = to_s
     all_entities.each do |e|
       output << "\n #{e} (#{@ids_to_tags[e]})"
-      comps = get_all_components_on_entity(e)
+      comps = get_all_components(e)
       comps.each do |c|
         output << "\n   #{c.to_s}"
       end
