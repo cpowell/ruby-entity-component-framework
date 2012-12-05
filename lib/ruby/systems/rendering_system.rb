@@ -17,8 +17,8 @@ class RenderingSystem < System
 
     entities = entity_mgr.get_all_entities_with_components_of_type([Renderable, SpatialState])
     entities.each do |e|
-      loc_comp    = entity_mgr.get_entity_component_of_type(e, SpatialState)
-      render_comp = entity_mgr.get_entity_component_of_type(e, Renderable)
+      loc_comp    = entity_mgr.get_component_of_type(e, SpatialState)
+      render_comp = entity_mgr.get_component_of_type(e, Renderable)
 
       batch.draw(render_comp.image, loc_comp.x, loc_comp.y,
         render_comp.width/2, render_comp.height/2,
@@ -33,14 +33,14 @@ class RenderingSystem < System
     
     entities = entity_mgr.get_all_entities_with_component_of_type(Fuel)
     entities.each_with_index do |e, index|
-      fuel_component   = entity_mgr.get_entity_component_of_type(e, Fuel)
+      fuel_component   = entity_mgr.get_component_of_type(e, Fuel)
       font.draw(batch, "Fuel remaining #{sprintf "%.1f" % fuel_component.remaining}", 8, 90);
     end
 
     # Uncomment to visualize the bounding polygons:
     # entities = entity_mgr.get_all_entities_with_component_of_type(PolygonCollidable)
     # entities.each_with_index do |e, index|
-    #   polygon_component = entity_mgr.get_entity_component_of_type(e, PolygonCollidable)
+    #   polygon_component = entity_mgr.get_component_of_type(e, PolygonCollidable)
     #   graphics.draw polygon_component.bounding_polygon if polygon_component.bounding_polygon
     # end
   end

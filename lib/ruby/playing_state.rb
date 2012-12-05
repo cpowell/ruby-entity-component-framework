@@ -46,25 +46,25 @@ class PlayingState
       @entity_manager = EntityManager.new(self)
   
       p1_lander = @entity_manager.create_tagged_entity('p1_lander')
-      @entity_manager.add_entity_component p1_lander, SpatialState.new(580, 430, 0, 0)
-      @entity_manager.add_entity_component p1_lander, Engine.new(0.01)
-      @entity_manager.add_entity_component p1_lander, Fuel.new(250)
-      @entity_manager.add_entity_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/images/lander.png", 1.0, 0)
-      @entity_manager.add_entity_component p1_lander, GravitySensitive.new
-      @entity_manager.add_entity_component p1_lander, Motion.new
-      @entity_manager.add_entity_component p1_lander, PolygonCollidable.new
-      @entity_manager.add_entity_component p1_lander, Landable.new
-      @entity_manager.add_entity_component p1_lander, PlayerInput.new([Input::Keys::A, Input::Keys::S, Input::Keys::D])
+      @entity_manager.add_component p1_lander, SpatialState.new(580, 430, 0, 0)
+      @entity_manager.add_component p1_lander, Engine.new(0.01)
+      @entity_manager.add_component p1_lander, Fuel.new(250)
+      @entity_manager.add_component p1_lander, Renderable.new(RELATIVE_ROOT + "res/images/lander.png", 1.0, 0)
+      @entity_manager.add_component p1_lander, GravitySensitive.new
+      @entity_manager.add_component p1_lander, Motion.new
+      @entity_manager.add_component p1_lander, PolygonCollidable.new
+      @entity_manager.add_component p1_lander, Landable.new
+      @entity_manager.add_component p1_lander, PlayerInput.new([Input::Keys::A, Input::Keys::S, Input::Keys::D])
 
       platform = @entity_manager.create_tagged_entity('platform')
-      @entity_manager.add_entity_component platform, SpatialState.new(50, 118, 0, 0)
-      @entity_manager.add_entity_component platform, Renderable.new(RELATIVE_ROOT + "res/images/shelf.png", 1.0, 0)
-      @entity_manager.add_entity_component platform, Pad.new
+      @entity_manager.add_component platform, SpatialState.new(50, 118, 0, 0)
+      @entity_manager.add_component platform, Renderable.new(RELATIVE_ROOT + "res/images/shelf.png", 1.0, 0)
+      @entity_manager.add_component platform, Pad.new
 
       ground = @entity_manager.create_tagged_entity('ground')
-      @entity_manager.add_entity_component ground, SpatialState.new(0, -140, 0, 0)
-      @entity_manager.add_entity_component ground, Renderable.new(RELATIVE_ROOT + "res/images/ground.png", 1.0, 0)
-      @entity_manager.add_entity_component ground, PolygonCollidable.new
+      @entity_manager.add_component ground, SpatialState.new(0, -140, 0, 0)
+      @entity_manager.add_component ground, Renderable.new(RELATIVE_ROOT + "res/images/ground.png", 1.0, 0)
+      @entity_manager.add_component ground, PolygonCollidable.new
     end
 
     #@@logger.debug @entity_manager.dump_details

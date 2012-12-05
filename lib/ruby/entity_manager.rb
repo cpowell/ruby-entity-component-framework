@@ -52,7 +52,7 @@ class EntityManager
     return uuid
   end
 
-  # def set_entity_tag(entity_uuid, human_readable_tag)
+  # def set_tag(entity_uuid, human_readable_tag)
   #   raise ArgumentError, "UUID and tag must be specified" if entity_uuid.nil? || human_readable_tag.nil?
 
   #   @ids_to_tags[entity_uuid]=human_readable_tag

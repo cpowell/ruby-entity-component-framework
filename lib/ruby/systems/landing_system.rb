@@ -15,8 +15,8 @@ class LandingSystem < System
     pad_entities      = entity_mgr.get_all_entities_with_component_of_type(Pad)
 
     landable_entities.each do |entity|
-      location_component   = entity_mgr.get_entity_component_of_type(entity, SpatialState)
-      renderable_component = entity_mgr.get_entity_component_of_type(entity, Renderable)
+      location_component   = entity_mgr.get_component_of_type(entity, SpatialState)
+      renderable_component = entity_mgr.get_component_of_type(entity, Renderable)
 
       bl_x = location_component.x
       bl_y = location_component.y 
@@ -27,8 +27,8 @@ class LandingSystem < System
       br_y = bl_y
 
       pad_entities.each do |pad|
-        pad_loc_component = entity_mgr.get_entity_component_of_type(pad, SpatialState)
-        pad_rend_component = entity_mgr.get_entity_component_of_type(pad, Renderable)
+        pad_loc_component = entity_mgr.get_component_of_type(pad, SpatialState)
+        pad_rend_component = entity_mgr.get_component_of_type(pad, Renderable)
 
         ul_x = pad_loc_component.x
         ul_y = pad_loc_component.y+pad_rend_component.height

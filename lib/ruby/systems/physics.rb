@@ -14,7 +14,7 @@ class Physics < System
   def process_one_game_tick(delta, entity_mgr)
     gravity_entities = entity_mgr.get_all_entities_with_component_of_type(GravitySensitive)
     gravity_entities.each do |e|
-      spatial_component = entity_mgr.get_entity_component_of_type(e, SpatialState)
+      spatial_component = entity_mgr.get_component_of_type(e, SpatialState)
 
       # vertical speed will feel gravity's effect
       spatial_component.dy += ACCELERATION * delta
@@ -22,7 +22,7 @@ class Physics < System
 
     moving_entities = entity_mgr.get_all_entities_with_component_of_type(Motion)
     moving_entities.each do |e|
-      spatial_component = entity_mgr.get_entity_component_of_type(e, SpatialState)
+      spatial_component = entity_mgr.get_component_of_type(e, SpatialState)
 
       # move horizontally according to dx
       amount = 0.01 * delta * spatial_component.dx
