@@ -39,7 +39,6 @@ require 'logger'
 # Think of the following as the equivalent to the stuff you'd find in the
 # Java world's "public static void main(String[] argv)" method.
 
-# TODO might move these into Game
 @@logger = Logger.new(STDERR) # or ("log.txt")
 @@logger.level = Logger::DEBUG
 @@logger.info 'Uses The Ruby Entity-Component Framework, Copyright 2012 Prylis Inc.'

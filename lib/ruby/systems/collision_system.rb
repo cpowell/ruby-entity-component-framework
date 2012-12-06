@@ -8,9 +8,6 @@
 
 require 'components/renderable'
 
-# java_import org.newdawn.slick.geom.Polygon
-# java_import org.newdawn.slick.geom.Vector2f
-# java_import org.newdawn.slick.geom.Transform
 java_import com.badlogic.gdx.math.Polygon
 java_import com.badlogic.gdx.math.Intersector
 
