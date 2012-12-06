@@ -145,10 +145,10 @@ class TestEntityManager < MiniTest::Unit::TestCase
   def test_add_component_should_disallow_component_duplication
     id=@em.create_tagged_entity('blah')
     @em.add_component(id, @comp)
-    assert_equal(1, @em.get_all_components_on_entity(id).size)
+    assert_equal(1, @em.get_all_components(id).size)
 
     @em.add_component(id, @comp)
-    assert_equal(1, @em.get_all_components_on_entity(id).size)
+    assert_equal(1, @em.get_all_components(id).size)
   end
 
   def test_add_component_and_test_for_its_existence
@@ -157,7 +157,7 @@ class TestEntityManager < MiniTest::Unit::TestCase
 
     assert_equal(true, @em.has_component(id, @comp))
 
-    assert_equal(@comp, @em.get_all_components_on_entity(id)[0])
+    assert_equal(@comp, @em.get_all_components(id)[0])
 
     assert_equal(@comp, @em.get_component_of_type(id, Component))
   end
@@ -168,11 +168,11 @@ class TestEntityManager < MiniTest::Unit::TestCase
 
     assert(@em.has_component(id,@comp))
     assert(@em.has_component_of_type(id,Component))
-    assert_equal(1, @em.get_all_components_on_entity(id).size)
+    assert_equal(1, @em.get_all_components(id).size)
 
     @em.remove_component(id, @comp)
 
-    assert_equal(0, @em.get_all_components_on_entity(id).size)
+    assert_equal(0, @em.get_all_components(id).size)
 
     refute(@em.has_component(id,@comp))
     refute(@em.has_component_of_type(id,Component))
@@ -183,7 +183,7 @@ class TestEntityManager < MiniTest::Unit::TestCase
     @em.add_component(id, @comp)
 
     assert(@em.has_component(id,@comp))
-    assert_equal(1, @em.get_all_components_on_entity(id).size)
+    assert_equal(1, @em.get_all_components(id).size)
 
     comp = @em.get_component_of_type(id, Component)
     assert_equal(@comp, comp)
