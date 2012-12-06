@@ -1,7 +1,7 @@
 # Welcome to the Ruby Entity-Component Framework
 This framework (RECF for short) is designed to help game authors construct 
 modern, high-performance games using the elegant Ruby language and a fairly
-new alternative to OOP called "entity-component systems". An Entity-
+new alternative to OOP called an "entity-component system". An Entity-
 Component System is a programming methodology that successfully addresses many
 shortcomings of OOP and streamlines game creation and maintenance.
 
@@ -15,6 +15,28 @@ be separately downloaded.
 
 The RECF uses JRuby and has been tested with version 1.7. You'll need to 
 install your own JRuby interpreter (with, say, RVM).
+
+The RECF also uses some Gems which you can install with:
+    $ bundle
+
+# Running the sample game
+
+The RECF includes a **very** basic "Lunar Lander"-type game that is intended to
+be used as an example and teaching tool for the framework. You can run the
+game with:
+    $ ./run.sh
+
+(You'll need to have met the dependencies first.)
+
+A, D => rotate
+S => thrust
+
+You can also generate a precompiled, distributable, multi-platform, jarfile 
+package for your game as follows:
+    $ rake jar
+
+...and run it:
+    $ java -jar ./ecs_game.jar
 
 # Further reading about Entity-Component Frameworks
 
