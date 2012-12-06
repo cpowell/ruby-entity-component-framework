@@ -14,7 +14,7 @@ $:.push File.expand_path('../../lib/', __FILE__)
 $:.push File.expand_path('../../lib/ruby/', __FILE__)
 
 # Need a different root when inside the jar, luckily $0 is "<script>" in that case
-RELATIVE_ROOT = $0['<'] ? 'ruby_ec/' : ''
+RELATIVE_ROOT = $0['<'] ? 'ecs_game/' : ''
 
 require 'java'
 require "gdx-backend-lwjgl-natives.jar"
