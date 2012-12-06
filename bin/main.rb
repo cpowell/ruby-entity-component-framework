@@ -17,10 +17,11 @@ $:.push File.expand_path('../../lib/ruby/', __FILE__)
 RELATIVE_ROOT = $0['<'] ? 'ruby_ec/' : ''
 
 require 'java'
+require "gdx-backend-lwjgl-natives.jar"
+require "gdx-backend-lwjgl.jar"
+require "gdx-natives.jar"
+require "gdx.jar"
 
-Dir["lib/\*.jar"].each { |jar| require jar }
-
-java_import org.lwjgl.opengl.Display
 java_import com.badlogic.gdx.ApplicationListener
 java_import com.badlogic.gdx.Gdx
 java_import com.badlogic.gdx.Input
