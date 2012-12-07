@@ -1,7 +1,7 @@
 # Welcome to the Ruby Entity-Component Framework
 This framework (RECF for short) is designed to help game authors construct 
 modern, high-performance games using the elegant Ruby language and a fairly
-new alternative to OOP called an "entity-component system". An Entity-
+new alternative to OOP called an "entity component system". An Entity
 Component System is a programming methodology that successfully addresses many
 shortcomings of OOP and streamlines game creation and maintenance.
 
@@ -26,7 +26,6 @@ The RECF also uses some Gems which you can install with:
     $ bundle
 
 # Running the sample game
-
 The RECF includes a **very** basic "Lunar Lander"-type game that is intended to
 be used as an example and teaching tool for the framework. You can run the
 game with:
@@ -46,10 +45,9 @@ package for your game as follows:
     $ java -jar ./ecs_game.jar
 
 # Further reading about Entity-Component Frameworks
-
-E-C systems are quite different from Object Oriented Programming, especially
+Entity Component systems are quite different from Object Oriented Programming, especially
 if you are already a seasoned OO programmer. These resources will help you
-learn the justifications and benefits of E-C over OO:
+learn the justifications and benefits of Entity Component systems versus OO:
 
 * In [this article](http://humespeaks.tumblr.com/post/21273251357/ludum-dare-dry-run-lessons-learned), scroll down and read the comment that begins with *"Oh man, the Entity Systems question."* Hume tidily articulates the typical problem that OO creates but EC fixes.
 * [This T=Machine blog series](http://t-machine.org/index.php/2007/09/03/entity-systems-are-the-future-of-mmog-development-part-1/) offers a highly detailed and experienced look at the advantages to EC in MMO development.
@@ -57,6 +55,5 @@ learn the justifications and benefits of E-C over OO:
 * [This wiki](http://entity-systems.wikidot.com/) (by Adam of T=Machine) is one of the canonical EC references; you’ll return there often for advice.
 
 # Thanks
-
 A special "thanks" to Peter Cooper for writing [Let’s Build a Simple Video Game with JRuby: A Tutorial](http://www.rubyinside.com/video-game-ruby-tutorial-5726.html).
 His article inspired me down this path.
