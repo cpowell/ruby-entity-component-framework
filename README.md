@@ -9,6 +9,10 @@ The RECF has been documented in a series of blog posts by the author:
 
 [Entity-Component game programming using JRuby and libGDX](http://cbpowell.wordpress.com/2012/10/30/entity-component-game-programming-using-jruby-and-libgdx-part-1/)
 
+# Are you using this in a game?
+Won't you consider emailing the author at <cpowell@prylis.com> ? I'd love to 
+hear how the framework is being used "in the wild".
+
 # Dependencies
 The RECF utilizes libGDX (and LWJGL) to operate, although it has also been
 adapted to Slick2D. These are bundled with the RECF source and don't need to
