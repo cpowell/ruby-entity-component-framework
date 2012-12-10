@@ -23,7 +23,7 @@
 # components) being processed in chunks.
 #
 class System
-  attr_reader :name
+  attr_reader :game
   
   def initialize(game)
     @game = game
