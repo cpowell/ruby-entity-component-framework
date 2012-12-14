@@ -7,16 +7,28 @@ shortcomings of OOP and streamlines game creation and maintenance.
 
 The RECF has been documented in a series of blog posts by the author:
 
-[Entity-Component game programming using JRuby and libGDX](http://cbpowell.wordpress.com/2012/10/30/entity-component-game-programming-using-jruby-and-libgdx-part-1/)
+Entity-Component game programming using JRuby and libGDX
+
+* [Part 1 - introduction and nomenclature](http://cbpowell.wordpress.com/2012/10/30/entity-component-game-programming-using-jruby-and-libgdx-part-1/)
+* [Part 2 - entities and the entity manager](http://wp.me/pFIOD-f0)
+* [Part 3 - components](http://cbpowell.wordpress.com/2012/12/06/entity-component-game-programming-using-jruby-and-libgdx-part-3/)
+* [Part 4 - systems](http://cbpowell.wordpress.com/2012/12/07/entity-component-game-programming-using-jruby-and-libgdx-part-4/)
+* [Part 5 - libGDX concepts](http://cbpowell.wordpress.com/2012/12/11/entity-component-game-programming-using-jruby-and-libgdx-part-5/)
+* [Part 6 - the Lunar Lander game](http://cbpowell.wordpress.com/2012/12/13/entity-component-game-programming-using-jruby-and-libgdx-part-6/)
+
 
 # Are you using this in a game?
 Won't you consider emailing the author at <cpowell@prylis.com> ? I'd love to 
 hear how the framework is being used "in the wild".
 
 # Dependencies
-The RECF utilizes libGDX (and LWJGL) to operate, although it has also been
+The stock RECF utilizes libGDX (and LWJGL) to operate, although it has also been
 adapted to Slick2D. These are bundled with the RECF source and don't need to
 be separately downloaded.
+
+But note: the entity component piece itself is wholly agnostic to the
+graphics / game engine (libGDX, Slick, whatever). You can easily adapt the
+RECF to your favorite graphics system: Unity, Torque 3D, ...
 
 The RECF uses JRuby and has been tested with version 1.7. You'll need to 
 install your own JRuby interpreter (with, say, RVM).
