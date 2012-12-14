@@ -7,7 +7,7 @@ shortcomings of OOP and streamlines game creation and maintenance.
 
 The RECF has been documented in a series of blog posts by the author:
 
-##Entity-Component game programming using JRuby and libGDX
+###Entity-Component game programming using JRuby and libGDX
 
 * [Part 1 - introduction and nomenclature](http://cbpowell.wordpress.com/2012/10/30/entity-component-game-programming-using-jruby-and-libgdx-part-1/)
 * [Part 2 - entities and the entity manager](http://wp.me/pFIOD-f0)
