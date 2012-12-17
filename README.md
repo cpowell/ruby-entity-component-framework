@@ -15,7 +15,7 @@ The RECF has been documented in a series of blog posts by the author:
 * [Part 4 - systems](http://cbpowell.wordpress.com/2012/12/07/entity-component-game-programming-using-jruby-and-libgdx-part-4/)
 * [Part 5 - libGDX concepts](http://cbpowell.wordpress.com/2012/12/11/entity-component-game-programming-using-jruby-and-libgdx-part-5/)
 * [Part 6 - the Lunar Lander game](http://cbpowell.wordpress.com/2012/12/13/entity-component-game-programming-using-jruby-and-libgdx-part-6/)
-
+* [Part 7 - serialization](http://cbpowell.wordpress.com/2012/12/16/entity-component-game-programming-using-jruby-and-libgdx-part-7/)
 
 # Are you using this in a game?
 Won't you consider emailing the author at <cpowell@prylis.com> ? I'd love to 
