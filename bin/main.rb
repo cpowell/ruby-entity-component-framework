@@ -51,4 +51,13 @@ cfg.title = "LunarLander"
 cfg.useGL20 = true
 cfg.width = 640
 cfg.height = 480
-LwjglApplication.new(MyGame.new, cfg)
+
+game = MyGame.new
+
+LwjglApplication.new(game, cfg)
+
+# Prevent application from exiting while running as a jar
+while game.is_running
+  sleep(1)
+end
+

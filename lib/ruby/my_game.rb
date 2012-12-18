@@ -13,9 +13,13 @@ require 'startup_state'
 class MyGame < Game
   include ApplicationListener
 
-  attr_reader :game_clock
+  attr_reader :game_clock, :is_running
 
   GAME_CLOCK_MULTIPLIER=1
+
+  def initialize
+    @is_running = true
+  end
 
   def create
     @game_clock = Time.utc(2000,"jan",1,20,15,1)
@@ -28,4 +32,7 @@ class MyGame < Game
     @game_clock += (seconds)
   end
 
+  def dispose
+    @is_running = false
+  end
 end
