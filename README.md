@@ -51,6 +51,7 @@ A, D => rotate, S => thrust
 
 You can also generate a precompiled, distributable, multi-platform, jarfile 
 package for your game as follows:
+
     $ rake jar
 
 ...and run it:
