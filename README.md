@@ -56,7 +56,7 @@ package for your game as follows:
 
 ...and run it:
 
-    $ java -jar ./ecs_game.jar
+    $ java -jar ./recf.jar
 
 # Further reading about Entity-Component Frameworks
 Entity Component systems are quite different from Object Oriented Programming, especially
