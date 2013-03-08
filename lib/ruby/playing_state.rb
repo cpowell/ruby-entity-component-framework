@@ -41,9 +41,8 @@ class PlayingState
     if File.size? 'savedgame.dat'
       #@entity_manager = YAML::load( File.open( 'savedgame.yaml' ) )
       @entity_manager = Marshal::load( File.open( 'savedgame.dat' ) )
-      @entity_manager.game = self
     else
-      @entity_manager = EntityManager.new(self)
+      @entity_manager = EntityManager.new
   
       p1_lander = @entity_manager.create_tagged_entity('p1_lander')
       @entity_manager.add_component p1_lander, SpatialState.new(580, 430, 0, 0)

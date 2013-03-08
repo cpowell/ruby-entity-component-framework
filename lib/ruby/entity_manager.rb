@@ -16,9 +16,8 @@ class EntityManager
   attr_accessor :game
   attr_reader :id
 
-  def initialize(game)
+  def initialize
     @id          = java.util.UUID.randomUUID().to_s
-    @game        = game
     @ids_to_tags = Hash.new
     @tags_to_ids = Hash.new
 
