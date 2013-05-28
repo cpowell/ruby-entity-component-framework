@@ -22,7 +22,7 @@ class MyGame < Game
   end
 
   def create
-    @game_clock = Time.utc(2000,"jan",1,20,15,1)
+    @game_clock = Time.now.utc
 
     # this.setScreen(new Splash(this));
     setScreen(StartupState.new(self))
