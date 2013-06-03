@@ -43,7 +43,8 @@ The RECF includes a **very** basic "Lunar Lander"-type game that is intended to
 be used as an example and teaching tool for the framework. You can run the
 game with:
 
-    $ ./run.sh
+    $ ./run.sh (*nix, MacOS)	
+	run.bat (Windows, requires jruby in your PATH)
 
 (You'll need to have met the dependencies first.)
 
