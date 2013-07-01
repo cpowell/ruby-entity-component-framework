@@ -43,7 +43,7 @@ class PlayingState
       @entity_manager = Marshal::load( File.open( 'savedgame.dat' ) )
     else
       @entity_manager = EntityManager.new
-  
+
       p1_lander = @entity_manager.create_tagged_entity('p1_lander')
       @entity_manager.add_component p1_lander, SpatialState.new(580, 430, 0, 0)
       @entity_manager.add_component p1_lander, Engine.new(0.01)
@@ -139,10 +139,10 @@ class PlayingState
 
     if Gdx.input.isKeyPressed(Input::Keys::ESCAPE)
       if !(@game_over || @landed)
-        File.open("savedgame.dat", "w") do |file|
+        File.open("savedgame.dat", "wb") do |file|
           file.print Marshal::dump(@entity_manager)
         end
-      end      
+      end
       @game.setScreen StartupState.new(@game)
     end
 
