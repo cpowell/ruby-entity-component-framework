@@ -8,8 +8,8 @@
 
 # A Entity in a game is an object that exists in the world defined by the game.
 #
-# This means that almost everything is a game entity, from the player character 
-# to the box that holds the score. Some entities may be visible, others may be mobile, 
+# This means that almost everything is a game entity, from the player character
+# to the box that holds the score. Some entities may be visible, others may be mobile,
 # but all of them are part of the world of the game (even if invisible).
 
 class EntityManager
@@ -66,7 +66,7 @@ class EntityManager
   end
 
   def get_all_entities_with_tag(tag)
-    @tags_to_ids[tag]  
+    @tags_to_ids[tag]
   end
 
   def kill_entity(entity_uuid)
@@ -143,6 +143,19 @@ class EntityManager
     end
 
     return components.first
+  end
+
+  def get_components_of_type(entity_uuid, component_class)
+    raise ArgumentError, "UUID and component class must be specified" if entity_uuid.nil? || component_class.nil?
+
+    # return nil unless has_component_of_type(entity_uuid, component.class)
+    store = @component_stores[component_class]
+    return nil if store.nil?
+
+    components = store[entity_uuid]
+    return nil if components.nil? || components.empty?
+
+    return components
   end
 
   def remove_component(entity_uuid, component)

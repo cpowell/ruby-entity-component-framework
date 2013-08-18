@@ -15,14 +15,14 @@ require "lib/ruby/components/component"
 
 class TestEntityManager < MiniTest::Unit::TestCase
   def setup
-    @em = EntityManager.new(nil)
+    @em = EntityManager.new
     @comp = Component.new
   end
 
   def test_initialization_is_sane
     assert_equal([], @em.all_entities)
   end
-  
+
   def test_create_entity
     id=@em.create_basic_entity
     refute_nil(id)
@@ -68,7 +68,7 @@ class TestEntityManager < MiniTest::Unit::TestCase
   # def test_change_tag_of_entity
   #   id=@em.create_tagged_entity('blah')
   #   assert_equal('blah', @em.get_tag(id))
-  #   @em.set_tag(id, 'foobar')  
+  #   @em.set_tag(id, 'foobar')
   #   assert_equal('foobar', @em.get_tag(id))
   # end
 
@@ -187,6 +187,23 @@ class TestEntityManager < MiniTest::Unit::TestCase
 
     comp = @em.get_component_of_type(id, Component)
     assert_equal(@comp, comp)
+  end
+
+  def test_get_components_of_type
+    id=@em.create_tagged_entity('blah')
+    @em.add_component(id, @comp)
+    @comp2 = Component.new
+    @em.add_component(id, @comp2)
+
+    @comp3 = String.new
+    @em.add_component(id, @comp3)
+
+    assert(@em.has_component(id,@comp))
+    assert(@em.has_component(id,@comp2))
+    assert_equal(3, @em.get_all_components(id).size)
+
+    comps = @em.get_components_of_type(id, Component)
+    assert_equal([@comp, @comp2], comps)
   end
 
   def test_get_all_entities_with_components_of_type_should_barf_on_bad_argument
