@@ -64,7 +64,7 @@ Entity Component systems are quite different from Object Oriented Programming, e
 if you are already a seasoned OO programmer. These resources will help you
 learn the justifications and benefits of Entity Component systems versus OO:
 
-* In [this article](http://humespeaks.tumblr.com/post/21273251357/ludum-dare-dry-run-lessons-learned), scroll down and read the comment that begins with *"Oh man, the Entity Systems question."* Hume tidily articulates the typical problem that OO creates but EC fixes.
+* In [this article](http://zero-g-adventures.tumblr.com/post/56985031070/best-of-hume-entity-systems), Justin tidily articulates the typical problem that OO creates but EC fixes.
 * [This T=Machine blog series](http://t-machine.org/index.php/2007/09/03/entity-systems-are-the-future-of-mmog-development-part-1/) offers a highly detailed and experienced look at the advantages to EC in MMO development.
 * ["Evolve Your Hierarchy"](http://cowboyprogramming.com/2007/01/05/evolve-your-heirachy/) is a commonly-referenced piece on OO vs. EC.
 * [This wiki](http://entity-systems.wikidot.com/) (by Adam of T=Machine) is one of the canonical EC references; you’ll return there often for advice.
