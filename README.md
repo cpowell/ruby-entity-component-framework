@@ -72,3 +72,7 @@ learn the justifications and benefits of Entity Component systems versus OO:
 # Thanks
 A special "thanks" to Peter Cooper for writing [Let’s Build a Simple Video Game with JRuby: A Tutorial](http://www.rubyinside.com/video-game-ruby-tutorial-5726.html).
 His article inspired me down this path.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/cpowell/ruby-entity-component-framework/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
