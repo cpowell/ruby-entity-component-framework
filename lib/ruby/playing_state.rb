@@ -66,7 +66,7 @@ class PlayingState
       @entity_manager.add_component ground, PolygonCollidable.new
     end
 
-    #@@logger.debug @entity_manager.dump_details
+    #$logger.debug @entity_manager.dump_details
 
     # Initialize any runnable systems
     @physics   = Physics.new(self)

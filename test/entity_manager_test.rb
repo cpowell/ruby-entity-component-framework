@@ -155,7 +155,7 @@ class TestEntityManager < MiniTest::Unit::TestCase
     id=@em.create_tagged_entity('blah')
     @em.add_component(id, @comp)
 
-    assert_equal(true, @em.has_component(id, @comp))
+    assert_equal(true, @em.has_component?(id, @comp))
 
     assert_equal(@comp, @em.get_all_components(id)[0])
 
@@ -166,23 +166,23 @@ class TestEntityManager < MiniTest::Unit::TestCase
     id=@em.create_tagged_entity('blah')
     @em.add_component(id, @comp)
 
-    assert(@em.has_component(id,@comp))
-    assert(@em.has_component_of_type(id,Component))
+    assert(@em.has_component?(id,@comp))
+    assert(@em.has_component_of_type?(id,Component))
     assert_equal(1, @em.get_all_components(id).size)
 
     @em.remove_component(id, @comp)
 
     assert_equal(0, @em.get_all_components(id).size)
 
-    refute(@em.has_component(id,@comp))
-    refute(@em.has_component_of_type(id,Component))
+    refute(@em.has_component?(id,@comp))
+    refute(@em.has_component_of_type?(id,Component))
   end
 
   def test_get_component_of_type
     id=@em.create_tagged_entity('blah')
     @em.add_component(id, @comp)
 
-    assert(@em.has_component(id,@comp))
+    assert(@em.has_component?(id,@comp))
     assert_equal(1, @em.get_all_components(id).size)
 
     comp = @em.get_component_of_type(id, Component)
@@ -198,8 +198,8 @@ class TestEntityManager < MiniTest::Unit::TestCase
     @comp3 = String.new
     @em.add_component(id, @comp3)
 
-    assert(@em.has_component(id,@comp))
-    assert(@em.has_component(id,@comp2))
+    assert(@em.has_component?(id,@comp))
+    assert(@em.has_component?(id,@comp2))
     assert_equal(3, @em.get_all_components(id).size)
 
     comps = @em.get_components_of_type(id, Component)
