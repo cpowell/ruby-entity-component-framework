@@ -21,9 +21,9 @@ class EntityManager
     @ids_to_tags = Hash.new
     @tags_to_ids = Hash.new
 
-    # "Stores" hash: key=component class, value=a component store
-    # Each "component store" hash: key=entity UUID, value=an array of components
-    @component_stores = Hash.new
+    @component_stores = Hash.new { |h, k| h[k] = {} }
+
+    @mutex = Mutex.new
   end
 
   def all_entities
@@ -40,152 +40,155 @@ class EntityManager
     raise ArgumentError, "Must specify tag" if human_readable_tag.nil?
     raise ArgumentError, "Tag '-' is reserved and cannot be used" if human_readable_tag=='-'
 
-    uuid=create_basic_entity
-    @ids_to_tags[uuid]=human_readable_tag
-    if @tags_to_ids.has_key? human_readable_tag
-      @tags_to_ids[human_readable_tag]<<uuid
-    else
-      @tags_to_ids[human_readable_tag]=[uuid]
+    @mutex.synchronize do
+      uuid=create_basic_entity
+      @ids_to_tags[uuid]=human_readable_tag
+      if @tags_to_ids.has_key? human_readable_tag
+        @tags_to_ids[human_readable_tag]<<uuid
+      else
+        @tags_to_ids[human_readable_tag]=[uuid]
+      end
+
+      return uuid
     end
-
-    return uuid
-  end
-
-  # def set_tag(entity_uuid, human_readable_tag)
-  #   raise ArgumentError, "UUID and tag must be specified" if entity_uuid.nil? || human_readable_tag.nil?
-
-  #   @ids_to_tags[entity_uuid]=human_readable_tag
-  #   @tags_to_ids[]
-  #   @tags_to_ids[human_readable_tag]<<entity_uuid
-  # end
-
-  def get_tag(entity_uuid)
-    raise ArgumentError, "UUID must be specified" if entity_uuid.nil?
-
-    @ids_to_tags[entity_uuid]
   end
 
   def get_all_entities_with_tag(tag)
     @tags_to_ids[tag]
   end
 
-  def kill_entity(entity_uuid)
-    raise ArgumentError, "UUID must be specified" if entity_uuid.nil?
+  # def set_tag(entity, human_readable_tag)
+  #   raise ArgumentError, "UUID and tag must be specified" if entity.nil? || human_readable_tag.nil?
 
-    @component_stores.each_value do |store|
-      store.delete(entity_uuid)
-    end
-    @tags_to_ids.each_key do |tag|
-      if @tags_to_ids[tag].include? entity_uuid
-        @tags_to_ids[tag].delete entity_uuid
-      end
-    end
+  #   @ids_to_tags[entity]=human_readable_tag
+  #   @tags_to_ids[]
+  #   @tags_to_ids[human_readable_tag]<<entity
+  # end
 
-    if @ids_to_tags.delete(entity_uuid)==nil
-      return false
+  def get_tag(entity)
+    raise ArgumentError, "UUID must be specified" if entity.nil?
+
+    @ids_to_tags[entity]
+  end
+
+  def has_component?(entity, component)
+    raise ArgumentError, "UUID and component must be specified" if entity.nil? || component.nil?
+
+    store = @component_stores[component.class]
+    if store.nil?
+      return false # NOBODY has this component type
     else
-      return true
+      return store.has_key?(entity) && store[entity].include?(component)
     end
   end
 
-  def add_component(entity_uuid, component)
-    raise ArgumentError, "UUID and component must be specified" if entity_uuid.nil? || component.nil?
+  def has_component_of_type?(entity, component_class)
+    raise ArgumentError, "UUID and component class must be specified" if entity.nil? || component_class.nil?
+
+    store = @component_stores[component_class]
+    if store.nil?
+      return false # NOBODY has this component type
+    else
+      return store.has_key?(entity) && store[entity].size > 0
+    end
+  end
+
+
+  def add_component(entity, component)
+    raise ArgumentError, "UUID and component must be specified" if entity.nil? || component.nil?
 
     # Get the store for this component class.
     # If it doesn't exist, make it.
     store = @component_stores[component.class]
-    if store.nil?
-      store = Hash.new
-      @component_stores[component.class]=store
-    end
+    @mutex.synchronize do
+      if store.nil?
+        store = Hash.new
+        @component_stores[component.class]=store
+      end
 
-    if store.has_key? entity_uuid
-      store[entity_uuid] << component unless store[entity_uuid].include? component
-    else
-      store[entity_uuid] = [component]
-    end
-  end
-
-  def has_component(entity_uuid, component)
-    raise ArgumentError, "UUID and component must be specified" if entity_uuid.nil? || component.nil?
-
-    store = @component_stores[component.class]
-    if store.nil?
-      return false # NOBODY has this component type
-    else
-      return store.has_key?(entity_uuid) && store[entity_uuid].include?(component)
+      if store.has_key? entity
+        store[entity] << component unless store[entity].include? component
+      else
+        store[entity] = [component]
+      end
     end
   end
 
-  def has_component_of_type(entity_uuid, component_class)
-    raise ArgumentError, "UUID and component class must be specified" if entity_uuid.nil? || component_class.nil?
+  def add_singleton_component(entity, component)
+    if has_component_of_type?(entity, component.class.to_s.to_sym)
+      $logger.warn "Denied attempt to add more than one singleton #{component} to #{entity}"
+      return false
+    end
 
-    store = @component_stores[component_class]
-    if store.nil?
-      return false # NOBODY has this component type
-    else
-      return store.has_key?(entity_uuid) && store[entity_uuid].size > 0
+    add_component(entity, component)
+  end
+
+  def remove_component(entity, component)
+    raise ArgumentError, "UUID and component must be specified" if entity.nil? || component.nil?
+
+    Thread.exclusive do
+      store = @component_stores[component.class]
+      return nil if store.nil?
+
+      components = store[entity]
+      return nil if components.nil?
+
+      result = components.delete(component)
+      if result.nil?
+        raise ArgumentError, "Entity #{entity} did not possess #{component} to remove"
+      else
+        store.delete(entity) if store[entity].empty?
+        return true
+      end
     end
   end
 
-  def get_component_of_type(entity_uuid, component_class)
-    raise ArgumentError, "UUID and component class must be specified" if entity_uuid.nil? || component_class.nil?
+  def get_component_of_type(entity, component_class)
+    raise ArgumentError, "UUID and component class must be specified" if entity.nil? || component_class.nil?
 
-    # return nil unless has_component_of_type(entity_uuid, component.class)
+    # return nil unless has_component_of_type?(entity, component.class)
     store = @component_stores[component_class]
     return nil if store.nil?
 
-    components = store[entity_uuid]
+    components = store[entity]
     return nil if components.nil? || components.empty?
 
     if components.size != 1
-      puts "Warning: you probably expected #{entity_uuid} to have just one #{component_class.to_s} but it had #{components.size}...returning first."
+      puts "Warning: you probably expected #{entity} to have just one #{component_class.to_s} but it had #{components.size}...returning first."
     end
 
     return components.first
   end
 
-  def get_components_of_type(entity_uuid, component_class)
-    raise ArgumentError, "UUID and component class must be specified" if entity_uuid.nil? || component_class.nil?
+  def get_components_of_type(entity, component_class)
+    raise ArgumentError, "UUID and component class must be specified" if entity.nil? || component_class.nil?
 
-    # return nil unless has_component_of_type(entity_uuid, component.class)
+    # return nil unless has_component_of_type?(entity, component.class)
     store = @component_stores[component_class]
     return nil if store.nil?
 
-    components = store[entity_uuid]
+    components = store[entity]
     return nil if components.nil? || components.empty?
 
     return components
   end
 
-  def remove_component(entity_uuid, component)
-    raise ArgumentError, "UUID and component must be specified" if entity_uuid.nil? || component.nil?
-
-    store = @component_stores[component.class]
-    return nil if store.nil?
-
-    components = store[entity_uuid]
-    return nil if components.nil?
-
-    result = components.delete(component)
-    if result.nil?
-      raise ArgumentError, "Entity #{entity_uuid} did not possess #{component} to remove"
-    else
-      store.delete(entity_uuid) if store[entity_uuid].empty?
-      return true
-    end
+  def get_all_components_of_type(component_sym)
+    Set.new(@component_stores[component_sym].values).flatten
   end
 
-  def get_all_components(entity_uuid)
-    raise ArgumentError, "UUID must be specified" if entity_uuid.nil?
+  def get_all_components(entity)
+    raise ArgumentError, "UUID must be specified" if entity.nil?
 
-    components = []
-    @component_stores.values.each do |store|
-      if store[entity_uuid]
-        components += store[entity_uuid]
+    @mutex.synchronize do
+      components = []
+      @component_stores.values.each do |store|
+        if store[entity]
+          components += store[entity]
+        end
       end
+      components
     end
-    components
   end
 
   def get_all_entities_with_component_of_type(component_class)
@@ -207,6 +210,25 @@ class EntityManager
       entities = entities & get_all_entities_with_component_of_type(klass)
     end
     return entities
+  end
+
+  def kill_entity(entity)
+    raise ArgumentError, "UUID must be specified" if entity.nil?
+
+    @component_stores.each_value do |store|
+      store.delete(entity)
+    end
+    @tags_to_ids.each_key do |tag|
+      if @tags_to_ids[tag].include? entity
+        @tags_to_ids[tag].delete entity
+      end
+    end
+
+    if @ids_to_tags.delete(entity)==nil
+      return false
+    else
+      return true
+    end
   end
 
   def dump_details
