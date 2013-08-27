@@ -22,7 +22,6 @@ class EntityManager
     @tags_to_ids = Hash.new
 
     @component_stores = Hash.new { |h, k| h[k] = {} }
-
     @mutex = Mutex.new
   end
 
@@ -116,7 +115,6 @@ class EntityManager
 
   def add_singleton_component(entity, component)
     if has_component_of_type?(entity, component.class.to_s.to_sym)
-      $logger.warn "Denied attempt to add more than one singleton #{component} to #{entity}"
       return false
     end
 
